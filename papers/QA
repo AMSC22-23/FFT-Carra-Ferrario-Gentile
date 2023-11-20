@@ -1,0 +1,2 @@
+Fast Fourier Transforms for various cases where N is not a power of two: one option is to pad the vector with zeroes, that is, add zeroes to the
+end of the vector so that its length is a power of 2, and then take the FFT of that vector, however a slightly different result is produce.
