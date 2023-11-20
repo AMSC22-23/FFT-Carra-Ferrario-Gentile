@@ -27,11 +27,11 @@ int main(int argc, char** argv)
 	// -------------------
 	// create the matrix W
 	// -------------------
-  int n = 4;
+  int n = 16;
 	//matrixXcd is just an alias for Matrix<std::complex<double>, Dynamic, Dynamic>
 	Eigen::MatrixXcd W(n,n); 
 
-	comp exponent = (2*M_PI/n)*If;
+	comp exponent = (-2*M_PI/n)*If;
   for (int i=0; i<n; i++) {
 		for(int j=0; j<n; j++){
 			W(i,j)=std::exp(exponent*(1.0*i*j));
@@ -43,13 +43,14 @@ int main(int argc, char** argv)
 	// -------------------
 	Eigen::VectorXcd x(n);
 	for(int i=0; i<n; i++){
-		x(i)=f(i);
+		comp c(i,0);
+		x(i)=f(c);
 	}
 	
 	Eigen::VectorXcd X = W*x;	
 	
 
-	std::cout<<W<<std::endl;
+	//std::cout<<W<<std::endl;
 	std::cout<<X<<std::endl;
 	
 	/*
