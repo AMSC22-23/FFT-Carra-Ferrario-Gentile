@@ -7,26 +7,24 @@
 
 /**
  * This template extends the TensorFFTBase template to
- * handle data in the time domain, providing additional
+ * handle images data (Rank 2 tensors), providing additional
  * utility methods.
+ * @TODO: How images are really stored in a rank 2 tensor?
  * @author: Daniele Ferrario
 */
 template<typename DataType>
-class TimeTensor : public TensorFFTBase<DataType, 1>{
+class ImageTensor : public TensorFFTBase<DataType, 2>{
     public:
 
         // Inherit constructor
-        using TensorFFTBase<DataType, 1>::TensorFFTBase;
+        using TensorFFTBase<DataType, 2>::TensorFFTBase;
 
         // @Todo: data splicing methods
         void load_from_file(std::string);
 
 };
 
-/**
- * @TODO: Implement 1d .mtx loadings
-*/
 template<typename DataType>
-void TimeTensor<DataType>::load_from_file(std::string path){
-    //EigenTensorFilesIO::load_1d_mtx<DataType>(this->get_tensor(), path);
+void ImageTensor<DataType>::load_from_file(std::string path){
+    EigenTensorFilesIO::load_2d_mtx<DataType>(this->get_tensor(), path);
 }

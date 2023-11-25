@@ -20,9 +20,7 @@ class TensorFFTBase{
         };
 
         int get_rank();
-        Eigen::Tensor<DataType, Rank> get_tensor(){
-            return this->_tensor;
-        };
+        Eigen::Tensor<DataType, Rank>& get_tensor();
 
         ~TensorFFTBase() = default;
     private:
@@ -42,7 +40,7 @@ int TensorFFTBase<DataType, Rank>::get_rank(){
  * Returns the actual tensor object.
 */
 template<typename DataType, int Rank>
-Eigen::Tensor<DataType, Rank> get_tensor(){
+Eigen::Tensor<DataType, Rank>& TensorFFTBase<DataType, Rank>::get_tensor(){
         return this->_tensor;
 };
 
