@@ -1,20 +1,13 @@
-#include "FFTDataTypes.hpp"
+#include "../../fft/src/fftcore/TimeTensor.hpp"
 #include <unsupported/Eigen/CXX11/Tensor>
-
-
+#include <memory>
+#include <iostream>
 
 int main(){
-    int n = 3;
-    FFTDataTypes::TimeTensor<int, 3> time_tensor(n,n,n);
-    FFTDataTypes::FreqTensor<int, 3> freq_tensor(n,n,n);
+    TimeTensor<int, 3> time_tensor(1, 1, 1);
+    std::cout << time_tensor.get_rank();
+    std::cout << time_tensor.get_tensor();
 
-    int k = 0;
-    for(int i=0; i<n; i++){
-        for(int j=0; j<n; j++){
-            time_tensor(i, j, 1) = k++;
-        }
-    }
-    std::cout << time_tensor << std::endl;
-    
+
     return 0;
 }
