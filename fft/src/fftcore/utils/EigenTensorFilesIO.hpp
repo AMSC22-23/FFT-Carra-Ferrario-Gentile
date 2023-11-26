@@ -58,5 +58,31 @@ namespace EigenTensorFilesIO{
 
     }
 
+    /**
+     * Loads a 2d .mtx file into a two-ranked Eigen::Tensor object.
+     * 
+     * @TODO: Unfortunally, to load a Dense matrix (and then convert it to a Tensor), 
+     * we must pass it through a Sparse Matrix first since loadMarketDense is not present
+     * in the current version of Eigen.
+     * 
+     * @param target The Eigen::Tensor object
+     * @param path the file path
+    */
+    template<typename DataType>
+    void load_1d_mtx(Eigen::Tensor<DataType, 1> &target, const std::string &path){
+
+
+        
+
+        Eigen::SparseMatrix<double> spMat;
+        Eigen::MatrixXd denseMat;
+        Eigen::loadMarket(spMat, path);
+        denseMat = Eigen::MatrixXd(spMat);
+        std::cout << "Rows: " << spMat.rows() << std::endl;
+        std::cout << "Cols: " << spMat.cols() << std::endl;
+
+        target = Eigen::TensorMap<Eigen::Tensor<double, 1>>(denseMat.data(), denseMat.rows(), denseMat.cols());
+
+    }
 
 }

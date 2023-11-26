@@ -1,11 +1,15 @@
 //#include "../../fft/src/fftcore/TimeTensor.hpp"
 #include "../../fft/src/fftcore/ImageTensor.hpp"
+#include "../../fft/src/fftcore/FFTSolver.hpp"
+
+
 #include <unsupported/Eigen/CXX11/Tensor>
 #include <memory>
 #include <iostream>
 #include<unsupported/Eigen/SparseExtra>
 #include<Eigen/Sparse>
 #include<Eigen/Dense>
+
 int main(){
     
     /*
@@ -14,7 +18,7 @@ int main(){
     std::cout << "Empty tensor: "<<time_tensor.get_tensor();
     //TensorFFTBase<double,2> tensorfft2d;
     */
-   
+
     //EigenTensorFilesIO::load_2d_mtx<double>(tensorfft2d.get_tensor(), "./test.mtx");    
     
     ImageTensor<double> img_tensor;

@@ -28,5 +28,5 @@ class TimeTensor : public TensorFFTBase<DataType, 1>{
 */
 template<typename DataType>
 void TimeTensor<DataType>::load_from_file(std::string path){
-    //EigenTensorFilesIO::load_1d_mtx<DataType>(this->get_tensor(), path);
+    EigenTensorFilesIO::load_1d_mtx<DataType>(this->get_tensor(), path);
 }
