@@ -20,6 +20,7 @@ class ImageTensor : public TensorFFTBase<DataType, 2>{
         using TensorFFTBase<DataType, 2>::TensorFFTBase;
 
         // @Todo: data splicing methods
+        
         void load_from_file(std::string);
 
 };

@@ -5,7 +5,7 @@
 
 /**
  * IO utils for Eigen vectors, matrixes and tensors.
- * @TODO: Create a standard for saving tensors, for all ranks. (.mtx suits only vectors and matrixes.)
+ * @TODO: Create a standard for saving tensors, for all ranks. 
  * 
  * @author Daniele Ferrario
 */
@@ -59,7 +59,7 @@ namespace EigenTensorFilesIO{
     }
 
     /**
-     * Loads a 2d .mtx file into a two-ranked Eigen::Tensor object.
+     * Loads a 1d .mtx file into a one-ranked Eigen::Tensor object.
      * 
      * @TODO: Unfortunally, to load a Dense matrix (and then convert it to a Tensor), 
      * we must pass it through a Sparse Matrix first since loadMarketDense is not present
@@ -71,9 +71,6 @@ namespace EigenTensorFilesIO{
     template<typename DataType>
     void load_1d_mtx(Eigen::Tensor<DataType, 1> &target, const std::string &path){
 
-
-        
-
         Eigen::SparseMatrix<double> spMat;
         Eigen::MatrixXd denseMat;
         Eigen::loadMarket(spMat, path);
@@ -82,6 +79,15 @@ namespace EigenTensorFilesIO{
         std::cout << "Cols: " << spMat.cols() << std::endl;
 
         target = Eigen::TensorMap<Eigen::Tensor<double, 1>>(denseMat.data(), denseMat.rows(), denseMat.cols());
+
+    }
+
+    /**
+     * Load a x-dimensional .mtx file into a x-ranked Eigen::Tensor object.
+     * @TODO: to implement
+    */
+    template<typename DataType, int Rank>
+    void load_tensor_mtx(Eigen::Tensor<DataType, Rank> &target, const std::string &path){
 
     }
 

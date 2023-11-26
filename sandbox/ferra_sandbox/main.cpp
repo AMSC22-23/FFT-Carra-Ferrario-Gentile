@@ -24,6 +24,8 @@ int main(){
     ImageTensor<double> img_tensor;
     img_tensor.load_from_file("./test.mtx");
     std::cout << img_tensor.get_tensor();
+    
+    fftcore::FFTSolver<double, 3> solver;
 
     return 0;
 }

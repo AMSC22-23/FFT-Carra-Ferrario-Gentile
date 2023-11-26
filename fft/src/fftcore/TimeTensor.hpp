@@ -18,14 +18,12 @@ class TimeTensor : public TensorFFTBase<DataType, 1>{
         // Inherit constructor
         using TensorFFTBase<DataType, 1>::TensorFFTBase;
 
-        // @Todo: data splicing methods
+        // @Todo: time splicing methods
+        
         void load_from_file(std::string);
 
 };
 
-/**
- * @TODO: Implement 1d .mtx loadings
-*/
 template<typename DataType>
 void TimeTensor<DataType>::load_from_file(std::string path){
     EigenTensorFilesIO::load_1d_mtx<DataType>(this->get_tensor(), path);
