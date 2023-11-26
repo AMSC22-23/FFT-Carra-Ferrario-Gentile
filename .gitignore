@@ -33,3 +33,6 @@
 
 # Matrix Market files
 *.mtx
+
+# Vscode files
+.vscode
