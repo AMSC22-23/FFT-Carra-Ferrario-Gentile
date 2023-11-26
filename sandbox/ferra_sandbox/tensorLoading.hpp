@@ -7,16 +7,17 @@
 #define MATRIX_MARKET_TENSOR_TITLE "%%MatrixMarket tensor coordinate real general"
 using namespace std;
 
-std::vector<std::string> splitString(const std::string& input, char delimiter) {
-    std::vector<std::string> tokens;
-    std::istringstream tokenStream(input);
-    std::string token;
+std::vector<std::string> splitByWhitespace(const std::string& input) {
+    std::istringstream iss(input);
+    std::vector<std::string> result;
 
-    while (std::getline(tokenStream, token, delimiter)) {
-        tokens.push_back(token);
+    // Use >> operator to extract words
+    std::string word;
+    while (iss >> word) {
+        result.push_back(word);
     }
 
-    return tokens;
+    return result;
 }
 
 template<typename DataType, int Rank>
@@ -36,22 +37,33 @@ void load_tensor_mtx(Eigen::Tensor<DataType, Rank> &tensor, std::string path){
 
     int lineCount = 1;
     int nnz;
-    int[Rank] sizes;
+    vector<int> sizes;
     vector<string> strValues;
+    
     while(getline(inputFile, line)){
+        
+        strValues = splitByWhitespace(line);
+
+        // Reading tesor header
         if(lineCount == 1){
-            strValues = splitString(line, " ");
             if(strValues.size() != (Rank +1)){
+
                 cerr << "Matrix market header file doesn't match the tensor rank.";
                 return;
             }
             for(int i=0; i<strValues.size()-1; i++){
-                sizes[i] = strValues[i];
+                sizes[i] = stoi(strValues[i]);
             }
-            nnz = strValues.back();
-
+            tensor = Eigen::Tensor<DataType, Rank>(sizes);
+            nnz = stoi(strValues.back());   
         }
+
+        // Reading coordinate
+        
+
+        lineCount++;
     }
+    
     
     
 }

@@ -5,8 +5,7 @@
 namespace fftcore{
 	
 
-	// Useful alias
-	
+	// Useful alias	
 	template<typename DataType, int Rank>
 	using TensorFFT = TensorFFTBase<DataType, Rank>;
 
@@ -18,16 +17,16 @@ namespace fftcore{
 	class FFTSolver{
 		public:
 			FFTSolver(){};
-			void compute_fft(const &TensorFFT, &TensorFFT) const; // virtual?
+			void compute_fft(const TensorFFT<DataType, Rank>&, TensorFFT<DataType, Rank>&) const; // virtual?
 
-			void ifft(const& TensorFFT,&TensorFFT) const;
+			void ifft(const TensorFFT<DataType, Rank>&,TensorFFT<DataType, Rank>&) const;
 			
-			void fft(&TensorFFT) const;
+			void fft(TensorFFT<DataType, Rank>&) const;
 
-			void ifft(&TensorFFT) const;
+			void ifft(TensorFFT<DataType, Rank>&) const;
 
-			void set_strategy(&&std::unique_ptr<FFTEngine>);
+			void set_strategy(std::unique_ptr<fftcore::FFTEngine<DataType, Rank>>&&);
 		private:
-			std::unique_ptr<FFTEngine> _fftengine;
+			std::unique_ptr<fftcore::FFTEngine<DataType, Rank>> _fftengine;
 	};
 }

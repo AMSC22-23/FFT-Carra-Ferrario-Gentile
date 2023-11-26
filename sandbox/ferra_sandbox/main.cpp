@@ -1,7 +1,7 @@
 //#include "../../fft/src/fftcore/TimeTensor.hpp"
 #include "../../fft/src/fftcore/ImageTensor.hpp"
 #include "../../fft/src/fftcore/FFTSolver.hpp"
-//#include "tensorLoading.hpp"
+#include "tensorLoading.hpp"
 
 #include <unsupported/Eigen/CXX11/Tensor>
 #include <memory>
@@ -23,12 +23,11 @@ int main(){
     
     ImageTensor<double> img_tensor;
     img_tensor.load_from_file("./test.mtx");
-    std::cout << img_tensor.get_tensor();
+    //std::cout << img_tensor.get_tensor();
     
     fftcore::FFTSolver<double, 3> solver;
-    //TensorFFTBase<double, 3> generic_tensor;
+    TensorFFTBase<double, 2> generic_tensor;
 
-    //load_tensor_mtx(generic_tensor.get_tensor(), "./test.mtx");
-
+    load_tensor_mtx(generic_tensor.get_tensor(), "./test.mtx");
     return 0;
 }

@@ -51,8 +51,6 @@ namespace EigenTensorFilesIO{
         Eigen::MatrixXd denseMat;
         Eigen::loadMarket(spMat, path);
         denseMat = Eigen::MatrixXd(spMat);
-        std::cout << "Rows: " << spMat.rows() << std::endl;
-        std::cout << "Cols: " << spMat.cols() << std::endl;
 
         target = Eigen::TensorMap<Eigen::Tensor<double, 2>>(denseMat.data(), denseMat.rows(), denseMat.cols());
 
@@ -75,8 +73,6 @@ namespace EigenTensorFilesIO{
         Eigen::MatrixXd denseMat;
         Eigen::loadMarket(spMat, path);
         denseMat = Eigen::MatrixXd(spMat);
-        std::cout << "Rows: " << spMat.rows() << std::endl;
-        std::cout << "Cols: " << spMat.cols() << std::endl;
 
         target = Eigen::TensorMap<Eigen::Tensor<double, 1>>(denseMat.data(), denseMat.rows(), denseMat.cols());
 
