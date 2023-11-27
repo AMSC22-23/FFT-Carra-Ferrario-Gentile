@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include "TensorFFTBase.hpp"
-#include "utils/EigenTensorFilesIO.hpp"
+#include "utils/MtxFilesIO.hpp"
 
 
 /**
@@ -22,11 +22,11 @@ class ImageTensor : public TensorFFTBase<DataType, 2>{
 
         // @Todo: data splicing methods
         
-        void load_from_file(std::string);
+        void load_from_file(const std::string&);
 
 };
 
 template<typename DataType>
-void ImageTensor<DataType>::load_from_file(std::string path){
-    EigenTensorFilesIO::load_2d_mtx<DataType>(this->get_tensor(), path);
+void ImageTensor<DataType>::load_from_file(const std::string &path){
+    MtxFilesIO::laod_mat_mtx<DataType, 2>(this->get_tensor(), path);
 }

@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include "TensorFFTBase.hpp"
-#include "utils/EigenTensorFilesIO.hpp"
+#include "utils/MtxFilesIO.hpp"
 
 
 /**
@@ -21,11 +21,11 @@ class TimeTensor : public TensorFFTBase<DataType, 1>{
 
         // @Todo: time splicing methods
         
-        void load_from_file(std::string);
+        void load_from_file(const std::string&);
 
 };
 
 template<typename DataType>
-void TimeTensor<DataType>::load_from_file(std::string path){
-    EigenTensorFilesIO::load_1d_mtx<DataType>(this->get_tensor(), path);
+void TimeTensor<DataType>::load_from_file(const std::string &path){
+    MtxFilesIO::load_mat_mtx<DataType, 1>(this->get_tensor(), path);
 }
