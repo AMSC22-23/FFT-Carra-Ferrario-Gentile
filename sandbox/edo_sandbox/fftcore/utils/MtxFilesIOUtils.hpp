@@ -56,8 +56,8 @@ namespace MtxFilesIOUtils{
         if(h_sub_strings[3] == "real"){
             is_complex_data = false;
         }
-        else if(h_sub_strings[3] == "real"){
-            is_complex_data = false;
+        else if(h_sub_strings[3] == "complex"){
+            is_complex_data = true;
         }else{
             cerr << "Err: 'real/complex' keyword is missing in the matrix market file header." << endl;
             cerr << help_header_template;
@@ -80,4 +80,34 @@ namespace MtxFilesIOUtils{
 
     }
 
+        template<typename DataType, int Rank>
+        void _set_value(Eigen::Tensor<DataType, Rank>& tensor, std::vector<int> coordinates, vector<std::string> str_values){
+            bool num_of_entries_check = str_values.size() == Rank + 1;
+            assert(num_of_entries_check && "Error: real data is incomplete or badly formatted.");
+
+            double current_value;
+            current_value = stod(str_values.at(
+                Rank // Last index if number is real
+            ));       
+
+            // Setting the value into the tensor
+            tensor(coordinates) = current_value;
+        }
+
+        template<int Rank>
+        void tensor_set_value(Eigen::Tensor<std::complex<double>, Rank>& tensor, std::vector<int> coordinates, vector<std::string> str_values){
+            bool num_of_entries_check = str_values.size() == Rank + 2;
+            assert(num_of_entries_check && "Error: complex data is incomplete or badly formatted.");
+
+            std::complex<double> current_value;
+            current_value.real(stod(str_values.at(
+                Rank // Index of real part
+            )));       
+            current_value.imag(stod(str_values.at(
+                Rank+1 // Index of imaginary part
+            )));
+
+            // Setting the value into the tensor
+            tensor(coordinates) = current_value;
+        }
 }

@@ -8,6 +8,8 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <complex>
+#include <type_traits>
 #include "MtxFilesIOUtils.hpp"
 
 
@@ -65,9 +67,8 @@ namespace MtxFilesIO{
 
 
         // Data properties
-        // @TODO: to implement
-        bool is_symmetric;
         bool is_complex_data;
+        bool is_symmetric; // @TODO: to implement?
 
 
         // File line count
@@ -86,14 +87,14 @@ namespace MtxFilesIO{
         // Current line coordinates
         vector<int> current_coordinates;
 
-        // The value at the current set coordinates
-        DataType current_value;
-
         // HEADER CHECK    
         getline(input_file, line);
         if(!MtxFilesIOUtils::load_mtx_tensor_file_settings(line, is_complex_data, is_symmetric)){
             return;
         }
+
+        bool are_complex_data_check = (std::is_same<std::complex<double>, DataType>::value == is_complex_data);
+        assert(are_complex_data_check && "Error: file data type doesn't match the provided data structure.");
 
         // DATA LOADING
         while(getline(input_file, line)){
@@ -105,10 +106,10 @@ namespace MtxFilesIO{
             if(reading_tensor_header){
 
                 // There should be the dimensions for each off the sizes, plus the total elements
-                if(str_values.size() != (Rank +1)){
-                    cerr << "Matrix market header file doesn't match the tensor rank.";
-                    return;
-                }
+                bool dims_header_check = (str_values.size() == (Rank +1));
+                
+                assert(dims_header_check && "Matrix market header file doesn't match the tensor rank.");
+
                 
                 // Set the dimension sizes
                 for(int i=0; i<str_values.size()-1; i++){
@@ -139,11 +140,8 @@ namespace MtxFilesIO{
                     return std::stoi(str)-1;
                 });     
 
-                // Getting the value string and convert to double
-                current_value = stod(str_values.at(str_values.size()-1));       
-
-                // Setting the value into the tensor
-                tensor(current_coordinates) = current_value;
+                // Setting the current line data in the tensor
+                MtxFilesIOUtils::tensor_set_value(tensor, current_coordinates, str_values);
 
                 nnz_count++;
                 current_coordinates.clear();
@@ -151,10 +149,8 @@ namespace MtxFilesIO{
         }
 
         // Final check
-        if(nnz_count != nnz_header){
-            cerr << "Matrix market header file doesn't match the number of nnz entries.";
-            return;
-        }
+        assert(nnz_count == nnz_header && "Matrix market header file doesn't match the number of nnz entries.");
+
 
         input_file.close();
 
