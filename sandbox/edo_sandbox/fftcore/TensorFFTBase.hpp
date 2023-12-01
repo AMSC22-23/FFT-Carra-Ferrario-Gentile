@@ -11,11 +11,14 @@
  */
 template<typename DataType, int Rank>
 class TensorFFTBase{
+	
+	friend class FFTSolver;
     public:
         /**
          * Constructor for a Tensor. The constructor must be passed rank integers 
          * indicating the sizes of the instance along each of the the rank dimensions.
         */
+
         template <typename... Args>
         TensorFFTBase(Args... args){
             _tensor = Eigen::Tensor<DataType, Rank>(args...);
