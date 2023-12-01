@@ -36,3 +36,4 @@
 
 # Vscode files
 .vscode
+*.dSYM
