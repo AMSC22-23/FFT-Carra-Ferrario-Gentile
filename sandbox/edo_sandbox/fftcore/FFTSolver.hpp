@@ -1,32 +1,33 @@
+#ifndef _FFTSOLVER_H
+#define _FFTSOLVER_H
+
 #include "TensorFFTBase.hpp"
 #include "FFTStrategy.hpp"
+#include "FFTDataTypes.hpp"
 #include <memory>
 
 namespace fftcore{	
 
-	// Useful alias	
-	template<typename DataType, int Rank>
-	using TensorFFT = TensorFFTBase<DataType, Rank>;
 
-	//template<typename DataType, int Rank>
+	template<typename DataType, int Rank>
 	class FFTSolver{
+		
+		using TensorFFT = TensorFFTBase<DataType, Rank>;
+
 		public:
 			FFTSolver(){};
 			
-			template<typename DataType, int Rank>
-			void compute_fft(const TensorFFT& input, TensorFFT& output) const;
+			void compute_fft_C2C(const TensorFFT& input, TensorFFT& output, FFTDirection) const;
 
-			template<typename DataType, int Rank>
-			void compute_ifft(const TensorFFT& input, TensorFFT& output) const;
+			void compute_fft_R2C(const TensorFFT& input, TensorFFT& output, FFTDirection) const;
 			
-			template<typename DataType, int Rank>
-			void compute_fft(TensorFFT& input_output) const;
+			void compute_fft_C2C(TensorFFT& input_output, FFTDirection) const;
 
-			template<typename DataType, int Rank>
-			void compute_ifft(TensorFFT& input_output) const;
+			void compute_fft_R2C(TensorFFT& input_output, FFTDirection) const;
 
 			//void set_strategy(std::unique_ptr<fftcore::FFTEngine<DataType, Rank>>&&);
 		private:
 			std::unique_ptr<fftcore::FFTStrategy> _fftengine;
 	};
 }
+#endif
