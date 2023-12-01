@@ -1,5 +1,5 @@
-#include "SequentialFFT.hpp"
 #include "TensorFFTBase.hpp"
+#include "SequentialFFT.hpp"
 #include "FFTSolver.hpp"
 #include <memory>
 
