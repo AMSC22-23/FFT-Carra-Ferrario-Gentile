@@ -28,7 +28,7 @@ namespace fftcore{
             int get_rank();
 
             const Eigen::Tensor<DataType, Rank>& get_tensor_const() const;
-            Eigen::Tensor<DataType, Rank>& get_tensor() const;
+            Eigen::Tensor<DataType, Rank>& get_tensor() ;
 
 
             ~TensorFFTBase() = default;
@@ -49,7 +49,7 @@ namespace fftcore{
     * Returns the actual tensor object.
     */
     template<typename DataType, int Rank>
-    Eigen::Tensor<DataType, Rank>& TensorFFTBase<DataType, Rank>::get_tensor() const{
+    Eigen::Tensor<DataType, Rank>& TensorFFTBase<DataType, Rank>::get_tensor() {
             return _tensor;
     };
 
