@@ -1,32 +1,44 @@
+#ifndef H_FFTSOLVER_H
+#define H_FFTSOLVER_H
+
 #include "TensorFFTBase.hpp"
-#include "FFTEngine.hpp"
+#include "FFTStrategy.hpp"
+#include "FFTDataTypes.hpp"
 #include <memory>
+#include <type_traits>
 
-namespace fftcore{
-	
+namespace fftcore{	
 
-	// Useful alias	
-	template<typename DataType, int Rank>
-	using TensorFFT = TensorFFTBase<DataType, Rank>;
-
-	/**
-	 * @TODO: Templating the entire class or just the methods?
-	 * @TODO: Add to tenplate the FFTEngine strategy?
-	*/
 	template<typename DataType, int Rank>
 	class FFTSolver{
+
+		using CTensorBase = TensorFFTBase<std::complex<DataType>, Rank>;
+		using RTensorBase = TensorFFTBase<DataType, Rank>;
+
 		public:
-			FFTSolver(){};
-			void compute_fft(const TensorFFT<DataType, Rank>&, TensorFFT<DataType, Rank>&) const; // virtual?
-
-			void ifft(const TensorFFT<DataType, Rank>&,TensorFFT<DataType, Rank>&) const;
+			FFTSolver(std::unique_ptr<FFTStrategy<DataType, Rank>>&& strategy): _fftstrategy(std::move(strategy))
+			{
+				static_assert(std::is_same<DataType,double>::value || std::is_same<DataType,float>::value);
+				static_assert(Rank>0 && Rank<=3);
+			};
 			
-			void fft(TensorFFT<DataType, Rank>&) const;
+			void compute_fft(const CTensorBase& input, CTensorBase& output, FFTDirection dir) const
+			{
+				_fftstrategy->fft(input.get_tensor_const(), output.get_tensor(), dir);
+			};
+			
+			void compute_fft(const RTensorBase& input, CTensorBase& output, FFTDirection dir) const
+			{
+				_fftstrategy->fft(input.get_tensor_const(), output.get_tensor(), dir);
+			};
 
-			void ifft(TensorFFT<DataType, Rank>&) const;
+			void compute_fft(CTensorBase& input_output,FFTDirection dir) const{
+				_fftstrategy->fft(input_output.get_tensor(), dir);
+			};
 
-			void set_strategy(std::unique_ptr<fftcore::FFTEngine<DataType, Rank>>&&);
+			//void set_strategy(std::unique_ptr<fftcore::FFTEngine<DataType, Rank>>&&);
 		private:
-			std::unique_ptr<fftcore::FFTEngine<DataType, Rank>> _fftengine;
+			std::unique_ptr<FFTStrategy<DataType, Rank>> _fftstrategy;
 	};
 }
+#endif
