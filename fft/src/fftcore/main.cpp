@@ -4,7 +4,6 @@
 
 using namespace fftcore;
 
-
 template<typename DataType>
 class SequentialFFT:
 public FFT_1D<DataType>,
@@ -20,6 +19,7 @@ public FFT_3D<DataType>{
             };
 
 			void fft(CTensor_1D<DataType>&, FFTDirection) const {
+
                 std::cout<<"fft 1-d C-C in-place"<<std::endl;
             };
 			

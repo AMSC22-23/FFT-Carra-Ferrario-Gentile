@@ -4,7 +4,11 @@
 #include "FFTDataTypes.hpp"
 
 namespace fftcore{
-
+	/**
+	 * The solving Strategy which define the computation 
+	 * of fft algorithms.
+	 * @TODO: better description
+	*/
 	template<typename DataType, int Rank>
 	class FFTStrategy{
 
@@ -32,74 +36,48 @@ namespace fftcore{
 			virtual ~FFTStrategy() = default;
 	};
 
+	/**
+	 * UTILITY STRATEGY DIMENSION DEFINERS MARKER CLASSES
+	 * @TODO: useful for code clarity?
+	*/
+
+	/**
+	 * Strategies which extend this marker class refer
+	 * to 1D vectors algorithms.
+	*/
 	template<typename DataType>
 	class FFT_1D :
 	public FFTStrategy<DataType, 1>{
 
 		public:
-			/**
-			* Complex to Complex out-of-place 1D-FFT
-			*/ 
-			virtual void fft(const CTensor_1D<DataType>&, CTensor_1D<DataType>&, FFTDirection) const = 0;
-			
-			/**
-			* Real to Complex out-of-place 1D-FFT
-			*/ 
-			virtual void fft(const RTensor_1D<DataType>&, CTensor_1D<DataType>&, FFTDirection) const = 0;
-
-			/**
-			* In-place 1D-FFT
-			*/ 
-			virtual void fft(CTensor_1D<DataType>&, FFTDirection) const = 0;
 			
 			virtual ~FFT_1D() = default;
 	};
 
+	/**
+	 * Strategies which extend this marker class refer
+	 * to 2D matrices algorithms.
+	*/
 	template<typename DataType>
 	class FFT_2D :
 	public FFTStrategy<DataType, 2>{
 
 		public:
 		
-			/**
-			* Complex to Complex out-of-place 2-D FFT
-			*/ 
-			virtual void fft(const CTensor_2D<DataType>&, CTensor_2D<DataType>&, FFTDirection) const = 0;
-			
-			/**
-			* Real to Complex out-of-place 2-D FFT
-			*/ 
-			virtual void fft(const RTensor_2D<DataType>&, CTensor_2D<DataType>&, FFTDirection) const = 0;
-
-			/**
-			* In-place 2-D FFT
-			*/ 
-			virtual void fft(CTensor_2D<DataType>&, FFTDirection) const = 0;
 			
 			virtual ~FFT_2D() = default;
 	};
 
+	/**
+	 * Strategies which extend this marker class refer
+	 * to 3D Tensors algorithms.
+	*/
 	template<typename DataType>
 	class FFT_3D :
 	public FFTStrategy<DataType, 3>{
 
 		public:
 
-			/**
-			* Complex to Complex out-of-place 3-D FFT
-			*/ 
-			virtual void fft(const CTensor_3D<DataType>&, CTensor_3D<DataType>&, FFTDirection) const = 0;
-			
-			/**
-			* Real to Complex out-of-place 3-D FFT
-			*/ 
-			virtual void fft(const RTensor_3D<DataType>&, CTensor_3D<DataType>&, FFTDirection) const = 0;
-
-			/**
-			* In-place 3-D FFT
-			*/ 
-			virtual void fft(CTensor_3D<DataType>&, FFTDirection) const = 0;
-			
 			virtual ~FFT_3D() = default;
 	};
 
