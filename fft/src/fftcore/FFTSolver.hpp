@@ -9,16 +9,16 @@
 
 namespace fftcore{	
 
-	template<typename DataType, int Rank>
+	template<int Rank, typename FloatingType = double>
 	class FFTSolver{
 
-		using CTensorBase = TensorFFTBase<std::complex<DataType>, Rank>;
-		using RTensorBase = TensorFFTBase<DataType, Rank>;
+		using CTensorBase = TensorFFTBase<std::complex<FloatingType>, Rank>;
+		using RTensorBase = TensorFFTBase<FloatingType, Rank>;
 
 		public:
-			FFTSolver(std::unique_ptr<FFTStrategy<DataType, Rank>>&& strategy): _fftstrategy(std::move(strategy))
+			FFTSolver(std::unique_ptr<FFTStrategy<Rank, FloatingType>>&& strategy): _fftstrategy(std::move(strategy))
 			{
-				static_assert(std::is_same<DataType,double>::value || std::is_same<DataType,float>::value);
+				static_assert(std::is_floating_point<FloatingType>::value, "DataType must be floating point");
 				static_assert(Rank>0 && Rank<=3, "Rank not supported");
 			};
 			
@@ -38,7 +38,7 @@ namespace fftcore{
 
 			//void set_strategy(std::unique_ptr<fftcore::FFTEngine<DataType, Rank>>&&);
 		private:
-			std::unique_ptr<FFTStrategy<DataType, Rank>> _fftstrategy;
+			std::unique_ptr<FFTStrategy<Rank, FloatingType>> _fftstrategy;
 	};
 }
 #endif

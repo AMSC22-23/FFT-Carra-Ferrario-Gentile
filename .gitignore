@@ -37,3 +37,4 @@
 # Vscode files
 .vscode
 *.dSYM
+.cursorignore

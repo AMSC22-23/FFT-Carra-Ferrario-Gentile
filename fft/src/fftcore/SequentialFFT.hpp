@@ -5,41 +5,41 @@
 using namespace fftcore;
 using namespace std;
 
-template<typename DataType>
+template<typename FloatingType = double>
 class SequentialFFT:
-public FFT_1D<DataType>,
-public FFT_2D<DataType>, 
-public FFT_3D<DataType>{
+public FFT_1D<FloatingType>,
+public FFT_2D<FloatingType>, 
+public FFT_3D<FloatingType>{
 		public:
-			void fft(const CTensor_1D<DataType>& , CTensor_1D<DataType>&, FFTDirection) const;
+			void fft(const CTensor_1D<FloatingType>& , CTensor_1D<FloatingType>&, FFTDirection) const;
 			
-			void fft(const RTensor_1D<DataType>&, CTensor_1D<DataType>&, FFTDirection) const;
+			void fft(const RTensor_1D<FloatingType>&, CTensor_1D<FloatingType>&, FFTDirection) const;
 
-			void fft(CTensor_1D<DataType>&, FFTDirection) const;
+			void fft(CTensor_1D<FloatingType>&, FFTDirection) const;
 			
-			void fft(const CTensor_2D<DataType>&, CTensor_2D<DataType>&, FFTDirection) const;
+			void fft(const CTensor_2D<FloatingType>&, CTensor_2D<FloatingType>&, FFTDirection) const;
 
-			void fft(const RTensor_2D<DataType>&, CTensor_2D<DataType>&, FFTDirection) const;
+			void fft(const RTensor_2D<FloatingType>&, CTensor_2D<FloatingType>&, FFTDirection) const;
 
-			void fft(CTensor_2D<DataType>&, FFTDirection) const;
+			void fft(CTensor_2D<FloatingType>&, FFTDirection) const;
 
-			void fft(const CTensor_3D<DataType>&, CTensor_3D<DataType>&, FFTDirection) const ;
+			void fft(const CTensor_3D<FloatingType>&, CTensor_3D<FloatingType>&, FFTDirection) const ;
 
-			void fft(const RTensor_3D<DataType>&, CTensor_3D<DataType>&, FFTDirection) const ;
+			void fft(const RTensor_3D<FloatingType>&, CTensor_3D<FloatingType>&, FFTDirection) const ;
 
-			void fft(CTensor_3D<DataType>&, FFTDirection) const ;
+			void fft(CTensor_3D<FloatingType>&, FFTDirection) const ;
 			~SequentialFFT() = default;
 };
 
 
-template<typename DataType>
-void SequentialFFT<DataType>::fft(const CTensor_1D<DataType>& input, CTensor_1D<DataType>& output, FFTDirection) const {
+template<typename FloatingType>
+void SequentialFFT<FloatingType>::fft(const CTensor_1D<FloatingType>& input, CTensor_1D<FloatingType>& output, FFTDirection) const {
     std::cout<<"fft 1-d C-C out-of-place"<<std::endl;
 
 };
 
-template<typename DataType>
-void SequentialFFT<DataType>::fft(const RTensor_1D<DataType>&, CTensor_1D<DataType>&, FFTDirection) const {
+template<typename FloatingType>
+void SequentialFFT<FloatingType>::fft(const RTensor_1D<FloatingType>&, CTensor_1D<FloatingType>&, FFTDirection) const {
     std::cout<<"fft 1-d R-C out-of-place"<<std::endl;
 };
 
@@ -47,10 +47,10 @@ void SequentialFFT<DataType>::fft(const RTensor_1D<DataType>&, CTensor_1D<DataTy
 /**
  * @author: Lorenzo Gentile
 */
-template<typename DataType>
-void SequentialFFT<DataType>::fft(CTensor_1D<DataType>& input_output, fftcore::FFTDirection fftDirection) const {
+template<typename FloatingType>
+void SequentialFFT<FloatingType>::fft(CTensor_1D<FloatingType>& input_output, fftcore::FFTDirection fftDirection) const {
 
-    using Complex = std::complex<DataType>;
+    using Complex = std::complex<FloatingType>;
     int n = input_output.size();
     int log2n = std::log2(n);
      
@@ -93,34 +93,34 @@ void SequentialFFT<DataType>::fft(CTensor_1D<DataType>& input_output, fftcore::F
     }
 };
 
-template<typename DataType>
-void SequentialFFT<DataType>::fft(const CTensor_2D<DataType>&, CTensor_2D<DataType>&, FFTDirection) const {
+template<typename FloatingType>
+void SequentialFFT<FloatingType>::fft(const CTensor_2D<FloatingType>&, CTensor_2D<FloatingType>&, FFTDirection) const {
     std::cout<<"fft 2-d C-C out-of-place"<<std::endl;
 };
 
-template<typename DataType>
-void SequentialFFT<DataType>::fft(const RTensor_2D<DataType>&, CTensor_2D<DataType>&, FFTDirection) const {
+template<typename FloatingType>
+void SequentialFFT<FloatingType>::fft(const RTensor_2D<FloatingType>&, CTensor_2D<FloatingType>&, FFTDirection) const {
     std::cout<<"fft 2-d R-C out-of-place"<<std::endl;
 
 };
 
-template<typename DataType>
-void SequentialFFT<DataType>::fft(CTensor_2D<DataType>&, FFTDirection) const {
+template<typename FloatingType>
+void SequentialFFT<FloatingType>::fft(CTensor_2D<FloatingType>&, FFTDirection) const {
     std::cout<<"fft 2-d in-place"<<std::endl;
 };
 
-template<typename DataType>
-void SequentialFFT<DataType>::fft(const CTensor_3D<DataType>&, CTensor_3D<DataType>&, FFTDirection) const {
+template<typename FloatingType>
+void SequentialFFT<FloatingType>::fft(const CTensor_3D<FloatingType>&, CTensor_3D<FloatingType>&, FFTDirection) const {
     std::cout<<"fft 3-d C-C out-of-place"<<std::endl;
 };
 
-template<typename DataType>
-void SequentialFFT<DataType>::fft(const RTensor_3D<DataType>&, CTensor_3D<DataType>&, FFTDirection) const {
+template<typename FloatingType>
+void SequentialFFT<FloatingType>::fft(const RTensor_3D<FloatingType>&, CTensor_3D<FloatingType>&, FFTDirection) const {
     std::cout<<"fft 3-d R-C out-of-place"<<std::endl;
 
 };
 
-template<typename DataType>
-void SequentialFFT<DataType>::fft(CTensor_3D<DataType>&, FFTDirection) const {
+template<typename FloatingType>
+void SequentialFFT<FloatingType>::fft(CTensor_3D<FloatingType>&, FFTDirection) const {
     std::cout<<"fft 3-d in-place"<<std::endl;
 };

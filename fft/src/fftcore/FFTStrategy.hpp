@@ -9,12 +9,12 @@ namespace fftcore{
 	 * of fft algorithms.
 	 * @TODO: better description
 	*/
-	template<typename DataType, int Rank>
+	template<int Rank, typename FloatingType>
 	class FFTStrategy{
 
-		using CTensor = Eigen::Tensor<std::complex<DataType>, Rank>;
+		using CTensor = Eigen::Tensor<std::complex<FloatingType>, Rank>;
 
-		using RTensor = Eigen::Tensor<DataType, Rank>;
+		using RTensor = Eigen::Tensor<FloatingType, Rank>;
 
 		public:
 
@@ -45,9 +45,9 @@ namespace fftcore{
 	 * Strategies which extend this marker class refer
 	 * to 1D vectors algorithms.
 	*/
-	template<typename DataType>
+	template<typename FloatingType>
 	class FFT_1D :
-	public FFTStrategy<DataType, 1>{
+	public FFTStrategy<1, FloatingType>{
 
 		public:
 			
@@ -58,9 +58,9 @@ namespace fftcore{
 	 * Strategies which extend this marker class refer
 	 * to 2D matrices algorithms.
 	*/
-	template<typename DataType>
+	template<typename FloatingType>
 	class FFT_2D :
-	public FFTStrategy<DataType, 2>{
+	public FFTStrategy<2, FloatingType>{
 
 		public:
 		
@@ -72,9 +72,9 @@ namespace fftcore{
 	 * Strategies which extend this marker class refer
 	 * to 3D Tensors algorithms.
 	*/
-	template<typename DataType>
+	template<typename FloatingType>
 	class FFT_3D :
-	public FFTStrategy<DataType, 3>{
+	public FFTStrategy<3, FloatingType>{
 
 		public:
 
