@@ -13,7 +13,6 @@ namespace fftcore{
 	class FFTStrategy{
 
 		using CTensor = Eigen::Tensor<std::complex<FloatingType>, Rank>;
-
 		using RTensor = Eigen::Tensor<FloatingType, Rank>;
 
 		public:
@@ -48,9 +47,10 @@ namespace fftcore{
 	template<typename FloatingType>
 	class FFT_1D :
 	public FFTStrategy<1, FloatingType>{
-
 		public:
-			
+			using RTensor_1D = Eigen::Tensor<FloatingType, 1>;
+			using CTensor_1D = Eigen::Tensor<std::complex<FloatingType>, 1>;
+
 			virtual ~FFT_1D() = default;
 	};
 
@@ -63,8 +63,9 @@ namespace fftcore{
 	public FFTStrategy<2, FloatingType>{
 
 		public:
-		
-			
+			using RTensor_2D = Eigen::Tensor<FloatingType, 2>;
+			using CTensor_2D = Eigen::Tensor<std::complex<FloatingType>, 2>;
+
 			virtual ~FFT_2D() = default;
 	};
 
@@ -77,7 +78,9 @@ namespace fftcore{
 	public FFTStrategy<3, FloatingType>{
 
 		public:
-
+			using RTensor_3D = Eigen::Tensor<FloatingType, 3>;
+			using CTensor_3D = Eigen::Tensor<std::complex<FloatingType>, 3>;
+			
 			virtual ~FFT_3D() = default;
 	};
 
