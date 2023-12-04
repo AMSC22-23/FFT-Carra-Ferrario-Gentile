@@ -19,7 +19,7 @@ namespace fftcore{
 			FFTSolver(std::unique_ptr<FFTStrategy<DataType, Rank>>&& strategy): _fftstrategy(std::move(strategy))
 			{
 				static_assert(std::is_same<DataType,double>::value || std::is_same<DataType,float>::value);
-				static_assert(Rank>0 && Rank<=3);
+				static_assert(Rank>0 && Rank<=3, "Rank not supported");
 			};
 			
 			void compute_fft(const CTensorBase& input, CTensorBase& output, FFTDirection dir) const
