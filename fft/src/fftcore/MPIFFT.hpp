@@ -2,6 +2,7 @@
 #include "FFTSolver.hpp"
 #include "utils/FFTUtils.hpp"
 #include <iostream>
+#include <mpi.h>
 
 using namespace fftcore;
 using namespace std;
@@ -63,10 +64,18 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection f
     using Complex = std::complex<FloatingType>;
     int n = input_output.size();
     int log2n = std::log2(n);
-     
+    
+    int pi, total_p;
+    MPI_Comm_rank(MPI_COMM_WORLD, &pi);
+    MPI_Comm_size(MPI_COMM_WORLD, &total_p);
+    
+    cout << "Process number: " << pi<< endl;
+    //@TODO: check
+    assert(pi<=n/2 && "Process number must be less or equal than n/2.");
+        
     assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
 
-    
+
         // Bit-reversal permutation
         for (unsigned int i = 0; i < n; ++i) {
             unsigned int rev = FFTUtils::reverseBits(i, log2n);
@@ -77,26 +86,32 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection f
 
     Complex w, wm, t, u;
     int m, m2;
+    int k1_pi, k2_pi;
+
     // Cooley-Tukey iterative FFT
     for (int s = 1; s <= log2n; ++s) {
         m = 1 << s;         // 2 power s
         m2 = m >> 1;        // m2 = m/2 -1
-        w = Complex(1, 0);
         wm = exp(Complex(0, 2 * M_PI / m)); // w_m = e^(2*pi/m)
 
-        for (int j = 0; j < m2; ++j) {
-            for (int k = j; k < n; k += m) {
-                t = w * input_output[k + m2];
-                u = input_output[k];
-                
-                input_output[k] = u + t;
-                input_output[k + m2] = u - t;
-            }
-            w *= wm;
-        }
+        // If process index is even
+        
+        k1_pi = pi;
+        k2_pi = 1 << (s-1);
+
+        wm = std::pow(wm, pi);
+        t = wm * input_output[k2_pi];
+        u = input_output[k1_pi];
+        
+        input_output[k1_pi] = u + t;
+        input_output[k2_pi] = u - t;
+        
+
+        MPI_Barrier(MPI_COMM_WORLD);
+
     }
    
-    if(fftDirection == fftcore::FFTDirection::FFT_INVERSE){
+    if(pi == 0 && fftDirection == fftcore::FFTDirection::FFT_INVERSE){
         for(int i=0; i<n; i++){
             input_output[i] /= n;
         }
@@ -110,7 +125,8 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection f
         
 
     }
-         
+    MPI_Barrier(MPI_COMM_WORLD);
+
 };
 
 template<typename FloatingType>
