@@ -24,12 +24,12 @@ namespace fftcore{
 			
 			void compute_fft(const CTensorBase& input, CTensorBase& output, FFTDirection dir) const
 			{
-				_fftstrategy->fft(input.get_tensor_const(), output.get_tensor(), dir);
+				_fftstrategy->fft(input.get_tensor(), output.get_tensor(), dir);
 			};
 			
 			void compute_fft(const RTensorBase& input, CTensorBase& output, FFTDirection dir) const
 			{
-				_fftstrategy->fft(input.get_tensor_const(), output.get_tensor(), dir);
+				_fftstrategy->fft(input.get_tensor(), output.get_tensor(), dir);
 			};
 
 			void compute_fft(CTensorBase& input_output,FFTDirection dir) const{
