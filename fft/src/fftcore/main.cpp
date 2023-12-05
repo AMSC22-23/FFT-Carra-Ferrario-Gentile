@@ -16,14 +16,18 @@ int main(){
         // fft_solver.compute_fft(tensor_in_complex, tensor_out_complex, FFT_FORWARD);
         // fft_solver.compute_fft(tensor_in_real, tensor_out_complex, FFT_FORWARD);
 
-        CTensorBase<1> tensor_in_out_complex(4);
+        CTensorBase<1> tensor_in_out_complex(8);
         tensor_in_out_complex.get_tensor().setValues({
-            {1.0, 0.0},
-            {1.0, 0.0},
-            {1.0, 0.0},
-            {1.0, 0.0},
+            {1.0, 1.0},
+            {-10.0, 2.0},
+            {-10.0, -3.0},
+            {-2.0, 4.0},
+            {1.0, 1.0},
+            {-10.0, 2.0},
+            {-10.0, -3.0},
+            {-2.0, 4.0},
         });
-        //fft_solver.compute_fft(tensor_in_complex, FFT_FORWARD);
+       //fft_solver.compute_fft(tensor_in_complex, FFT_FORWARD);
         fft_solver.compute_fft(tensor_in_out_complex, FFT_FORWARD);
         fft_solver.compute_fft(tensor_in_out_complex, FFT_INVERSE);
         cout << tensor_in_out_complex.get_tensor() << endl;

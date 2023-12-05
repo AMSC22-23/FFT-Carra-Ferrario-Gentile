@@ -63,14 +63,26 @@ namespace fftcore{
         
         assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
 
+    /**
+     * @author: Lorenzo Gentile, Daniele Ferrario
+    */
+    template<typename FloatingType>
+    void SequentialFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection fftDirection) const {
 
-        // Bit-reversal permutation
-        for (unsigned int i = 0; i < n; ++i) {
-            unsigned int rev = FFTUtils::reverseBits(i, log2n);
-            if (i < rev) {
-                std::swap(input_output[i], input_output[rev]);
+        using Complex = std::complex<FloatingType>;
+        int n = input_output.size();
+        int log2n = std::log2(n);
+        
+        assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
+
+        
+            // Bit-reversal permutation
+            for (unsigned int i = 0; i < n; ++i) {
+                unsigned int rev = FFTUtils::reverseBits(i, log2n);
+                if (i < rev) {
+                    std::swap(input_output[i], input_output[rev]);
+                }
             }
-        }
 
         Complex w, wm, t, u;
         int m, m2;
@@ -79,30 +91,34 @@ namespace fftcore{
             m = 1 << s;         // 2 power s
             m2 = m >> 1;        // m2 = m/2 -1
             w = Complex(1, 0);
-            wm = exp(Complex(0, -2 * M_PI / m)); // w_m = e^(-2*pi/m)
+            wm = exp(Complex(0, 2 * M_PI / m)); // w_m = e^(2*pi/m)
 
             for (int j = 0; j < m2; ++j) {
                 for (int k = j; k < n; k += m) {
                     t = w * input_output[k + m2];
                     u = input_output[k];
+                    
                     input_output[k] = u + t;
                     input_output[k + m2] = u - t;
                 }
-                w *= wm;
             }
         }
-
-
-        if(fftDirection == FFTDirection::FFT_INVERSE){
+    
+        if(fftDirection == fftcore::FFTDirection::FFT_INVERSE){
             for(int i=0; i<n; i++){
                 input_output[i] /= n;
             }
-        }
-    };
+            
+            // Re-oredering
+            // @TODO: I don't know if it's correct, but it works (Ferra)
+            // Also, no need to conjugate anything apparently
+            for (unsigned int i = 1; i < n/2; ++i) {
+                std::swap(input_output[i], input_output[n-i]);
+            }
+            
 
-    template<typename FloatingType>
-    void SequentialFFT<FloatingType>::fft(const CTensor_2D&, CTensor_2D&, FFTDirection) const {
-        throw NotSupportedException("Operation is not supported");
+        }
+            
     };
 
     template<typename FloatingType>
