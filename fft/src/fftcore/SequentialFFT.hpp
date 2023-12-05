@@ -4,6 +4,7 @@
 
 using namespace std;
 namespace fftcore{
+
     template<typename FloatingType = double>
     class SequentialFFT:
     public FFT_1D<FloatingType>,
@@ -49,19 +50,6 @@ namespace fftcore{
     void SequentialFFT<FloatingType>::fft(const RTensor_1D&, CTensor_1D&, FFTDirection) const {
         throw NotSupportedException("Operation is not supported");
     };
-
-
-    /**
-     * @author: Lorenzo Gentile
-    */
-    template<typename FloatingType>
-    void SequentialFFT<FloatingType>::fft(CTensor_1D& input_output, FFTDirection fftDirection) const {
-
-        using Complex = std::complex<FloatingType>;
-        int n = input_output.size();
-        int log2n = std::log2(n);
-        
-        assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
 
     /**
      * @author: Lorenzo Gentile, Daniele Ferrario
@@ -119,6 +107,11 @@ namespace fftcore{
 
         }
             
+    };
+
+    template<typename FloatingType>
+    void SequentialFFT<FloatingType>::fft(const CTensor_2D&, CTensor_2D&, FFTDirection) const {
+        throw NotSupportedException("Operation is not supported");
     };
 
     template<typename FloatingType>
