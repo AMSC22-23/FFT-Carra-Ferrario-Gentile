@@ -64,13 +64,13 @@ namespace fftcore{
         assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
 
         
-            // Bit-reversal permutation
-            for (unsigned int i = 0; i < n; ++i) {
-                unsigned int rev = FFTUtils::reverseBits(i, log2n);
-                if (i < rev) {
-                    std::swap(input_output[i], input_output[rev]);
-                }
+        // Bit-reversal permutation
+        for (unsigned int i = 0; i < n; ++i) {
+            unsigned int rev = FFTUtils::reverseBits(i, log2n);
+            if (i < rev) {
+                std::swap(input_output[i], input_output[rev]);
             }
+        }
 
         Complex w, wm, t, u;
         int m, m2;
@@ -79,7 +79,7 @@ namespace fftcore{
             m = 1 << s;         // 2 power s
             m2 = m >> 1;        // m2 = m/2 -1
             w = Complex(1, 0);
-            wm = exp(Complex(0, 2 * M_PI / m)); // w_m = e^(2*pi/m)
+            wm = exp(Complex(0, -2 * M_PI / m)); // w_m = e^(-2*pi/m)
 
             for (int j = 0; j < m2; ++j) {
                 for (int k = j; k < n; k += m) {
@@ -97,12 +97,12 @@ namespace fftcore{
                 input_output[i] /= n;
             }
             
-            // Re-oredering
-            // @TODO: I don't know if it's correct, but it works (Ferra)
-            // Also, no need to conjugate anything apparently
-            for (unsigned int i = 1; i < n/2; ++i) {
-                std::swap(input_output[i], input_output[n-i]);
-            }
+            // // Re-oredering
+            // // @TODO: I don't know if it's correct, but it works (Ferra)
+            // // Also, no need to conjugate anything apparently
+            // for (unsigned int i = 1; i < n/2; ++i) {
+            //     std::swap(input_output[i], input_output[n-i]);
+            // }
             
 
         }
