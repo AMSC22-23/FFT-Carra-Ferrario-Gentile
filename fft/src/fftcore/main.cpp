@@ -29,7 +29,7 @@ int main(){
         cout << tensor_in_out_complex.get_tensor() << endl;
 
     } // 1D 
-
+/*
     {
         FFTSolver<2> fft_solver(std::make_unique<SequentialFFT<>>());
         CTensorBase<2> tensor_out_complex(10,10);
@@ -41,6 +41,7 @@ int main(){
         fft_solver.compute_fft(tensor_in_complex, FFT_FORWARD);
 
     }// 2D
+
     {
         FFTSolver<3> fft_solver(std::make_unique<SequentialFFT<>>());
         CTensorBase<3> tensor_out_complex(10,10,10);
@@ -53,6 +54,6 @@ int main(){
 
     }// 3D
 
-
+*/
 
 }
