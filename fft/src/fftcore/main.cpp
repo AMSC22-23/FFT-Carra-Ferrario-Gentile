@@ -27,10 +27,10 @@ int main(){
             {-10.0, -3.0},
             {-2.0, 4.0},
         });
-       //fft_solver.compute_fft(tensor_in_complex, FFT_FORWARD);
         fft_solver.compute_fft(tensor_in_out_complex, FFT_FORWARD);
         fft_solver.compute_fft(tensor_in_out_complex, FFT_INVERSE);
         cout << tensor_in_out_complex.get_tensor() << endl;
+        fft_solver.get_timer().print();
 
     } // 1D 
 /*
