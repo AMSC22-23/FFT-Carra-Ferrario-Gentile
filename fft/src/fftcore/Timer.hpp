@@ -1,11 +1,3 @@
-/**
- * @file Timer.hpp
- * @brief This file contains the Timer class, which is used to measure the
- *       execution time of different FFT implementations.
- * @details todo
- * @date 2023-12-04
-**/
-
 #ifndef TIMER_HPP
 #define TIMER_HPP
 
@@ -17,6 +9,11 @@
 
 namespace fftcore{
 
+    /**
+     * @brief This class is used to measure the execution time of different FFT implementations.
+     * @date 2023-12-06
+     * @author Lorenzo Gentiile
+     **/
     class Timer{
 
         public:
