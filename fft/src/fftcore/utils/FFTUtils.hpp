@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cmath>
+#include <unsupported/Eigen/CXX11/Tensor>
+
 namespace FFTUtils{
 
     // Function to perform the bit reversal of a given integer n
@@ -15,5 +18,18 @@ namespace FFTUtils{
         }
         return result;
     }
+
+    template<typename DataType>
+    void bit_reversal_permutation(Eigen::Tensor<DataType, 1> &tensor){
+        for (int i = 0; i < tensor.size(); ++i)
+        {
+            int rev = FFTUtils::reverseBits(i, std::log2(tensor.size()));
+            if (i < rev)
+            {
+                std::swap(tensor[i], tensor[rev]);
+            }
+        }
+    }
+
 
 }

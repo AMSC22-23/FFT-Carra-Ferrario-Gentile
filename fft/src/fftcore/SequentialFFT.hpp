@@ -1,3 +1,4 @@
+#pragma once
 #include "FFTSolver.hpp"
 #include "utils/FFTUtils.hpp"
 #include <iostream>
@@ -71,14 +72,7 @@ namespace fftcore{
         }
 
         // Bit-reversal permutation
-        for (int i = 0; i < n; ++i)
-        {
-            int rev = FFTUtils::reverseBits(i, log2n);
-            if (i < rev)
-            {
-                std::swap(input_output[i], input_output[rev]);
-            }
-        }
+        FFTUtils::bit_reversal_permutation(input_output);
 
         Complex w, wm, t, u;
         int m, m2;
