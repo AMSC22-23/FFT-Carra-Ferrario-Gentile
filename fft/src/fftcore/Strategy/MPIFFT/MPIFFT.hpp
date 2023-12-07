@@ -64,16 +64,18 @@ void MPIFFT<FloatingType>::fft(const RTensor_1D&, CTensor_1D&, FFTDirection) con
 
 /**
  * @author: Daniele Ferrario
- * //@TODO: Works only with double, use MPI scatter and gather, remove workarounds
+ * //@TODO: use MPI scatter and gather, remove workarounds
 */
 template<typename FloatingType>
 void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection fftDirection) const {
+
 
     // Utility
     using Complex = std::complex<FloatingType>;
     
     // MPI Infos
     int rank, size;
+    MPI_Datatype mpi_datatype = std::is_same<FloatingType, double>::value ? MPI_C_DOUBLE_COMPLEX : MPI_C_FLOAT_COMPLEX;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
@@ -124,7 +126,7 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection f
 
 
     if(rank>0){    
-        MPI_Send(local_tensor.data(), local_tensor_size, MPI_C_DOUBLE_COMPLEX, 0, 0, MPI_COMM_WORLD);
+        MPI_Send(local_tensor.data(), local_tensor_size, mpi_datatype, 0, 0, MPI_COMM_WORLD);
 
     }else{
         // For Rank 0
@@ -134,7 +136,7 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection f
         
         for(int r=1; r<size; r++){
             auto *pos_to_overwrite = input_output_data + r*local_tensor_size;
-            MPI_Recv(pos_to_overwrite, local_tensor_size, MPI_C_DOUBLE_COMPLEX, r, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            MPI_Recv(pos_to_overwrite, local_tensor_size, mpi_datatype, r, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         }
         // Now there remains log2(num of processes) steps to do
         Complex w, wm, t, u;
@@ -169,7 +171,7 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection f
         }
         
     }
-    MPI_Bcast(input_output.data(), input_output.size(), MPI_C_DOUBLE_COMPLEX, 0, MPI_COMM_WORLD);
+    MPI_Bcast(input_output.data(), input_output.size(), mpi_datatype, 0, MPI_COMM_WORLD);
 
 }
 

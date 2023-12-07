@@ -10,9 +10,9 @@ using namespace fftcore;
 int main(int argc, char **argv){
     MPI_Init(&argc, &argv);
 
-    FFTSolver<1> fft_solver(std::make_unique<SequentialFFT<>>());
+    FFTSolver<1, float> fft_solver(std::make_unique<MPIFFT<float>>());
 
-    CTensorBase<1> tensorA(4);
+    CTensorBase<1, float> tensorA(4);
     
     tensorA.get_tensor().setValues({
         {1.0, 1.0},
