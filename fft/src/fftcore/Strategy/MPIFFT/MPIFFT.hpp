@@ -45,7 +45,7 @@ public FFT_3D<FloatingType>{
 
 			~MPIFFT() = default;
         private :
-            void noReverseFFT(CTensor_1D&, FFTDirection) const;
+            void customFFT(CTensor_1D&, FFTDirection) const;
 
 };
 
@@ -64,22 +64,23 @@ void MPIFFT<FloatingType>::fft(const RTensor_1D&, CTensor_1D&, FFTDirection) con
 
 /**
  * @author: Daniele Ferrario
+ * //@TODO: Works only with double, use MPI scatter and gather, remove workarounds
 */
 template<typename FloatingType>
 void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection fftDirection) const {
 
     // Utility
     using Complex = std::complex<FloatingType>;
-
-    // Tensor infos
-    int n = input_output.size();
-    int log2n = std::log2(n);
     
     // MPI Infos
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    cout << "Process number: " << rank<< endl;
+
+    // Tensor infos
+    int n = input_output.size();
+    int log2n = std::log2(n);
+    int log2p = std::log2(size);
 
     // Assertions
     // Add p constraints
@@ -88,9 +89,11 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection f
     // -------------------------------------
 
 
-
     FFTUtils::bit_reversal_permutation(input_output);
-
+    //conjugate if inverse
+    if(fftDirection == fftcore::FFT_INVERSE){
+        FFTUtils::conjugate(input_output);
+    }
 
     // Create local tensors    
     int local_tensor_size = input_output.size()/size;
@@ -98,83 +101,77 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection f
     
     int starting_local_index = rank*local_tensor_size;
     int i=starting_local_index;
+
+
     for(int k=0; k<local_tensor_size; k++){
+
+
         local_tensor(k) = input_output(i);
         i++; 
     }
-    cout << "p: " << rank << " " << local_tensor << endl;
     
+
     // Bit-reversal permutation 
     // @TODO: This is a workaround 
     FFTUtils::bit_reversal_permutation(local_tensor);
 
-
     // // Run fft on local tensors
     SequentialFFT<FloatingType> sequentialFFT;
-    sequentialFFT.fft(local_tensor, fftDirection);
+    sequentialFFT.fft(local_tensor, FFT_FORWARD);
     //noReverseFFT(local_tensor, fftDirection);
 
-    cout << "p: " << rank << " " << local_tensor << endl;
-    if(rank>0){
-       // MPI_Send(&length, 1, MPI_UNSIGNED, 0, 0, MPI_COMM_WORLD);
-
-    }
-    
-    
-}
-
-/**
- * TEST
- */
-template <typename FloatingType>
-void MPIFFT<FloatingType>::noReverseFFT(CTensor_1D &input_output, fftcore::FFTDirection fftDirection) const
-{
-
-    using Complex = std::complex<FloatingType>;
-    int n = input_output.size();
-    assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
-
-    int log2n = std::log2(n);
-
-    //conjugate if inverse
-    if(fftDirection == fftcore::FFT_INVERSE){
-        input_output.unaryExpr([](Complex x){return std::conj(x);});
-    }
+    auto *input_output_data = input_output.data();
 
 
+    if(rank>0){    
+        MPI_Send(local_tensor.data(), local_tensor_size, MPI_C_DOUBLE_COMPLEX, 0, 0, MPI_COMM_WORLD);
 
-    Complex w, wm, t, u;
-    int m, m2;
-    // Cooley-Tukey iterative FFT
-    for (int s = 1; s <= log2n; ++s)
-    {
-        m = 1 << s;  // 2 power s
-        m2 = m >> 1; // m2 = m/2 -1
-        wm = exp(Complex(0, -2 * M_PI / m)); // w_m = e^(-2*pi/m)
+    }else{
+        // For Rank 0
+        memcpy(input_output.data(), local_tensor.data(), local_tensor_size*sizeof(std::complex<FloatingType>));
 
-        for(int k = 0; k < n; k += m)
+        // Overwrite content from other processes
+        
+        for(int r=1; r<size; r++){
+            auto *pos_to_overwrite = input_output_data + r*local_tensor_size;
+            MPI_Recv(pos_to_overwrite, local_tensor_size, MPI_C_DOUBLE_COMPLEX, r, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        }
+        // Now there remains log2(num of processes) steps to do
+        Complex w, wm, t, u;
+        int m, m2;
+        // Cooley-Tukey iterative FFT
+        for (int s = log2n - log2p + 1; s <= log2n; ++s)
         {
-            w = Complex(1, 0);
-            for(int j = 0; j < m2; ++j)
+            m = 1 << s;  // 2 power s
+            m2 = m >> 1; // m2 = m/2 -1
+            wm = exp(Complex(0, -2 * M_PI / m)); // w_m = e^(-2*pi/m)
+
+            for(int k = 0; k < n; k += m)
             {
-                t = w * input_output[k + j + m2];
-                u = input_output[k + j];
+                w = Complex(1, 0);
+                for(int j = 0; j < m2; ++j)
+                {
+                    t = w * input_output[k + j + m2];
+                    u = input_output[k + j];
 
-                input_output[k + j] = u + t;
-                input_output[k + j + m2] = u - t;
+                    input_output[k + j] = u + t;
+                    input_output[k + j + m2] = u - t;
 
-                w *= wm;
+                    w *= wm;
+                }
             }
         }
-    }
 
-    //re-conjugate and scale if inverse
-    if(fftDirection == fftcore::FFT_INVERSE){
-        input_output.unaryExpr([](Complex x){return std::conj(x);});
-        input_output = input_output * Complex(1.0 / n, 0);
+        //re-conjugate and scale if inverse
+        if(fftDirection == fftcore::FFT_INVERSE){
+            FFTUtils::conjugate(input_output);
+            input_output = input_output * Complex(1.0 / n, 0);
+        }
+        
     }
-};
-   
+    MPI_Bcast(input_output.data(), input_output.size(), MPI_C_DOUBLE_COMPLEX, 0, MPI_COMM_WORLD);
+
+}
 
 
 

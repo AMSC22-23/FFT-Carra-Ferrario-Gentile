@@ -68,7 +68,7 @@ namespace fftcore{
 
         //conjugate if inverse
         if(fftDirection == fftcore::FFT_INVERSE){
-            input_output.unaryExpr([](Complex x){return std::conj(x);});
+            FFTUtils::conjugate(input_output);
         }
 
         // Bit-reversal permutation
@@ -101,7 +101,7 @@ namespace fftcore{
 
         //re-conjugate and scale if inverse
         if(fftDirection == fftcore::FFT_INVERSE){
-            input_output.unaryExpr([](Complex x){return std::conj(x);});
+            FFTUtils::conjugate(input_output);
             input_output = input_output * Complex(1.0 / n, 0);
         }
     };
