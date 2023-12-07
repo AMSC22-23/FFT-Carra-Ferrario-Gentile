@@ -1,7 +1,9 @@
+#ifndef MPIFFT_HPP
+#define MPIFFT_HPP
 
-#include "FFTSolver.hpp"
-#include "utils/FFTUtils.hpp"
-#include "SequentialFFT.hpp"
+#include "../../FFTSolver.hpp"
+#include "../../utils/FFTUtils.hpp"
+#include "../SequentialFFT/SequentialFFT.hpp"
 #include <iostream>
 #include <mpi.h>
 
@@ -207,3 +209,5 @@ template<typename FloatingType>
 void MPIFFT<FloatingType>::fft(CTensor_3D&, FFTDirection) const {
     std::cout<<"fft 3-d in-place"<<std::endl;
 };
+
+#endif //MPIFFT_HPP

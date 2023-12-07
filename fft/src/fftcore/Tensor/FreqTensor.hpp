@@ -1,3 +1,6 @@
+#ifndef FREQTENSOR_HPP
+#define FREQTENSOR_HPP
+
 #include <string>
 #include "TensorFFTBase.hpp"
 
@@ -43,3 +46,5 @@ void FreqTensor<DataType, Rank>::apply_band_pass_filter(){
 };
 
 /** ----------------------*/
+
+#endif // FREQTENSOR_HPP

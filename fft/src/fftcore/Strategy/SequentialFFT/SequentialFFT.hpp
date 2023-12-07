@@ -1,6 +1,6 @@
 #pragma once
-#include "FFTSolver.hpp"
-#include "utils/FFTUtils.hpp"
+#include "../../FFTSolver.hpp"
+#include "../../utils/FFTUtils.hpp"
 #include <iostream>
 
 using namespace std;

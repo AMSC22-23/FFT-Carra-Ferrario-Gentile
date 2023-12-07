@@ -1,4 +1,5 @@
-#pragma once 
+#ifndef MTXFILESIOUTILS_HPP
+#define MTXFILESIOUTILS_HPP
 
 #include <iostream>
 #include <vector>
@@ -111,3 +112,5 @@ namespace MtxFilesIOUtils{
             tensor(coordinates) = current_value;
         }
 }
+
+#endif //MTXFILESIOUTILS_HPP

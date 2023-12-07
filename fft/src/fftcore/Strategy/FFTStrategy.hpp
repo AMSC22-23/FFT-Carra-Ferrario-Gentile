@@ -1,7 +1,7 @@
-#ifndef H_FFTSTRATEGY_H
-#define H_FFTSTRATEGY_H
+#ifndef FFTSTRATEGY_HPP
+#define FFTSTRATEGY_HPP
 
-#include "FFTDataTypes.hpp"
+#include "../utils/FFTDataTypes.hpp"
 
 namespace fftcore{
 	/**
@@ -86,4 +86,4 @@ namespace fftcore{
 
 }
 
-#endif
+#endif // FFTSTRATEGY_HPP

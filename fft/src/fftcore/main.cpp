@@ -1,6 +1,6 @@
 #include "FFTSolver.hpp"
-#include "SequentialFFT.hpp"
-#include "fftwFFT.hpp"
+#include "Strategy/SequentialFFT/SequentialFFT.hpp"
+#include "Strategy/fftwFFT/fftwFFT.hpp"
 #include <iostream>
 #include <memory>
 

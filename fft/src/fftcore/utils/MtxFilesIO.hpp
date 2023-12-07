@@ -1,4 +1,5 @@
-#pragma once 
+#ifndef MTXFILESIO_HPP
+#define MTXFILESIO_HPP
 
 #include<unsupported/Eigen/SparseExtra>
 #include <Eigen/Sparse>
@@ -157,3 +158,5 @@ namespace MtxFilesIO{
     }
 
 }
+
+#endif // MTXFILESIO_HPP

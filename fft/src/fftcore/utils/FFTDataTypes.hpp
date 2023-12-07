@@ -1,9 +1,9 @@
-#ifndef H_FFTDATATYPES_H
-#define H_FFTDATATYPES_H
+#ifndef FFTDATATYPES_HPP
+#define FFTDATATYPES_HPP
 
 #include <stdexcept>
 #include <unsupported/Eigen/CXX11/Tensor>
-#include "TensorFFTBase.hpp"
+#include "../Tensor/TensorFFTBase.hpp"
 
 
 namespace fftcore{
@@ -24,4 +24,4 @@ namespace fftcore{
     };
 }
 
-#endif
+#endif //FFTDATATYPES_HPP

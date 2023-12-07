@@ -1,5 +1,5 @@
-#ifndef H_TENSORFFTBASE_H
-#define H_TENSORFFTBASE_H
+#ifndef TENSORFFTBASE_HPP
+#define TENSORFFTBASE_HPP
 
 #include <unsupported/Eigen/CXX11/Tensor>
 
@@ -64,4 +64,4 @@ namespace fftcore{
     };*/
 }
 
-#endif
+#endif // TENSORFFTBASE_HPP

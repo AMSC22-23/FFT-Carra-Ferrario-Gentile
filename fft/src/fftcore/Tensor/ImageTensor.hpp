@@ -1,4 +1,5 @@
-#pragma once
+#ifndef IMAGETENSOR_HPP
+#define IMAGETENSOR_HPP
 
 #include <string>
 #include <iostream>
@@ -30,3 +31,5 @@ template<typename DataType>
 void ImageTensor<DataType>::load_from_file(const std::string &path){
     MtxFilesIO::laod_mat_mtx<DataType, 2>(this->get_tensor(), path);
 }
+
+#endif // IMAGETENSOR_HPP

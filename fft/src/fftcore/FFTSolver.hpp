@@ -1,10 +1,10 @@
-#ifndef H_FFTSOLVER_H
-#define H_FFTSOLVER_H
+#ifndef FFTSOLVER_HPP
+#define FFTSOLVER_HPP
 
-#include "TensorFFTBase.hpp"
-#include "FFTStrategy.hpp"
-#include "FFTDataTypes.hpp"
-#include "Timer.hpp"
+#include "Tensor/TensorFFTBase.hpp"
+#include "Strategy/FFTStrategy.hpp"
+#include "utils/FFTDataTypes.hpp"
+#include "Timer/Timer.hpp"
 #include <memory>
 #include <type_traits>
 
@@ -55,4 +55,5 @@ namespace fftcore{
 			Timer _timer;
 	};
 }
-#endif
+
+#endif //FFTSOLVER_HPP

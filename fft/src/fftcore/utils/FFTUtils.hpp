@@ -1,4 +1,5 @@
-#pragma once
+#ifndef FFTUTILS_HPP
+#define FFTUTILS_HPP
 
 #include <cmath>
 #include <unsupported/Eigen/CXX11/Tensor>
@@ -33,3 +34,5 @@ namespace FFTUtils{
 
 
 }
+
+#endif //FFTUTILS_HPP

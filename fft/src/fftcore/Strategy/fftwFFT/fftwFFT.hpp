@@ -1,8 +1,8 @@
 #ifndef FFTWFFT_HPP
 #define FFTWFFT_HPP
 
-#include "FFTSolver.hpp"
-#include "utils/FFTUtils.hpp"
+#include "../../FFTSolver.hpp"
+#include "../../utils/FFTUtils.hpp"
 #include <type_traits>
 #include <fftw3.h>
 

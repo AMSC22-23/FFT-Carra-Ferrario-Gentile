@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TIMETENSOR_HPP
+#define TIMETENSOR_HPP
 
 #include <string>
 #include <iostream>
@@ -29,3 +30,5 @@ template<typename DataType>
 void TimeTensor<DataType>::load_from_file(const std::string &path){
     MtxFilesIO::load_mat_mtx<DataType, 1>(this->get_tensor(), path);
 }
+
+#endif // TIMETENSOR_HPP
