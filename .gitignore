@@ -39,4 +39,10 @@
 *.dSYM
 .cursorignore
 
+# CMake directories
+build/
+Debug/
+Release/
+CMakeFiles/
+
 

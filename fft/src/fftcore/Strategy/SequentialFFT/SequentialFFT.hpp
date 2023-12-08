@@ -102,7 +102,7 @@ namespace fftcore{
         //re-conjugate and scale if inverse
         if(fftDirection == fftcore::FFT_INVERSE){
             FFTUtils::conjugate(input_output);
-            input_output = input_output * Complex(1.0 / n, 0);
+            input_output = input_output * Complex(1.0/n, 0);
         }
     };
 

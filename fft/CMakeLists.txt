@@ -46,12 +46,5 @@ add_executable(main.out ${SOURCES})
 # Link libraries to the executable
 target_link_libraries(main.out PRIVATE fftw3 MPI::MPI_CXX Eigen3::Eigen)
 
-# Set the location for the object files
-set_target_properties(main.out PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/obj"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/obj"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
-)
-
 # Additional settings for MPI
 target_include_directories(main.out PRIVATE ${MPI_C_INCLUDE_PATH})
