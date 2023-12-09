@@ -190,7 +190,31 @@ CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gen
   /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/basic_ios.tcc \
   /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ostream.tcc \
   /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/istream \
-  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/istream.tcc
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/istream.tcc \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/algorithm \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/utility \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_relops.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_algo.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/algorithmfwd.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_heap.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_tempbuf.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/uniform_int_dist.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/pstl/glue_algorithm_defs.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/functional \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/tuple \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/array \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/uses_allocator.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/invoke.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/refwrap.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/std_function.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/unordered_map \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/aligned_buffer.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/hashtable.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/hashtable_policy.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/node_handle.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/unordered_map.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/erase_if.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/pstl/execution_defs.h
 
 CMakeFiles/main.out.dir/main.cpp.o: ../main.cpp \
   /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
@@ -1024,6 +1048,12 @@ CMakeFiles/main.out.dir/main.cpp.o: ../main.cpp \
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/gcc/x86_64-mk-linux/11.2.0/include-fixed/limits.h:
 
+/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/SelfAdjointView.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/climits:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/string.h:
+
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/struct___jmp_buf_tag.h:
 
 /home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/products/GeneralMatrixMatrixTriangular.h:
@@ -1064,12 +1094,6 @@ CMakeFiles/main.out.dir/main.cpp.o: ../main.cpp \
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/functexcept.h:
 
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/ArrayBase.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/algorithm:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/cxxabi_init_exception.h:
-
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/FILE.h:
 
 /home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/products/TriangularSolverVector.h:
@@ -1101,16 +1125,6 @@ CMakeFiles/main.out.dir/main.cpp.o: ../main.cpp \
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stringfwd.h:
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/mbstate_t.h:
-
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/utils/FFTDataTypes.hpp:
-
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/unsupported/Eigen/src/SpecialFunctions/BesselFunctionsFunctors.h:
-
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/StlIterators.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/pstl/glue_algorithm_defs.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cctype:
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/specfun.h:
 
@@ -1185,6 +1199,12 @@ CMakeFiles/main.out.dir/main.cpp.o: ../main.cpp \
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ostream.tcc:
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/stdint-intn.h:
+
+/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/Fuzzy.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/strings.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/cpu-set.h:
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_algo.h:
 
@@ -1538,11 +1558,11 @@ CMakeFiles/main.out.dir/main.cpp.o: ../main.cpp \
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/stdio.h:
 
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/tr1/modified_bessel_func.tcc:
-
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/cpu_defines.h:
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_relops.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/tr1/modified_bessel_func.tcc:
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/errno.h:
 
@@ -1563,6 +1583,12 @@ CMakeFiles/main.out.dir/main.cpp.o: ../main.cpp \
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/limits.h:
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/error_t.h:
+
+/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/ArrayBase.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/cxxabi_init_exception.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/algorithm:
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/charconv.h:
 
@@ -1600,6 +1626,66 @@ CMakeFiles/main.out.dir/main.cpp.o: ../main.cpp \
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/istream.tcc:
 
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/algorithmfwd.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/range_access.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/basic_ios.tcc:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_heap.h:
+
+/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/ArithmeticSequence.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/stdlib.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/uniform_int_dist.h:
+
+/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/utils/FFTDataTypes.hpp:
+
+/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/unsupported/Eigen/src/SpecialFunctions/BesselFunctionsFunctors.h:
+
+/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/StlIterators.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cctype:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/pstl/glue_algorithm_defs.h:
+
+/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/unsupported/Eigen/CXX11/src/Tensor/TensorConversion.h:
+
+/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/unsupported/Eigen/CXX11/src/Tensor/TensorTraits.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/random.tcc:
+
+/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/ReturnByValue.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/math.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/tuple:
+
+/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/util/BlasUtil.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/iostream:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/tr1/beta_function.tcc:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/array:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/uses_allocator.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/functional_hash.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/unordered_map:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/aligned_buffer.h:
+
+/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/SolveTriangular.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/os_defines.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/erase_if.h:
+
+/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/util/MKL_support.h:
+
 /home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/unsupported/Eigen/CXX11/src/Tensor/TensorContractionMapper.h:
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_tempbuf.h:
@@ -1622,15 +1708,11 @@ CMakeFiles/main.out.dir/main.cpp.o: ../main.cpp \
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cmath:
 
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/unsupported/Eigen/CXX11/src/Tensor/TensorConversion.h:
+/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp:
 
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/unsupported/Eigen/CXX11/src/Tensor/TensorTraits.h:
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/unordered_map.h:
 
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/random.tcc:
-
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/ReturnByValue.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/math.h:
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/math-vector.h:
 
 /home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/products/GeneralMatrixVector.h:
 
@@ -1644,6 +1726,10 @@ CMakeFiles/main.out.dir/main.cpp.o: ../main.cpp \
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/fp-fast.h:
 
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/hashtable_policy.h:
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/mathcalls-narrow.h:
+
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/math.h:
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/waitstatus.h:
@@ -1651,14 +1737,6 @@ CMakeFiles/main.out.dir/main.cpp.o: ../main.cpp \
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/vector.tcc:
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/tr1/bessel_function.tcc:
-
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/util/BlasUtil.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/iostream:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/tr1/beta_function.tcc:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/tuple:
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/tr1/hypergeometric.tcc:
 
@@ -1672,62 +1750,8 @@ CMakeFiles/main.out.dir/main.cpp.o: ../main.cpp \
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/gcc/x86_64-mk-linux/11.2.0/include/mm_malloc.h:
 
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/sstream:
-
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/util/MKL_support.h:
-
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/SolveTriangular.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/os_defines.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/erase_if.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/array:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/uses_allocator.h:
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/invoke.h:
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/complex:
 
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/invoke.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/functional_hash.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/unordered_map:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/aligned_buffer.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/mathcalls-narrow.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/hashtable_policy.h:
-
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/math-vector.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/unordered_map.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/algorithmfwd.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/range_access.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/basic_ios.tcc:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_heap.h:
-
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/ArithmeticSequence.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/stdlib.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/uniform_int_dist.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/string.h:
-
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/Fuzzy.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/cpu-set.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/strings.h:
-
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/eigen/Eigen/src/Core/SelfAdjointView.h:
-
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/climits:
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/sstream:

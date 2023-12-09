@@ -1,5 +1,5 @@
 #include "Timer.hpp"
-
+#include <algorithm>
 namespace fftcore{
 
     void Timer::start(){
@@ -15,6 +15,7 @@ namespace fftcore{
         _durations.clear();
     }
 
+    
     void Timer::print() const{
         
         std::cout << "\n---- Timings ----" << std::endl;
@@ -32,6 +33,30 @@ namespace fftcore{
             }
         }
         std::cout << "-----------------\n" << std::endl;
+    }
+
+    const double Timer::get_last() const{
+        return _durations.back().count();
+    }
+
+    double _count(fftcore::Timer::duration dur){
+        return dur.count();
+    }
+
+    const double Timer::get_min() const{
+        std::vector<double> counts(_durations.size());
+
+        std::transform(_durations.begin(), _durations.end(), counts.begin(), _count);
+        
+        auto min = std::min_element(counts.begin(), counts.end());
+
+        // @Todo: improve with exceptions
+        if(min!=counts.end()){
+            return *min;
+        }else{
+            return 0;
+        }
+
     }
 
 }

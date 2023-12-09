@@ -29,6 +29,8 @@ namespace fftcore{
         void reset();
 
         void print() const;
+        const double get_last() const;
+        const double get_min() const;
 
         private: 
             time_point _current_start;
