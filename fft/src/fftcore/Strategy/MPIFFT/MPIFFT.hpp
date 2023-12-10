@@ -27,36 +27,17 @@ using namespace std;
 
 template<typename FloatingType = double>
 class MPIFFT:
-public FFT_1D<FloatingType>,
-public FFT_2D<FloatingType>, 
-public FFT_3D<FloatingType>{
+public FFT_1D<FloatingType>
+{
 		public:
             using typename FFT_1D<FloatingType>::RTensor_1D;
             using typename FFT_1D<FloatingType>::CTensor_1D;
-
-            using typename FFT_2D<FloatingType>::RTensor_2D;
-            using typename FFT_2D<FloatingType>::CTensor_2D;
-
-            using typename FFT_3D<FloatingType>::RTensor_3D;
-            using typename FFT_3D<FloatingType>::CTensor_3D;
 
 			void fft(const CTensor_1D& , CTensor_1D&, FFTDirection) const;
 			
 			void fft(const RTensor_1D&, CTensor_1D&, FFTDirection) const;
 
 			void fft(CTensor_1D&, FFTDirection) const;
-
-			void fft(const CTensor_2D&, CTensor_2D&, FFTDirection) const;
-
-			void fft(const RTensor_2D&, CTensor_2D&, FFTDirection) const;
-
-			void fft(CTensor_2D&, FFTDirection) const;
-
-			void fft(const CTensor_3D&, CTensor_3D&, FFTDirection) const ;
-
-			void fft(const RTensor_3D&, CTensor_3D&, FFTDirection) const ;
-
-			void fft(CTensor_3D&, FFTDirection) const ;
 
 			~MPIFFT() = default;
         private :
@@ -201,38 +182,6 @@ void MPIFFT<FloatingType>::_fft_no_reverse_no_conjugate(CTensor_1D& input_output
             }
         }
 
-};
-
-template<typename FloatingType>
-void MPIFFT<FloatingType>::fft(const CTensor_2D&, CTensor_2D&, FFTDirection) const {
-    std::cout<<"fft 2-d C-C out-of-place"<<std::endl;
-};
-
-template<typename FloatingType>
-void MPIFFT<FloatingType>::fft(const RTensor_2D&, CTensor_2D&, FFTDirection) const {
-    std::cout<<"fft 2-d R-C out-of-place"<<std::endl;
-
-};
-
-template<typename FloatingType>
-void MPIFFT<FloatingType>::fft(CTensor_2D&, FFTDirection) const {
-    std::cout<<"fft 2-d in-place"<<std::endl;
-};
-
-template<typename FloatingType>
-void MPIFFT<FloatingType>::fft(const CTensor_3D&, CTensor_3D&, FFTDirection) const {
-    std::cout<<"fft 3-d C-C out-of-place"<<std::endl;
-};
-
-template<typename FloatingType>
-void MPIFFT<FloatingType>::fft(const RTensor_3D&, CTensor_3D&, FFTDirection) const {
-    std::cout<<"fft 3-d R-C out-of-place"<<std::endl;
-
-};
-
-template<typename FloatingType>
-void MPIFFT<FloatingType>::fft(CTensor_3D&, FFTDirection) const {
-    std::cout<<"fft 3-d in-place"<<std::endl;
 };
 
 #endif //MPIFFT_HPP

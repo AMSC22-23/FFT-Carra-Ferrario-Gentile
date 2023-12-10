@@ -7,37 +7,18 @@ using namespace std;
 namespace fftcore{
 
     template<typename FloatingType = double>
-    class SequentialFFT : public FFT_1D<FloatingType>,
-                          public FFT_2D<FloatingType>,
-                          public FFT_3D<FloatingType>
+    class SequentialFFT : public FFT_1D<FloatingType>
     {
     public:
         using typename FFT_1D<FloatingType>::RTensor_1D;
         using typename FFT_1D<FloatingType>::CTensor_1D;
-
-        using typename FFT_2D<FloatingType>::RTensor_2D;
-        using typename FFT_2D<FloatingType>::CTensor_2D;
-
-        using typename FFT_3D<FloatingType>::RTensor_3D;
-        using typename FFT_3D<FloatingType>::CTensor_3D;
-
+        
         void fft(const CTensor_1D &, CTensor_1D &, FFTDirection) const;
 
         void fft(const RTensor_1D &, CTensor_1D &, FFTDirection) const;
 
         void fft(CTensor_1D &, FFTDirection) const;
 
-        void fft(const CTensor_2D &, CTensor_2D &, FFTDirection) const;
-
-        void fft(const RTensor_2D &, CTensor_2D &, FFTDirection) const;
-
-        void fft(CTensor_2D &, FFTDirection) const;
-
-        void fft(const CTensor_3D &, CTensor_3D &, FFTDirection) const;
-
-        void fft(const RTensor_3D &, CTensor_3D &, FFTDirection) const;
-
-        void fft(CTensor_3D &, FFTDirection) const;
         ~SequentialFFT() = default;
     };
 
@@ -104,42 +85,6 @@ namespace fftcore{
             FFTUtils::conjugate(input_output);
             input_output = input_output * Complex(1.0/n, 0);
         }
-    };
-
-    template <typename FloatingType>
-    void SequentialFFT<FloatingType>::fft(const CTensor_2D &, CTensor_2D &, FFTDirection) const
-    {
-        throw NotSupportedException("Operation is not supported");
-    };
-
-    template <typename FloatingType>
-    void SequentialFFT<FloatingType>::fft(const RTensor_2D &, CTensor_2D &, FFTDirection) const
-    {
-        throw NotSupportedException("Operation is not supported");
-    };
-
-    template <typename FloatingType>
-    void SequentialFFT<FloatingType>::fft(CTensor_2D &, FFTDirection) const
-    {
-        throw NotSupportedException("Operation is not supported");
-    };
-
-    template <typename FloatingType>
-    void SequentialFFT<FloatingType>::fft(const CTensor_3D &, CTensor_3D &, FFTDirection) const
-    {
-        throw NotSupportedException("Operation is not supported");
-    };
-
-    template <typename FloatingType>
-    void SequentialFFT<FloatingType>::fft(const RTensor_3D &, CTensor_3D &, FFTDirection) const
-    {
-        throw NotSupportedException("Operation is not supported");
-    };
-
-    template <typename FloatingType>
-    void SequentialFFT<FloatingType>::fft(CTensor_3D &, FFTDirection) const
-    {
-        throw NotSupportedException("Operation is not supported");
     };
 
 }
