@@ -35,7 +35,8 @@ link_directories("${FFTW3_DIR}/lib")
 
 # Find required packages
 find_package(MPI REQUIRED)
-find_package(Eigen3 REQUIRED NO_MODULE)
+find_package(Eigen3 REQUIRED NO_MODULE
+		HINTS $ENV{mkEigenPrefix})
 
 # Source files
 file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
