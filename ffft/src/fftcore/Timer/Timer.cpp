@@ -16,10 +16,12 @@ namespace fftcore{
         _durations.clear();
     }
 
-    
-    void Timer::print() const{
-        
-        std::cout << "\n---- Timings ----" << std::endl;
+    void Timer::print(std::string title) const{
+        if(title.empty()) 
+            std::cout << "\n---- Timings ----" << std::endl;
+        else
+            std::cout << "\n----" << title << "----" << std::endl;
+
         for(size_t i = 0; i < _durations.size(); ++i){
             
             double time = _durations[i].count();
@@ -34,6 +36,10 @@ namespace fftcore{
             }
         }
         std::cout << "-----------------\n" << std::endl;
+    }
+
+    void Timer::print() const{
+       print("");
     }
 
     const double Timer::get_last() const{

@@ -4,6 +4,7 @@
 #include <vector>
 #include <chrono>
 #include <iostream>
+#include <string>
 
 namespace fftcore{
 
@@ -27,6 +28,8 @@ namespace fftcore{
         void reset();
 
         void print() const;
+        void print(std::string) const;
+
         const double get_last() const;
         const double get_min() const;
 
