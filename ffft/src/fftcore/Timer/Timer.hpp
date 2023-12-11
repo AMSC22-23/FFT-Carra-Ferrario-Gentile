@@ -5,8 +5,6 @@
 #include <chrono>
 #include <iostream>
 
-
-
 namespace fftcore{
 
     /**

@@ -1,5 +1,6 @@
 #include "Timer.hpp"
 #include <algorithm>
+
 namespace fftcore{
 
     void Timer::start(){
