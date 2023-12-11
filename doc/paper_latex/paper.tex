@@ -1,0 +1,162 @@
+\PassOptionsToPackage{svgnames}{xcolor}
+\documentclass[12pt]{article}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\usetikzlibrary{arrows.meta}
+\usepackage{algorithm2e}
+
+\usepackage[utf8]{inputenc}
+
+\newcounter{mycounter}
+
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{blindtext}
+\usepackage{multicol}
+\usepackage[a4paper, margin=1.4 cm]{geometry}
+\usepackage{tcolorbox}
+\usepackage{pgfplots}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+
+\author{
+  Carrà Edoardo\\
+  \texttt{edoardo.carra@mail.polimi.it}
+  \and
+  Gentile Lorenzo\\
+  \texttt{lorenzo.gentile@mail.polimi.it}
+  \and
+  Ferrario Daniele\\
+  \texttt{daniele.ferrario@mail.polimi.it}
+}
+
+\title{\textbf{A Parallel Implementation of}\\
+\textbf{the Fast Fourier Transform Algorithm}\\
+{\normal Advanced Methods for Scientific Computing}}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+\textit{The Fast Fourier Transform (FFT) is a powerful tool used in various fields, from pure mathematics to audio engineering and even finance. It's a method for expressing a function as a sum of periodic components, and for recovering the signal from those components. When both the function and its Fourier transform are replaced with discretized counterparts, it is called the discrete Fourier transform (DFT).}
+\bigskip
+
+\textit{The FFT library we are introducing is a comprehensive and efficient implementation of the FFT algorithm. It was developed at MIT by Matteo Frigo and Steven G. Johnson, and it's known for its superior performance compared to other publicly available FFT software. The library's performance is portable, meaning the same program will perform well on most architectures without modification.}
+\bigskip
+
+\textit{The FFT library is composed of several key components. The first part of the algorithm requires reordering the data through a bit-reversal procedure. This procedure can be viewed as a mapping with exclusive read and write access to the same position in the vector. This part of the execution is highly parallelizable, but it's not cache-friendly due to its non-contiguous memory access pattern.}
+
+\pagebreak
+\section{Cooley-Tukey algorithm}
+\begin{algorithm}
+\caption{Iterative FFT Algorithm}
+\begin{algorithmic}[1]
+\Function{FFT}{$a$}
+{
+  \State $bit\_reverse(a)$
+  \State $n \gets \texttt{length}(a)$
+  \For{$s = 1$ to $\texttt{log}(n)$}
+  {
+      \State $m \gets 2^s$
+      \State $\omega_m \gets \exp(-2\pi i/m)$
+      \For{$k = 0$ to $n-1$ by $m$}
+      {
+          \State $\omega \gets 1$
+          \For{$j = 0$ to $m/2 - 1$}
+          {
+            \State $t \gets \omega \cdot a[k + j + m/2]$
+            \State $u \gets a[k + j]$
+            \State $a[k + j] \gets u + t$
+            \State $a[k + j + m/2] \gets u - t$
+            \State $\omega \gets \omega \cdot \omega_m$
+          }
+      }
+  }
+  \State \Return $a$   
+}
+\end{algorithmic}
+\end{algorithm}
+
+\pagebreak
+\section{Analysis of Cooley-Tukey algorithm}
+\subsection{Complexity}
+The Cooley-Tukey algorithm has a time complexity of $O(N log N)$. This is because the algorithm recursively breaks down a DFT of any composite size into many smaller DFTs, and this process is repeated log N times. At each stage, the algorithm performs N multiplications, leading to a total of N log N multiplications. Note that, in the beginning of the algorithm it is required to perform a bit-reversal operation which requires linear time to be performed. However, this is dominated by the $O(N log N)$ time complexity of the FFT part of the algorithm.
+
+\subsection{Qualitative analysis}
+\subsubsection{Partitioning}
+By examining the Cooley-Tukey algorithm, we can construct a dependency graph to identify potential task partitions for parallelization.
+
+\input{bit_reverse}
+
+The initial stage of the algorithm involves reordering the data through a bit-reversal procedure. This procedure can be viewed as a mapping with exclusive read and write access to the same position in the vector. Please note that this part of the execution is highly parallelizable, but it's not cache-friendly due to its non-contiguous memory access pattern
+
+\bigskip
+
+
+\noindent If we do not consider the bit reversal part, the algorithm is composed of three nested for-loops. To address them in the following paragraph, the following notation will be used:
+
+\begin{enumerate}
+   \item $F_1$: the outer loop that executes $log(n)$ iterations. It's responsible for the main iteration over the data set and each iteration is called \textbf{stage}.
+   \item $F^{s}_2$: the first loop nested inside $F_1$ at the iteration $s$. It executes $n/2^s$ iterations, with $k$ that is increased by $2^s$ at each iteration. This loop creates partitions of the input vector.
+   \item $F^{s,k}_2$: the inner loop at the iteration $k$ of the loop $F^{s}_2$. It executes $2^{s-1}$ iterations. This loop performs the actual computation on each partition with a \textbf{butterfly} access to the input vector.
+\end{enumerate}
+
+\noindent Upon initial inspection, it appears that a \textit{lexically forward flow dependence} exists between each $F_2^s$ loop in the Cooley-Tukey algorithm. This means that the execution of each $F_2^s$ loop depends on the completion of the previous F2s loop.
+
+\noindent To address this flow dependence in the algorithm, we can construct a dependency graph:
+\pagebreak
+
+\input{for_2_dependencies}
+\bigskip
+
+At each stage, $F^{s,k}_2$ are all independent. Furthermore, when we examine the dependency graph of these operations, we discover that a partition of the dependencies exists between each stage. This means that the tasks can be grouped in a way that allows for parallel execution: 
+\bigskip
+
+\input{for_3_dependencies}
+\bigskip
+
+Each $F^{s,k}_2$ performs a butterfly access of a partition of the vector, of length $2^s$, as it shown in the following example:
+
+\bigskip
+
+\input{data_partition}
+
+
+\subsubsection{Communication}
+\subsubsection{Aggregation}
+
+\input{aggregation}
+
+
+
+\subsubsection{Mapping}
+
+\section{Implementation}
+
+\subsection{Classes and package structure}
+pattern strategy, principi di design: ISP IDP. 
+
+perché certe scelte?
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\linewidth]{Project_FFT.png}
+    \caption{Enter Caption}
+    
+\end{figure}
+
+\subsection{Optimization}
+
+\section{Tests and conclusion}
+
+\end{document}
+

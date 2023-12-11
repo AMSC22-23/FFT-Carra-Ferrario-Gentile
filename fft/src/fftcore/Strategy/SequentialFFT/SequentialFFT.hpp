@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SEQUENTIALFFT_HPP
+#define SEQUENTIALFFT_HPP
+
 #include "../../FFTSolver.hpp"
 #include "../../utils/FFTUtils.hpp"
 #include <iostream>
@@ -88,3 +90,5 @@ namespace fftcore{
     };
 
 }
+
+#endif //SEQUENTIALFFT_HPP

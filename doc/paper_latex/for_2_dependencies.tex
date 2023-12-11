@@ -1,0 +1,24 @@
+\begin{figure}[h]
+\centerline{
+\begin{tikzpicture}
+\begin{scope}[every node/.style={circle,thick,draw,minimum width=40px}]
+    \node (F20) at (0,0) {$F_2^{0}$};
+    \node (F21) at (3,0) {$F_2^{1}$};
+    \node (F22) at (6,0) {$F_2^{2}$};;
+    \node (F23) at (9,0) {$F_2^{3}$};
+    \node[state] (dots0) [draw=none] at (11.75,0) {$\ldots$};
+    \node (F2last) at (14.5,0) {$F_2^{logn}$};
+    
+\end{scope}
+
+\begin{scope}[>={Stealth[black]},
+              every edge/.style={draw=black,very thick}]
+    \path [->] (F20) edge (F21); 
+    \path [->] (F21) edge  (F22); 
+    \path [->] (F22) edge (F23);
+    \path [->] (F23) edge (dots0);
+    \path [->] (dots0) edge (F2last);
+\end{scope}
+\end{tikzpicture}
+}
+\end{figure}

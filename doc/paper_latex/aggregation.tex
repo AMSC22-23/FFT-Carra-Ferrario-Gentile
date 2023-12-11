@@ -1,0 +1,26 @@
+\centerline{
+\begin{tikzpicture}[h!]
+\begin{scope}[every node/.style={circle,thick,draw,minimum width=60px}]
+
+    \node (F1) at (0,0) {$Task_1$};
+    \node (F2) at (4,0) {$Task_2$};
+    
+    \node (F3) at (8,0) {$Task_3$};
+    \node (F4) at (12,0) {$Task_4$};
+    
+    \node (Fl) at (6,5) {$F_3^{logn,0}$};
+\end{scope}
+
+\begin{scope}[>={Stealth[black]},
+              every edge/.style={draw=black,very thick}]
+
+    \path [->] (F1) edge (Fl);
+    \path [->] (F2) edge (Fl);
+    \path [->] (F3) edge (Fl);
+    \path [->] (F4) edge (Fl);
+    
+    
+    
+\end{scope}
+\end{tikzpicture}
+}
