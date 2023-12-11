@@ -2,7 +2,7 @@
 #define FFTCORE_HPP
 
 /**
-* Public headers of the library. Include this file in your project to use the library
+* Public headers of the library. Include this file in your project to use the ffft library
 * @author Edoardo Carrà
 */
 

@@ -40,7 +40,7 @@ namespace fftcore{
      * @author: Lorenzo Gentile, Daniele Ferrario
      */
     template <typename FloatingType>
-    void SequentialFFT<FloatingType>::fft(CTensor_1D &input_output, fftcore::FFTDirection fftDirection) const
+    void SequentialFFT<FloatingType>::fft(CTensor_1D &input_output, FFTDirection fftDirection) const
     {
 
         using Complex = std::complex<FloatingType>;
@@ -50,7 +50,7 @@ namespace fftcore{
         int log2n = std::log2(n);
 
         //conjugate if inverse
-        if(fftDirection == fftcore::FFT_INVERSE){
+        if(fftDirection == FFT_INVERSE){
             FFTUtils::conjugate(input_output);
         }
 
@@ -83,7 +83,7 @@ namespace fftcore{
         }
 
         //re-conjugate and scale if inverse
-        if(fftDirection == fftcore::FFT_INVERSE){
+        if(fftDirection == FFT_INVERSE){
             FFTUtils::conjugate(input_output);
             input_output = input_output * Complex(1.0/n, 0);
         }

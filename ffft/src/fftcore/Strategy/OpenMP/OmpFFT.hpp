@@ -41,7 +41,7 @@ namespace fftcore{
      * @author: Edoardo Carra
     */
     template<typename FloatingType>
-    void OmpFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection fft_direction) const {
+    void OmpFFT<FloatingType>::fft(CTensor_1D& input_output, FFTDirection fftDirection) const {
 
         using Complex = std::complex<FloatingType>;
         int n = input_output.size();
@@ -49,61 +49,44 @@ namespace fftcore{
         
         assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
 
-        
-        // Bit-reversal permutation
-        for (unsigned int i = 0; i < n; ++i) {
-            unsigned int rev = FFTUtils::reverseBits(i, log2n);
-            if (i < rev) {
-                std::swap(input_output[i], input_output[rev]);
-            }
+        //conjugate if inverse
+        if(fftDirection == FFT_INVERSE){
+            FFTUtils::conjugate(input_output);
         }
 
-        Complex w, wm, wm_i, t, u;
+        // Bit-reversal permutation
+        FFTUtils::bit_reversal_permutation(input_output);
+
+
+        Complex w, wm, t, u;
         int m, m2;
         // Cooley-Tukey iterative FFT
         for (int s = 1; s <= log2n; ++s) {
             m = 1 << s;         // 2 power s
             m2 = m >> 1;        // m2 = m/2 -1
-            wm = exp(Complex(0, -2 * M_PI / m)); // w_m = e^(-2*pi/m)
-            wm_i = exp(Complex(0, 2 * M_PI / m)); // w_m = e^(2*pi/m)
 
+            #pragma omp parallel for private(w,t,u) num_threads(2)
             for (int k = 0; k < n; k += m) {
-			//	#pragma omp parallel for shared(input_output)
-				
-				w = Complex(1, 0);
+			    
+//                #pragma omp parallel for private(w,t,u)
 				for (int j = 0; j < m2; ++j) {
-					//if(fft_direction==FFT_FORWARD){
-					//	w = wm*exp(Complex(0,(k*m2)+j));
-					//}else{
-					//	w = wm_i*exp(Complex(0,(k*m2)+j));
-					//}
+                    w = exp(Complex(0, -2 * 3.14159 * (j) / m));
+
                     t = w * input_output[j + k + m2];
                     u = input_output[j + k];
                     
-                    input_output[k] = u + t;
-                    input_output[k + m2] = u - t;
+                    input_output[k+j] = u + t;
+                    input_output[k + m2 + j] = u - t;
 
-					if(fft_direction==FFT_FORWARD)w = w*wm;
-					else w=w*wm_i;
                 }
             }
         }
-    
-        if(fft_direction == FFT_INVERSE){
-            for(int i=0; i<n; i++){
-                input_output[i] /= n;
-            }
-            
-            // // Re-oredering
-            // // @TODO: I don't know if it's correct, but it works (Ferra)
-            // // Also, no need to conjugate anything apparently
-            // for (unsigned int i = 1; i < n/2; ++i) {
-            //     std::swap(input_output[i], input_output[n-i]);
-            // }
-            
 
-        }
-            
+       //re-conjugate and scale if inverse
+        if(fftDirection == FFT_INVERSE){
+            FFTUtils::conjugate(input_output);
+            input_output = input_output * Complex(1.0/n, 0);
+        }         
     };
 
 }
