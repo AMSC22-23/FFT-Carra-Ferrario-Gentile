@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
+
 # Project name and version
 project(FFT-CARRA-FERRARIO-GENTILE VERSION 1.0)
 
@@ -21,7 +22,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 # Set the FFTW3 path
-set(FFTW3_DIR "/opt/homebrew/Cellar/fftw/3.3.10_1")
+set(FFTW3_DIR "${FFTW3_DIR}")
 
 # Include directories for FFTW3 and other required libraries
 include_directories(
