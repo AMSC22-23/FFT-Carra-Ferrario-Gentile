@@ -1,4 +1,4 @@
-# FFTCORE
+# FFFT - Fast and FOUrious FOUrier Transform 
 ### A parallel library for the Fast Fourier Transform
 AMSC hands-on powered by Carrà Edoardo, Gentile Lorenzo, Ferrario Daniele.
 
@@ -13,7 +13,7 @@ This library depends on two modules: `Eigen` and `fftw3`, both of these modules 
 fftw3 is a state-of-the-art library widely used in the scientific community for its efficiency and accuracy. In the context of this library, it is utilized primarily for testing the correctness and performance of the different implementations.
 
 ### Library folder structure
-- `\fftcore\`: this directory contains the core files of the library.
+- `fftcore\`: this directory contains the core files of the library.
     - `FFTSolver.hpp`: this header file provides direct access for users to perform FFT operations.
     - `Strategy\`: this directory contains different strategies for performing the FFT. Some basic implementations are provided by default as the sequential one, MPI, OMP and CUDA.
 
@@ -24,16 +24,16 @@ To build the executable, make sure you have loaded the needed modules with
 ```bash
 $ module load eigen fftw
 ```
-Then, from the folder `fft`, run the following commands:
+Then, from the root folder, run the following commands:
 ```bash
 $ mkdir build
 $ cd build
 $ cmake -DFFTW3_DIR=${mkFftwPrefix} ..
 $ make
 ```
-The executable will be created into `fft/build`, and can be executed through
+An executable for each test will be created into `/build`, and can be executed through
 ```bash
-$ ./main.out
+$ ./test_NAME.out
 ```
 ### Documentation
 For a comprehensive understanding of the library's structure and usage within your project, please refer to the [documentation](./doc/).
