@@ -23,13 +23,15 @@ namespace FFTUtils{
     template<typename DataType>
     void bit_reversal_permutation(Eigen::Tensor<DataType, 1> &tensor){
         int log2n = std::log2(tensor.size());
-        for (int i = 0; i < tensor.size()/2; ++i)
+        for (int i = 0; i < tensor.size(); ++i)
         {
             int rev = FFTUtils::reverseBits(i, log2n);
-            std::swap(tensor[i], tensor[rev]);
+            if (i < rev)
+            {
+                std::swap(tensor[i], tensor[rev]);
+            }
         }
     }
-
     template<typename FloatingType>
     void conjugate(Eigen::Tensor<std::complex<FloatingType>, 1> &tensor){
         tensor = tensor.unaryExpr([](std::complex<FloatingType> x){return std::conj(x);});
