@@ -23,13 +23,10 @@ namespace FFTUtils{
     template<typename DataType>
     void bit_reversal_permutation(Eigen::Tensor<DataType, 1> &tensor){
         int log2n = std::log2(tensor.size());
-        for (int i = 0; i < tensor.size(); ++i)
+        for (int i = 0; i < tensor.size()/2; ++i)
         {
             int rev = FFTUtils::reverseBits(i, log2n);
-            if (i < rev)
-            {
-                std::swap(tensor[i], tensor[rev]);
-            }
+            std::swap(tensor[i], tensor[rev]);
         }
     }
 

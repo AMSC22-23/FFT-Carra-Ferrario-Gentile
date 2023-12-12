@@ -67,9 +67,19 @@ int main(int argc, char **argv){
 
     for(int i=0; i<attempts; i++){
         
-        if(rank==0)
-            tensorA.get_tensor().setRandom();
+        
+        if(rank==0){
+            /*
+           tensorA.get_tensor().setValues({
+            {1.0, 0.0},
+            {2.0, 0.0},
+            {4.0, 0.0},
+            {3.0, 0.0},
 
+           });*/
+           tensorA.get_tensor().setRandom();
+           
+        }
        
         MPI_Bcast(tensorA.get_tensor().data(), tensorA.get_tensor().size(), MPI_C_DOUBLE_COMPLEX, 0, MPI_COMM_WORLD);
 
