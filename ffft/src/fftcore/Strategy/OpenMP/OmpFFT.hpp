@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <omp.h>
+#include <cmath>
 #include "../../FFTSolver.hpp"
 #include "../../utils/FFTUtils.hpp"
 
@@ -45,8 +46,10 @@ namespace fftcore{
 
         using Complex = std::complex<FloatingType>;
         int n = input_output.size();
-        int log2n = std::log2(n);
-        
+        Complex w, wm, t, u;
+        int m, m2; 
+		int log2n = std::log2(n);
+		int rev;
         assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
 
         //conjugate if inverse
@@ -55,33 +58,42 @@ namespace fftcore{
         }
 
         // Bit-reversal permutation
-        FFTUtils::bit_reversal_permutation(input_output);
+		#pragma omp parallel private(m, m2, w, t, u, wm, rev)
+		{
+		#pragma omp for
+        for (int i = 0; i < input_output.size(); ++i)
+        {
+            rev = FFTUtils::reverseBits(i, log2n);
+            if (i < rev)
+            {
+                std::swap(input_output[i], input_output[rev]);
+            }
+        }
 
+		#pragma omp barrier
 
-        Complex w, wm, t, u;
-        int m, m2;
-        // Cooley-Tukey iterative FFT
+        // Cooley-Tukey iterative FFT	
         for (int s = 1; s <= log2n; ++s) {
             m = 1 << s;         // 2 power s
             m2 = m >> 1;        // m2 = m/2 -1
+			wm = exp(Complex(0,-2*M_PI/m));
 
-            #pragma omp parallel for private(w,t,u) num_threads(2)
+			#pragma omp for 
             for (int k = 0; k < n; k += m) {
-			    
-//                #pragma omp parallel for private(w,t,u)
+				w=Complex(1,0);		    
+//              #pragma omp parallel for private(w,t,u)
+				#pragma omp simd
 				for (int j = 0; j < m2; ++j) {
-                    w = exp(Complex(0, -2 * 3.14159 * (j) / m));
-
                     t = w * input_output[j + k + m2];
                     u = input_output[j + k];
                     
                     input_output[k+j] = u + t;
                     input_output[k + m2 + j] = u - t;
-
+					w=w*wm;
                 }
             }
         }
-
+		}
        //re-conjugate and scale if inverse
         if(fftDirection == FFT_INVERSE){
             FFTUtils::conjugate(input_output);

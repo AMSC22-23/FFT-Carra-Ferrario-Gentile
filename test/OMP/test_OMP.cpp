@@ -2,7 +2,7 @@
 #include "ffft.hpp"
 
 int main(){
-        int n = 1 << 24;
+        int n = 1 << 25;
 
         FFTSolver<1> omp_solver(std::make_unique<OmpFFT<>>());
         FFTSolver<1> sequential_solver(std::make_unique<SequentialFFT<>>());
@@ -29,5 +29,5 @@ int main(){
         sequential_solver.get_timer().print("Sequential");
         fftw_solver.get_timer().print("FFTW");
 
-        std::cout << "difference between omp and fftw: " << (tensor_sequential.get_tensor().abs() - tensor_fftw_out.get_tensor().abs()).sum() << std::endl;
+        std::cout << "difference between omp and fftw: " << (tensor_omp.get_tensor().abs() - tensor_sequential.get_tensor().abs()).sum() << std::endl;
 }
