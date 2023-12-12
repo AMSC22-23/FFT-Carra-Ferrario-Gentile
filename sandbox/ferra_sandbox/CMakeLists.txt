@@ -42,7 +42,7 @@ find_package(MPI REQUIRED)
 include_directories(main "../../eigen")
 
 # Define executable target
-add_executable(main.out main.cpp ../../fft/src/fftcore/Timer/Timer.cpp)
+add_executable(main.out main.cpp ../../ffft/src/fftcore/Timer/Timer.cpp)
 
 # Link libraries to the executable
 target_link_libraries(main.out PRIVATE MPI::MPI_CXX)

@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp" "CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.o" "gcc" "CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.o.d"
+  "/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp" "CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.o" "gcc" "CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.o.d"
   "/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/sandbox/ferra_sandbox/main.cpp" "CMakeFiles/main.out.dir/main.cpp.o" "gcc" "CMakeFiles/main.out.dir/main.cpp.o.d"
   )
 

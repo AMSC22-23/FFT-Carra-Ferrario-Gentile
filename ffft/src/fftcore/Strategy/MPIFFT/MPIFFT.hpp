@@ -96,10 +96,10 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection f
     // -------------------------------------
 
     MEASURE_TIME_START
-    // Create local tensors    
-    int local_tensor_size = input_output.size()/size;
+    FFTUtils::bit_reversal_permutation(input_output);
     MEASURE_TIME_END("Global array permutation")
     
+    int local_tensor_size = input_output.size()/size;
     int starting_local_index = rank*local_tensor_size;
     int i=starting_local_index;
 
@@ -127,7 +127,6 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection f
 
     // Reconstruct the original tenso gathering local tensors
     MPI_Gather(local_tensor.data(), local_tensor_size, mpi_datatype, input_output.data(), local_tensor_size, mpi_datatype, 0, MPI_COMM_WORLD);
-    
     if(rank == 0){
 
         // Now there remains log2(num of processes) steps to do
@@ -142,6 +141,8 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection f
         }
         
     }
+
+
 
     // Copy global tensor in all processes
     MPI_Bcast(input_output.data(), input_output.size(), mpi_datatype, 0, MPI_COMM_WORLD);

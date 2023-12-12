@@ -129,29 +129,29 @@ main.out/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.out.dir/build.make CMakeFiles/main.out.dir/build
 .PHONY : main.out/fast
 
-home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.o: home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.o
-.PHONY : home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.o
+home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.o: home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.o
+.PHONY : home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.o
 
 # target to build an object file
-home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.out.dir/build.make CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.o
-.PHONY : home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.o
+home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.out.dir/build.make CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.o
+.PHONY : home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.o
 
-home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.i: home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.i
-.PHONY : home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.i
+home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.i: home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.i
+.PHONY : home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.i
 
 # target to preprocess a source file
-home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.out.dir/build.make CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.i
-.PHONY : home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.i
+home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.out.dir/build.make CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.i
+.PHONY : home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.i
 
-home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.s: home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.s
-.PHONY : home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.s
+home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.s: home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.s
+.PHONY : home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.s
 
 # target to generate assembly for a file
-home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.out.dir/build.make CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.s
-.PHONY : home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.s
+home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.out.dir/build.make CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.s
+.PHONY : home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.s
 
 main.o: main.cpp.o
 .PHONY : main.o
@@ -186,9 +186,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... main.out"
-	@echo "... home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.o"
-	@echo "... home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.i"
-	@echo "... home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.s"
+	@echo "... home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.o"
+	@echo "... home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.i"
+	@echo "... home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

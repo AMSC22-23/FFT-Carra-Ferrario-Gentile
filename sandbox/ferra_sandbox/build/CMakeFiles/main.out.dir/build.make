@@ -83,30 +83,30 @@ CMakeFiles/main.out.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/main.out.dir/main.cpp.s"
 	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/sandbox/ferra_sandbox/main.cpp -o CMakeFiles/main.out.dir/main.cpp.s
 
-CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.o: CMakeFiles/main.out.dir/flags.make
-CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.o: /home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp
-CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.o: CMakeFiles/main.out.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/sandbox/ferra_sandbox/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.o"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.o -MF CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.o.d -o CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.o -c /home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp
+CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.o: CMakeFiles/main.out.dir/flags.make
+CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.o: /home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp
+CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.o: CMakeFiles/main.out.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/sandbox/ferra_sandbox/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.o"
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.o -MF CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.o.d -o CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.o -c /home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp
 
-CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.i"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp > CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.i
+CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.i"
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp > CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.i
 
-CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.s"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp -o CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.s
+CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.s"
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp -o CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.s
 
 # Object files for target main.out
 main_out_OBJECTS = \
 "CMakeFiles/main.out.dir/main.cpp.o" \
-"CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.o"
+"CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.o"
 
 # External object files for target main.out
 main_out_EXTERNAL_OBJECTS =
 
 main.out: CMakeFiles/main.out.dir/main.cpp.o
-main.out: CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/fft/src/fftcore/Timer/Timer.cpp.o
+main.out: CMakeFiles/main.out.dir/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft/src/fftcore/Timer/Timer.cpp.o
 main.out: CMakeFiles/main.out.dir/build.make
 main.out: /u/sw/toolchains/gcc-glibc/11.2.0/base/lib/libmpi.so
 main.out: CMakeFiles/main.out.dir/link.txt
