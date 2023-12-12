@@ -12,9 +12,12 @@ target_link_directories(FFFT PUBLIC "${FFTW3_DIR}/lib")
 
 # include OpenMP, MPI and Eigen
 find_package(MPI REQUIRED)
+#cmake_policy(SET CMP0074 NEW)
 find_package(OpenMP REQUIRED)
 find_package(Eigen3 REQUIRED NO_MODULE
 		HINTS $ENV{mkEigenPrefix})
+
+
 
 # Link libraries to the executable
 target_link_libraries(FFFT PUBLIC fftw3 MPI::MPI_CXX Eigen3::Eigen OpenMP::OpenMP_CXX)
