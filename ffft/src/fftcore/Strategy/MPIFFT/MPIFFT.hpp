@@ -58,11 +58,12 @@ void MPIFFT<FloatingType>::fft(const RTensor_1D&, CTensor_1D&, FFTDirection) con
 };
 
 
+
 /**
  * In place FFT using MPI parallelization. Every process will compute a 
- * sub tree of the iterational Cooley-tuekey algorithm, until there will 
- * occure dependency between them. Then, only one process will complete the
- * remaining steps of the algoritm, precisely doing log(p_size) steps with p_size
+ * sub tree of the iterational Cooley-tuekey algorithm, until  a dependency between them
+ * will occure. Then, only one process will complete the
+ * remaining steps of the algorithm, precisely doing log(p_size) steps with p_size
  * being the number of available processes.
  * 
  * @author: Daniele Ferrario
@@ -72,7 +73,6 @@ void MPIFFT<FloatingType>::fft(const RTensor_1D&, CTensor_1D&, FFTDirection) con
 
 template<typename FloatingType>
 void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection fftDirection) const {
-
     INIT_TIME_MEASURE
 
     // Utility
@@ -95,27 +95,52 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection f
     assert((size <= n/2 && std::ceil(log2p)==std::floor(log2p)) && "Process number must be a power of two and less or equal than n/2).");
     // -------------------------------------
 
-    MEASURE_TIME_START
-    FFTUtils::bit_reversal_permutation(input_output);
-    MEASURE_TIME_END("Global array permutation")
-    
+
     int local_tensor_size = input_output.size()/size;
-    int starting_local_index = rank*local_tensor_size;
-    int i=starting_local_index;
+    int offset = rank*local_tensor_size;
 
 
-    //c Conjugate input if ifft
-    if(fftDirection == fftcore::FFT_INVERSE){
-        FFTUtils::conjugate(input_output);
+    int rev;
+    for(int i=0; i<local_tensor_size; i++){
+        rev = FFTUtils::reverseBits(offset+i, log2n);
+
+        // swap if not done by onther element of the same process, or if 
+        // the reverse is owned by another process
+        if(rev > (offset+i) || rev < offset){
+            if((rev/local_tensor_size) == rank){
+                std::swap(input_output[offset+i], input_output[rev]);
+            }
+            else{ 
+                // No need to swap because it will be done by another process
+                input_output[offset+i]= input_output[rev];
+            }
+        }
     }
+
+
+    // Gather permuted subtensors on p0
+    MPI_Gather(input_output.data()+offset, local_tensor_size, mpi_datatype, input_output.data(), local_tensor_size, mpi_datatype, 0, MPI_COMM_WORLD);
+
+    if(rank == 0){
+
+        //c Conjugate input if ifft
+        if(fftDirection == fftcore::FFT_INVERSE){
+            FFTUtils::conjugate(input_output);
+
+        }
+
+    }
+
+    // Synchronize global tensor on all p
+    MPI_Bcast(input_output.data(), input_output.size(), mpi_datatype, 0, MPI_COMM_WORLD);
 
 
     // Create local tensors
     MEASURE_TIME_START
     CTensor_1D local_tensor(local_tensor_size);
     for(int k=0; k<local_tensor_size; k++){
-        local_tensor(k) = input_output(i);
-        i++; 
+        local_tensor(k) = input_output(offset+k);
+        
     }
     MEASURE_TIME_END("Local tensors creation")
 
