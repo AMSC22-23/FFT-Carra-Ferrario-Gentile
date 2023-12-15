@@ -1,7 +1,7 @@
 #ifndef MPIFFT_HPP
 #define MPIFFT_HPP
 
-#define INIT_TIME_MEASURE double start, end, check;
+#define INIT_TIME_MEASURE double start, end;
 
 #define MEASURE_TIME_START start = MPI_Wtime();
 
@@ -10,11 +10,9 @@
         end = MPI_Wtime(); \
         if(rank==0){\
             std::cout << "p: " << rank << " " << message << ": " << (end - start)*1.0e6 << " microseconds" << std::endl; \
-            check += (end - start)*1.0e6; \
         } \
     } while(0);
 
-#define CHECK_TIME cout << "Check mpi time: " << check << endl;
 
 #include "../../FFTSolver.hpp"
 #include "../../utils/FFTUtils.hpp"
@@ -41,7 +39,7 @@ public FFT_1D<FloatingType>
 
 			~MPIFFT() = default;
         private :
-            void _fft_no_reverse_no_conjugate(CTensor_1D&, int) const;
+            void _generalized_cooleytukey_butterfly(CTensor_1D&, const size_t, const int, const int) const;
 
 };
 
@@ -61,18 +59,17 @@ void MPIFFT<FloatingType>::fft(const RTensor_1D&, CTensor_1D&, FFTDirection) con
 
 /**
  * In place FFT using MPI parallelization. Every process will compute a 
- * sub tree of the iterational Cooley-tuekey algorithm, until  a dependency between them
- * will occure. Then, only one process will complete the
+ * sub tree of the iterational Cooley-tuekey algorithm, until a dependency between them
+ * will occure in the butterfly step. Then, only one process will complete the
  * remaining steps of the algorithm, precisely doing log(p_size) steps with p_size
  * being the number of available processes.
  * 
  * @author: Daniele Ferrario
- * @TODO: avoiding full copy of original tensor in every process?
  * @TODO: add exceptions instead of assertions
 */
 
 template<typename FloatingType>
-void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection fftDirection) const {
+void MPIFFT<FloatingType>::fft(CTensor_1D& global_tensor, fftcore::FFTDirection fftDirection) const {
     INIT_TIME_MEASURE
 
     // Utility
@@ -85,84 +82,91 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection f
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
     // Tensor infos
-    int n = input_output.size();
+    int n = global_tensor.size();
     int log2n = std::log2(n);
     double log2p = std::log2(size);
 
     // Assertions
-    // Add p constraints
     assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
     assert((size <= n/2 && std::ceil(log2p)==std::floor(log2p)) && "Process number must be a power of two and less or equal than n/2).");
     // -------------------------------------
 
-
-    int local_tensor_size = input_output.size()/size;
+    // Length of the sub-vector related to each process
+    int local_tensor_size = global_tensor.size()/size;
+    // Global index of the sub-vector
     int offset = rank*local_tensor_size;
 
+    // Every process runs a bit reversal permutation towards 
+    // a sub-vector, still by working on its copy of the global 
+    // vector. 
 
     int rev;
     for(int i=0; i<local_tensor_size; i++){
         rev = FFTUtils::reverseBits(offset+i, log2n);
 
-        // swap if not done by onther element of the same process, or if 
-        // the reverse is owned by another process
+        // Avoid to swap elements if the reverse 
+        // has already been processed by the process ( rev > (offset+i) ),
+        // or if it's placed in a sub vector
+        // of another process competence ( rev < offset )
+
         if(rev > (offset+i) || rev < offset){
+            
+            // If the elements to swap are in the same range
+            // of the process, swap them.
+
             if((rev/local_tensor_size) == rank){
-                std::swap(input_output[offset+i], input_output[rev]);
+                std::swap(global_tensor[offset+i], global_tensor[rev]);
             }
             else{ 
-                // No need to swap because it will be done by another process
-                input_output[offset+i]= input_output[rev];
+
+                // Else, there is no need to copy the current position
+                // in the reversed position. This is because it will be 
+                // discarded at MPI_Gather as it's not this processor competence 
+                // to handle it.
+
+                global_tensor[offset+i]= global_tensor[rev];
             }
         }
     }
 
 
-    // Gather permuted subtensors on p0
-    MPI_Gather(input_output.data()+offset, local_tensor_size, mpi_datatype, input_output.data(), local_tensor_size, mpi_datatype, 0, MPI_COMM_WORLD);
+    // Gather the permuted sub-vectors of each processor competence into process 0.
+    MPI_Gather(global_tensor.data()+offset, local_tensor_size, mpi_datatype, global_tensor.data(), local_tensor_size, mpi_datatype, 0, MPI_COMM_WORLD);
 
+    // Conjugate
     if(rank == 0){
 
-        //c Conjugate input if ifft
         if(fftDirection == fftcore::FFT_INVERSE){
-            FFTUtils::conjugate(input_output);
+            FFTUtils::conjugate(global_tensor);
 
         }
 
     }
 
-    // Synchronize global tensor on all p
-    MPI_Bcast(input_output.data(), input_output.size(), mpi_datatype, 0, MPI_COMM_WORLD);
-
-
-    // Create local tensors
-    MEASURE_TIME_START
-    CTensor_1D local_tensor(local_tensor_size);
-    for(int k=0; k<local_tensor_size; k++){
-        local_tensor(k) = input_output(offset+k);
-        
-    }
-    MEASURE_TIME_END("Local tensors creation")
+    // Synchronize the permutated (and conjugated) global tensor on all processes.
+    MPI_Bcast(global_tensor.data(), global_tensor.size(), mpi_datatype, 0, MPI_COMM_WORLD);
 
 
     MEASURE_TIME_START
     // Run fft on local tensors ( subtrees )
-    MPIFFT::_fft_no_reverse_no_conjugate(local_tensor, 1);
+    MPIFFT::_generalized_cooleytukey_butterfly(global_tensor, offset, local_tensor_size, 1);
     MEASURE_TIME_END("Local array FFT")
 
-    // Reconstruct the original tenso gathering local tensors
-    MPI_Gather(local_tensor.data(), local_tensor_size, mpi_datatype, input_output.data(), local_tensor_size, mpi_datatype, 0, MPI_COMM_WORLD);
+    // Reconstruct the pratially computed vector
+    MPI_Gather(global_tensor.data()+offset, local_tensor_size, mpi_datatype, global_tensor.data(), local_tensor_size, mpi_datatype, 0, MPI_COMM_WORLD);
+
+    // Sequentially compute the remaining steps
     if(rank == 0){
 
         // Now there remains log2(num of processes) steps to do
         MEASURE_TIME_START
-        MPIFFT::_fft_no_reverse_no_conjugate(input_output, log2n - log2p + 1);
+        MPIFFT::_generalized_cooleytukey_butterfly(global_tensor, 0, n, log2n - log2p + 1);
         MEASURE_TIME_END("Last global FFT")
 
-        //re-conjugate and scale if inverse
+        // Re-conjugate and scale if inverse
         if(fftDirection == fftcore::FFT_INVERSE){
-            FFTUtils::conjugate(input_output);
-            input_output = input_output * Complex(1.0 / n, 0);
+            FFTUtils::conjugate(global_tensor);
+            global_tensor = global_tensor * Complex(1.0 / n, 0);
         }
         
     }
@@ -170,18 +174,28 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& input_output, fftcore::FFTDirection f
 
 
     // Copy global tensor in all processes
-    MPI_Bcast(input_output.data(), input_output.size(), mpi_datatype, 0, MPI_COMM_WORLD);
+    MPI_Bcast(global_tensor.data(), global_tensor.size(), mpi_datatype, 0, MPI_COMM_WORLD);
 
 }
 
+
+/**
+ * This private method is employed when dealing with the butterfly phase
+ * of cooley-tukey algoirithm
+ * @param input_output The global vector
+ * @param start The index of the sub-vector in the global vector
+ * @param range The lenght of the sub-vector
+ * @param starting_depth The current depth (1...log(range)) to start from, since the input 
+ * could have already been manipulated previously.
+*/
 template<typename FloatingType>
-void MPIFFT<FloatingType>::_fft_no_reverse_no_conjugate(CTensor_1D& input_output, int starting_depth) const{
+void MPIFFT<FloatingType>::_generalized_cooleytukey_butterfly(CTensor_1D& input_output, const size_t start, const int range, const int starting_depth) const{
         using Complex = std::complex<FloatingType>;
         
-        int n = input_output.size();
-        assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
-
-        int log2n = std::log2(n);
+        int n = start+range;
+        assert(!(range & (range - 1)) && "FFT length must be a power of 2.");
+        int log2n = std::log2(range);
+        assert((starting_depth >=1 && starting_depth <= log2n) && "Starting depth has to be in (1...log(range)).");
 
         Complex w, wm, t, u;
         int m, m2;
@@ -192,7 +206,7 @@ void MPIFFT<FloatingType>::_fft_no_reverse_no_conjugate(CTensor_1D& input_output
             m2 = m >> 1; // m2 = m/2 -1
             wm = exp(Complex(0, -2 * M_PI / m)); // w_m = e^(-2*pi/m)
 
-            for(int k = 0; k < n; k += m)
+            for(int k = start; k < n; k += m)
             {
                 w = Complex(1, 0);
                 for(int j = 0; j < m2; ++j)
