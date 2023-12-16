@@ -44,6 +44,10 @@ namespace fftcore{
     template<typename FloatingType>
     void OmpFFT<FloatingType>::fft(CTensor_1D& io_tensor, FFTDirection fft_direction) const {
 
+#ifndef _OPENMP
+        std::cerr<< "[WARNING] OMP not found, normal execution."
+#endif
+
         using Complex = std::complex<FloatingType>;
         // dimension of the 
         int n = io_tensor.size();
@@ -51,6 +55,7 @@ namespace fftcore{
         int m, m2, rev, log2n = std::log2(n);
 
         assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
+
 
         //conjugate if inverse
         if(fft_direction == FFT_INVERSE){
@@ -60,6 +65,11 @@ namespace fftcore{
 
         #pragma omp parallel private(m, m2, w, t, u, wm, rev)
         {
+#ifdef _OPENMP
+            int omp_tn = omp_get_num_threads();
+            assert(!(omp_tn & (omp_tn-1)) && "Number of threads must be a power of 2.");
+#endif
+
             /* bit-reversal -> embarassingly parallel, exclusive read and
             * write access to the tensor. 
             */
@@ -84,7 +94,7 @@ namespace fftcore{
                 /*
                 * F_2 : this loop is responsible to the creation of the block partition
                 *       of the input vector. All threads are used until stage s is less then 
-                *       log(n)-log(omp_get_thread_num()). After this threshold is reached, the
+                *       log(n)-log(omp_get_num_threads()). After this threshold is reached, the
                 *       number of threads used is halved at each stage. Loop independent data
                 *       dependence.
                 */
