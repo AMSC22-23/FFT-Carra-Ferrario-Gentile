@@ -64,7 +64,10 @@ namespace fftcore
         int n = input.size();
         fftw_complex *in = nullptr, *out = nullptr;
         int direction = fftDirection == FFT_FORWARD ? FFTW_FORWARD : FFTW_BACKWARD;
-
+//@note fftw_complex is a typedef for double[2] or float[2]. I see you has to resort to
+//      a const_cast to get the (non cosnt) pointer to the data and have fftw work. 
+//      I think you can avoid this by using 
+//      reinterpret_cast<fftw_complex*>(input.data()) instead of const_cast<fftw_complex*>(reinterpret_cast<const fftw_complex*>(input.data()))
         in = const_cast<fftw_complex *>(reinterpret_cast<const fftw_complex *>(input.data()));
         out = reinterpret_cast<fftw_complex *>(output.data());
 
