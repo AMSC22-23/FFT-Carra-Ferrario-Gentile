@@ -7,7 +7,7 @@ FFTCore is a parallel C++ library designed for computing the Fast Fourier Transf
 
 ### Required software
 
-This library depends on two modules: `Eigen` and `fftw3`, both of these modules are available in the mk modules.
+This library depends on two modules: `Eigen v3.3.9` and `fftw3`, both of these modules are available in the mk modules.
 
 
 fftw3 is a state-of-the-art library widely used in the scientific community for its efficiency and accuracy. In the context of this library, it is utilized primarily for testing the correctness and performance of the different implementations.
