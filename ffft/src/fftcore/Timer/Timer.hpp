@@ -29,6 +29,7 @@ namespace fftcore{
 
         void print() const;
         void print(std::string) const;
+        void print_last_formatted() const;
 
         const double get_last() const;
         const double get_min() const;

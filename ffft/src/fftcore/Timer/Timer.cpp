@@ -16,6 +16,19 @@ namespace fftcore{
         _durations.clear();
     }
 
+    void Timer::print_last_formatted() const {
+        double time = Timer::get_last() ;
+            if(time < 1e-6){
+                std::cout << time*1e9 << " ns";
+            }else if(time < 1e-3){
+                std::cout << time*1e6 << " us";
+            }else if(time < 1){
+                std::cout << time*1e3 << " ms";
+            }else{
+                std::cout << time << " s";
+            }
+    }
+
     void Timer::print(std::string title) const{
         if(title.empty()) 
             std::cout << "\n---- Timings ----" << std::endl;
