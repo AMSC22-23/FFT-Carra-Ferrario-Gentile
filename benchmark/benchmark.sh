@@ -1,7 +1,9 @@
 #!/bin/bash
 
-TEST_OMP=$1
-echo "n,$2 forward,$2 inverse,$3 forward,$3 inverse,SU forward,SU inverse,error"
+TEST=$1
+PROCESSES_NUM=$2
+
+echo "n,$3 forward,$3 inverse,$4 forward,$4 inverse,SU forward,SU inverse,error"
 for n in {14..19}; do
-	$TEST_OMP $n
+	mpirun --use-hwthread-cpus -n $PROCESSES_NUM $TEST $n
 done

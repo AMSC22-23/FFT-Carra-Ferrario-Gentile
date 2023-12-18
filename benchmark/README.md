@@ -1,12 +1,23 @@
 `benchmark.sh` run a benchmark and format the output in a table-format thanks to print_table.sh. 
 
-Run it:
+Source it:
 ```bash
 $ source print_table.sh
-$ printTable "," "$(./benchmark.sh ../build/test_OMP.out OMP SEQ)"
-``` 
+```
 
-Output:
+Run it:
+```bash
+$ printTable "," "$(./benchmark.sh ../build/test_*.out <MPI number of processes> <Strategy header 1> <Strategy header 2>)"
+``` 
+OMP example:
+```bash
+$ printTable "," "$(./benchmark.sh ../build/test_OMP.out 1 OMP SEQ)"
+``` 
+MPI example:
+```bash
+$ printTable "," "$(./benchmark.sh ../build/test_MPI.out 4 MPI SEQ)"
+``` 
+OMP Output:
 
   ```
   +     +              +              +              +              +             +             +        +
