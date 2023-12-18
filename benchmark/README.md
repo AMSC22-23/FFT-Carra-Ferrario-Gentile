@@ -2,6 +2,7 @@
 
 Run it:
 ```bash
+$ source print_table.sh
 $ printTable "," "$(./benchmark.sh ../build/test_OMP.out OMP SEQ)"
 ``` 
 
