@@ -25,6 +25,7 @@ bool tensor_equality(CTensorBase<1> a, CTensorBase<1> b){
     return true;
 }
 
+// For debugging purpouses
 template<typename FloatingType>
 void random_tensor(const int real_bound_mod, const int imag_bound_mod, CTensorBase<1> &tensor){
     std::random_device rd;
