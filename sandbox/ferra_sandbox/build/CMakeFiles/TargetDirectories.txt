@@ -1,3 +1,0 @@
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/sandbox/ferra_sandbox/build/CMakeFiles/rebuild_cache.dir
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/sandbox/ferra_sandbox/build/CMakeFiles/edit_cache.dir
-/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/sandbox/ferra_sandbox/build/CMakeFiles/main.out.dir
