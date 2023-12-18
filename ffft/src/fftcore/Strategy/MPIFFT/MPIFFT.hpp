@@ -9,7 +9,7 @@
     do { \
         end = MPI_Wtime(); \
         if(rank==0){\
-            std::cout << "p: " << rank << " " << message << ": " << (end - start)*1.0e6 << " microseconds" << std::endl; \
+            /*std::cout << "p: " << rank << " " << message << ": " << (end - start)*1.0e6 << " microseconds" << std::endl;*/ \
         } \
     } while(0);
 
@@ -152,7 +152,7 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& global_tensor, fftcore::FFTDirection 
     MPIFFT::_generalized_cooleytukey_butterfly(global_tensor, offset, local_tensor_size, 1);
     MEASURE_TIME_END("Local array FFT")
 
-    // Reconstruct the pratially computed vector
+    // Reconstruct the partially computed vector
     MPI_Gather(global_tensor.data()+offset, local_tensor_size, mpi_datatype, global_tensor.data(), local_tensor_size, mpi_datatype, 0, MPI_COMM_WORLD);
 
     // Sequentially compute the remaining steps
@@ -160,7 +160,8 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& global_tensor, fftcore::FFTDirection 
 
         // Now there remains log2(num of processes) steps to do
         MEASURE_TIME_START
-        MPIFFT::_generalized_cooleytukey_butterfly(global_tensor, 0, n, log2n - log2p + 1);
+        if(log2p > 0)
+            MPIFFT::_generalized_cooleytukey_butterfly(global_tensor, 0, n, log2n - log2p + 1);
         MEASURE_TIME_END("Last global FFT")
 
         // Re-conjugate and scale if inverse
@@ -170,8 +171,6 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& global_tensor, fftcore::FFTDirection 
         }
         
     }
-
-
 
     // Copy global tensor in all processes
     MPI_Bcast(global_tensor.data(), global_tensor.size(), mpi_datatype, 0, MPI_COMM_WORLD);
@@ -191,7 +190,6 @@ void MPIFFT<FloatingType>::fft(CTensor_1D& global_tensor, fftcore::FFTDirection 
 template<typename FloatingType>
 void MPIFFT<FloatingType>::_generalized_cooleytukey_butterfly(CTensor_1D& input_output, const size_t start, const int range, const int starting_depth) const{
         using Complex = std::complex<FloatingType>;
-        
         int n = start+range;
         assert(!(range & (range - 1)) && "FFT length must be a power of 2.");
         int log2n = std::log2(range);
