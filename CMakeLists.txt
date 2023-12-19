@@ -35,16 +35,6 @@ target_include_directories(test_sequential.out PUBLIC
                           "${PROJECT_SOURCE_DIR}/ffft/include"
                           )
 
-# CUDA
-# Define executable target
-add_executable(test_CUDA.out test/CUDA/test_CUDA.cpp)
-# link the library to link to the executable
-target_link_libraries(test_CUDA.out PUBLIC FFFT)
-# specify the library's header file location
-target_include_directories(test_CUDA.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )
-
 # MPI
 # Define executable target
 add_executable(test_MPI.out test/MPI/test_MPI.cpp)
