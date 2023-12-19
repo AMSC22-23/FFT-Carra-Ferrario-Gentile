@@ -25,9 +25,10 @@ namespace fftcore{
     };
 
     template <typename FloatingType>
-    void SequentialFFT<FloatingType>::fft(const CTensor_1D &, CTensor_1D &, FFTDirection) const
+    void SequentialFFT<FloatingType>::fft(const CTensor_1D &input, CTensor_1D &output, FFTDirection fftDirection) const
     {
-        throw NotSupportedException("Operation is not supported");
+        output = input; //deep copy
+        fft(output, fftDirection);
     };
 
     template <typename FloatingType>
