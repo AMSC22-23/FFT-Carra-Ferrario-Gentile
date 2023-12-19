@@ -1,6 +1,7 @@
 #ifndef MPIFFT_HPP
 #define MPIFFT_HPP
 
+#define dout std::cout << "p" << rank <<": "
 #define INIT_TIME_MEASURE double start, end;
 
 #define MEASURE_TIME_START start = MPI_Wtime();
@@ -40,7 +41,7 @@ public:
     ~MPIFFT() = default;
 
 private:
-    void _generalized_cooleytukey_butterfly(CTensor_1D &, const size_t, const int, const int) const;
+    void _generalized_cooleytukey_butterfly(CTensor_1D &, const int) const;
 };
 
 template <typename FloatingType>
@@ -162,21 +163,26 @@ void MPIFFT<FloatingType>::fft(CTensor_1D &global_tensor, fftcore::FFTDirection 
     // Conjugate
     if (rank == 0)
     {
-
         if (fftDirection == fftcore::FFT_INVERSE)
         {
             FFTUtils::conjugate(global_tensor);
         }
     }
 
-    // Synchronize the permutated (and conjugated) global tensor on all processes.
-    MPI_Bcast(global_tensor.data(), global_tensor.size(), mpi_datatype, 0, MPI_COMM_WORLD);
+    // Local section of the vector
+    CTensor_1D local_tensor(local_tensor_size);
+
+
+
+
+    // Scatter the permutated (and conjugated) global tensor on all processes.
+    MPI_Scatter(global_tensor.data(), local_tensor_size, mpi_datatype, local_tensor.data(), local_tensor_size, mpi_datatype, 0, MPI_COMM_WORLD);
 
     // Run fft on local tensors ( subtrees )
-    MPIFFT::_generalized_cooleytukey_butterfly(global_tensor, offset, local_tensor_size, 1);
+    MPIFFT::_generalized_cooleytukey_butterfly(local_tensor, 1);
 
     // Reconstruct the partially computed vector
-    MPI_Gather(global_tensor.data() + offset, local_tensor_size, mpi_datatype, global_tensor.data(), local_tensor_size, mpi_datatype, 0, MPI_COMM_WORLD);
+    MPI_Gather(local_tensor.data(), local_tensor_size, mpi_datatype, global_tensor.data(), local_tensor_size, mpi_datatype, 0, MPI_COMM_WORLD);
 
     // Sequentially compute the remaining steps
     if (rank == 0)
@@ -185,7 +191,7 @@ void MPIFFT<FloatingType>::fft(CTensor_1D &global_tensor, fftcore::FFTDirection 
         // Now there remains log2(num of processes) steps to do
         // If there is only one process, butterfly has already been completed
         if (log2p > 0)
-            MPIFFT::_generalized_cooleytukey_butterfly(global_tensor, 0, n, log2n - log2p + 1);
+            MPIFFT::_generalized_cooleytukey_butterfly(global_tensor, log2n - log2p + 1);
 
         // Re-conjugate and scale if inverse
         if (fftDirection == fftcore::FFT_INVERSE)
@@ -195,27 +201,24 @@ void MPIFFT<FloatingType>::fft(CTensor_1D &global_tensor, fftcore::FFTDirection 
         }
     }
 
-    // Copy global tensor in all processes
-    MPI_Bcast(global_tensor.data(), global_tensor.size(), mpi_datatype, 0, MPI_COMM_WORLD);
+    // The global vector is ready on process 0.
 }
 
 /**
  * This private method is employed when dealing with the butterfly phase
  * of cooley-tukey algoirithm
- * @param input_output The global vector
- * @param start The index of the sub-vector in the global vector
- * @param range The lenght of the sub-vector
+ * @param input_output The local vector
  * @param starting_depth The current depth (1...log(range)) to start from, since the input
  * could have already been manipulated previously.
  */
 template <typename FloatingType>
-void MPIFFT<FloatingType>::_generalized_cooleytukey_butterfly(CTensor_1D &input_output, const size_t start, const int range, const int starting_depth) const
+void MPIFFT<FloatingType>::_generalized_cooleytukey_butterfly(CTensor_1D &input_output, const int starting_depth) const
 {
     using Complex = std::complex<FloatingType>;
-    int n = start + range;
-    assert(!(range & (range - 1)) && "FFT length must be a power of 2.");
-    int log2n = std::log2(range);
-    assert((starting_depth >= 1 && starting_depth <= log2n) && "Starting depth has to be in (1...log(range)).");
+    int n = input_output.size();
+    assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
+    int log2n = std::log2(n);
+    assert((starting_depth >= 1 && starting_depth <= log2n) && "Starting depth has to be in (1...log2(n)).");
 
     Complex w, wm, t, u;
     int m, m2;
@@ -226,7 +229,7 @@ void MPIFFT<FloatingType>::_generalized_cooleytukey_butterfly(CTensor_1D &input_
         m2 = m >> 1;                         // m2 = m/2 -1
         wm = exp(Complex(0, -2 * M_PI / m)); // w_m = e^(-2*pi/m)
 
-        for (int k = start; k < n; k += m)
+        for (int k = 0; k < n; k += m)
         {
             w = Complex(1, 0);
             for (int j = 0; j < m2; ++j)
