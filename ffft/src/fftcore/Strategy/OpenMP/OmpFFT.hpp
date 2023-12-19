@@ -45,7 +45,7 @@ namespace fftcore{
     void OmpFFT<FloatingType>::fft(CTensor_1D& io_tensor, FFTDirection fft_direction) const {
 
 #ifndef _OPENMP
-        std::cerr<< "[WARNING] OMP not found, normal execution."
+        std::cerr<< "[WARNING] OMP not found, normal execution.";
 #endif
 
         using Complex = std::complex<FloatingType>;
