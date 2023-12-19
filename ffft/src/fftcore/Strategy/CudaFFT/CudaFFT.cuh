@@ -134,6 +134,11 @@ namespace fftcore
         int numBlocks = (n + threadsPerBlock - 1) / threadsPerBlock;
         int log2n = std::log2(n);
 
+        //conjugate if inverse
+        if(fftDirection == FFT_INVERSE){
+            FFTUtils::conjugate(input_output);
+        }
+
         // allocate memory on device
         ComplexCuda *d_input_output;
         gpuErrchk(cudaMalloc((void **)&d_input_output, n * sizeof(ComplexCuda)));
@@ -168,6 +173,13 @@ namespace fftcore
 
         // free memory on device
         gpuErrchk(cudaFree(d_input_output));
+
+        //re-conjugate and scale if inverse
+        if(fftDirection == FFT_INVERSE){
+            FFTUtils::conjugate(input_output);
+            input_output = input_output * Complex(1.0/n, 0);
+        }
+
     };
 
 }
