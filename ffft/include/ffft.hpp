@@ -13,6 +13,7 @@
 #include "../src/fftcore/Strategy/fftwFFT/fftwFFT.hpp"
 #include "../src/fftcore/Strategy/MPIFFT/MPIFFT.hpp"
 #include "../src/fftcore/Strategy/OpenMP/OmpFFT.hpp"
+#include "../src/fftcore/Strategy/StockhamFFT/StockhamFFT.hpp"
 
 //Timer
 

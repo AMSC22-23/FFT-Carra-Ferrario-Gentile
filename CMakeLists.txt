@@ -64,3 +64,14 @@ target_link_libraries(test_OMP.out PUBLIC FFFT)
 target_include_directories(test_OMP.out PUBLIC
                           "${PROJECT_SOURCE_DIR}/ffft/include"
                           )
+
+
+#STOCKHAM
+# Define executable target
+add_executable(test_stockham.out test/stockham/test_stockham.cpp)
+# link the library to link to the executable
+target_link_libraries(test_stockham.out PUBLIC FFFT)
+# specify the library's header file location
+target_include_directories(test_stockham.out PUBLIC
+                          "${PROJECT_SOURCE_DIR}/ffft/include"
+                          )

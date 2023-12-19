@@ -11,7 +11,7 @@ $ printTable "," "$(./benchmark.sh ../build/test_*.out <MPI number of processes>
 ``` 
 OMP example:
 ```bash
-$ printTable "," "$(./benchmark.sh ../build/test_OMP.out 1 OMP SEQ)"
+$ printTable "," "$(./benchmark.sh ../build/test_OMP.out OMP SEQ)"
 ``` 
 MPI example:
 ```bash
