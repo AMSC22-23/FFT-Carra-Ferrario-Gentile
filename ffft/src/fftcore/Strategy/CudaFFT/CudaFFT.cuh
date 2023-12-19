@@ -102,6 +102,11 @@ namespace fftcore
         using Complex = std::complex<FloatingType>;
         using ComplexCuda = ComplexCuda<FloatingType>;
 
+        //The constructor calls cudaFree(0) to initialize CUDA memory context. This is dne to avoid wrong timing due to lazy initialization.
+        CudaFFT(){
+            cudaFree(0);
+        }
+
         void fft(const CTensor_1D &, CTensor_1D &, FFTDirection) const;
 
         void fft(const RTensor_1D &, CTensor_1D &, FFTDirection) const;
