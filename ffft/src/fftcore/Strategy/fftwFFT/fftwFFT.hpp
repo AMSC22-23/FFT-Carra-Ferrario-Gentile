@@ -70,13 +70,14 @@ namespace fftcore
 
         fftw_plan plan = fftw_plan_dft_1d(n, in, out, direction, FFTW_ESTIMATE);
 
+        fftw_execute(plan);
+
         // Scaling (fftw does not scale by default)
         if (direction == FFTW_BACKWARD)
         {
             output = output * Complex(1.0 / n, 0);
         }
 
-        fftw_execute(plan);
         fftw_destroy_plan(plan);
     };
 
@@ -108,7 +109,6 @@ namespace fftcore
     template <typename FloatingType>
     void fftwFFT<FloatingType>::fft(CTensor_1D &input_output, fftcore::FFTDirection fftDirection) const
     {
-
         fft(const_cast<const CTensor_1D &>(input_output), input_output, fftDirection);
     };
 
