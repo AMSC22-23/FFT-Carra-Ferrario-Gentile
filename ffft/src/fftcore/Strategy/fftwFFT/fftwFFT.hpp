@@ -60,25 +60,8 @@ namespace fftcore
     template <typename FloatingType>
     void fftwFFT<FloatingType>::fft(const CTensor_1D &input, CTensor_1D &output, FFTDirection fftDirection) const
     {
-
-        int n = input.size();
-        fftw_complex *in = nullptr, *out = nullptr;
-        int direction = fftDirection == FFT_FORWARD ? FFTW_FORWARD : FFTW_BACKWARD;
-
-        in = const_cast<fftw_complex *>(reinterpret_cast<const fftw_complex *>(input.data()));
-        out = reinterpret_cast<fftw_complex *>(output.data());
-
-        fftw_plan plan = fftw_plan_dft_1d(n, in, out, direction, FFTW_ESTIMATE);
-
-        fftw_execute(plan);
-
-        // Scaling (fftw does not scale by default)
-        if (direction == FFTW_BACKWARD)
-        {
-            output = output * Complex(1.0 / n, 0);
-        }
-
-        fftw_destroy_plan(plan);
+        memcpy(output.data(), input.data(), input.size() * sizeof(Complex));
+        fft(output, fftDirection);
     };
 
     template <typename FloatingType>
@@ -109,33 +92,35 @@ namespace fftcore
     template <typename FloatingType>
     void fftwFFT<FloatingType>::fft(CTensor_1D &input_output, fftcore::FFTDirection fftDirection) const
     {
-        fft(const_cast<const CTensor_1D &>(input_output), input_output, fftDirection);
-    };
+        //fft(const_cast<const CTensor_1D &>(input_output), input_output, fftDirection);
 
-    template <typename FloatingType>
-    void fftwFFT<FloatingType>::fft(const CTensor_2D &input, CTensor_2D &output, FFTDirection fftDirection) const
-    {
+        int n = input_output.size();
 
-        int n = input.dimension(0);
-        int m = input.dimension(1);
-
-        fftw_complex *in = nullptr, *out = nullptr;
+        fftw_complex *in = nullptr;
         int direction = fftDirection == FFT_FORWARD ? FFTW_FORWARD : FFTW_BACKWARD;
 
-        in = const_cast<fftw_complex *>(reinterpret_cast<const fftw_complex *>(input.data()));
-        out = reinterpret_cast<fftw_complex *>(output.data());
+        in = reinterpret_cast<fftw_complex *>(input_output.data());
 
-        fftw_plan plan = fftw_plan_dft_2d(m, n, in, out, direction, FFTW_ESTIMATE);
+        fftw_plan plan = fftw_plan_dft_1d(n, in, in, direction, FFTW_ESTIMATE);
 
         fftw_execute(plan);
 
         // Scaling (fftw does not scale by default)
         if (direction == FFTW_BACKWARD)
         {
-            output = output * Complex(1.0 / (n * m), 0);
+            input_output = input_output * Complex(1.0 / n, 0);
         }
 
         fftw_destroy_plan(plan);
+
+    };
+
+    template <typename FloatingType>
+    void fftwFFT<FloatingType>::fft(const CTensor_2D &input, CTensor_2D &output, FFTDirection fftDirection) const
+    {
+
+        memcpy(output.data(), input.data(), input.size() * sizeof(Complex));
+        fft(output, fftDirection);
     };
 
     template <typename FloatingType>
@@ -148,32 +133,33 @@ namespace fftcore
     void fftwFFT<FloatingType>::fft(CTensor_2D &input_output, FFTDirection fftDirection) const
     {
         fft(const_cast<const CTensor_2D &>(input_output), input_output, fftDirection);
-    };
 
-    template <typename FloatingType>
-    void fftwFFT<FloatingType>::fft(const CTensor_3D& input, CTensor_3D& output, FFTDirection fftDirection) const
-    {
-        int n = input.dimension(0);
-        int m = input.dimension(1);
-        int l = input.dimension(2);
+        int n = input_output.dimension(0);
+        int m = input_output.dimension(1);
 
-        fftw_complex *in = nullptr, *out = nullptr;
+        fftw_complex *in = nullptr;
         int direction = fftDirection == FFT_FORWARD ? FFTW_FORWARD : FFTW_BACKWARD;
 
-        in = const_cast<fftw_complex *>(reinterpret_cast<const fftw_complex *>(input.data()));
-        out = reinterpret_cast<fftw_complex *>(output.data());
+        in = reinterpret_cast<fftw_complex *>(input_output.data());
 
-        fftw_plan plan = fftw_plan_dft_3d(l, m, n, in, out, direction, FFTW_ESTIMATE);
+        fftw_plan plan = fftw_plan_dft_2d(m, n, in, in, direction, FFTW_ESTIMATE);
 
         fftw_execute(plan);
 
         // Scaling (fftw does not scale by default)
         if (direction == FFTW_BACKWARD)
         {
-            output = output * Complex(1.0 / (n * m * l), 0);
+            input_output = input_output * Complex(1.0 / (n * m), 0);
         }
 
         fftw_destroy_plan(plan);
+    };
+
+    template <typename FloatingType>
+    void fftwFFT<FloatingType>::fft(const CTensor_3D& input, CTensor_3D& output, FFTDirection fftDirection) const
+    {
+        memcpy(output.data(), input.data(), input.size() * sizeof(Complex));
+        fft(output, fftDirection);
     };
 
     template <typename FloatingType>
@@ -186,6 +172,27 @@ namespace fftcore
     void fftwFFT<FloatingType>::fft(CTensor_3D& input_output, FFTDirection fftDirection) const
     {
         fft(const_cast<const CTensor_3D &>(input_output), input_output, fftDirection);
+
+        int n = input_output.dimension(0);
+        int m = input_output.dimension(1);
+        int l = input_output.dimension(2);
+
+        fftw_complex *in = nullptr;
+        int direction = fftDirection == FFT_FORWARD ? FFTW_FORWARD : FFTW_BACKWARD;
+
+        in = reinterpret_cast<fftw_complex *>(input_output.data());
+
+        fftw_plan plan = fftw_plan_dft_3d(l, m, n, in, in, direction, FFTW_ESTIMATE);
+
+        fftw_execute(plan);
+
+        // Scaling (fftw does not scale by default)
+        if (direction == FFTW_BACKWARD)
+        {
+            input_output = input_output * Complex(1.0 / (n * m * l), 0);
+        }
+
+        fftw_destroy_plan(plan);
     };
 
 }
