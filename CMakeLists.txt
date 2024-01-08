@@ -75,3 +75,12 @@ target_link_libraries(test_sequential_2D.out PUBLIC FFFT)
 target_include_directories(test_sequential_2D.out PUBLIC
                           "${PROJECT_SOURCE_DIR}/ffft/include"
                           )
+# MPI_2D
+# Define executable target
+add_executable(test_MPI_2D.out test/MPI/test_MPI_2D.cpp)
+# link the library to link to the executable
+target_link_libraries(test_MPI_2D.out PUBLIC FFFT)
+# specify the library's header file location
+target_include_directories(test_MPI_2D.out PUBLIC
+                          "${PROJECT_SOURCE_DIR}/ffft/include"
+                          )
