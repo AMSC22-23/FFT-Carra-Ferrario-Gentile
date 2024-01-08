@@ -29,8 +29,19 @@ Then, from the root folder, run the following commands:
 $ mkdir build
 $ cd build
 $ cmake -DFFTW3_DIR=${mkFftwPrefix} ..
-$ make
 ```
+and build the test by typing `cmake --build . --target TESTNAME.out`, choosing from the following list:
+```
+test_MPI.out
+test_MPI_2D.out
+test_OMP.out
+test_OMP_2D.out
+test_sequential.out
+test_sequential_2D.out
+test_stockham.out
+```
+
+
 An executable for each test will be created into `/build`, and can be executed through
 ```bash
 $ ./test_NAME.out
