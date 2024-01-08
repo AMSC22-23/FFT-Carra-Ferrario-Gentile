@@ -65,7 +65,9 @@ namespace fftcore{
 		public:
 			using RTensor_2D = Eigen::Tensor<FloatingType, 2>;
 			using CTensor_2D = Eigen::Tensor<std::complex<FloatingType>, 2>;
-
+			// @TODO: Maybe change this
+			using RTensor_1D = Eigen::Tensor<FloatingType, 1>;
+			using CTensor_1D = Eigen::Tensor<std::complex<FloatingType>, 1>;
 			virtual ~FFT_2D() = default;
 	};
 

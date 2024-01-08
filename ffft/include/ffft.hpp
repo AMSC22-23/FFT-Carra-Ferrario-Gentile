@@ -18,6 +18,7 @@
 // strategies 2D
 #include "../src/fftcore/Strategy/2D/SequentialFFT_2D/SequentialFFT_2D.hpp"
 #include "../src/fftcore/Strategy/2D/OpenMP_2D/OmpFFT_2D.hpp"
+#include "../src/fftcore/Strategy/2D/MPIFFT/MPIFFT_2D.hpp"
 
 
 
