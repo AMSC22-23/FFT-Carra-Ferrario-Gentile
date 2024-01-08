@@ -32,8 +32,9 @@ namespace FFTUtils{
             }
         }
     }
-    template<typename FloatingType>
-    void conjugate(Eigen::Tensor<std::complex<FloatingType>, 1> &tensor){
+    
+    template<typename FloatingType, int Rank>
+    void conjugate(Eigen::Tensor<std::complex<FloatingType>, Rank> &tensor){
         tensor = tensor.unaryExpr([](std::complex<FloatingType> x){return std::conj(x);});
     }
 

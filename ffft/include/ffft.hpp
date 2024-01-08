@@ -16,7 +16,7 @@
 #include "../src/fftcore/Strategy/1D/StockhamFFT/StockhamFFT.hpp"
 
 // strategies 2D
-//#include "../src/fftcore/Strategy/2D/OpenMP/OmpFFT.hpp"
+#include "../src/fftcore/Strategy/2D/SequentialFFT_2D/SequentialFFT_2D.hpp"
 
 
 
