@@ -16,11 +16,11 @@
         }                                                                                                                    \
     } while (0);
 
-#include "../../FFTSolver.hpp"
-#include "../../utils/FFTUtils.hpp"
-#include "../SequentialFFT/SequentialFFT.hpp"
+
 #include <iostream>
 #include <mpi.h>
+#include "../../../FFTSolver.hpp"
+#include "../../../utils/FFTUtils.hpp"
 
 using namespace fftcore;
 using namespace std;

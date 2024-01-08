@@ -4,8 +4,8 @@
 #include <iostream>
 #include <omp.h>
 #include <cmath>
-#include "../../FFTSolver.hpp"
-#include "../../utils/FFTUtils.hpp"
+#include "../../../FFTSolver.hpp"
+#include "../../../utils/FFTUtils.hpp"
 
 namespace fftcore{
 

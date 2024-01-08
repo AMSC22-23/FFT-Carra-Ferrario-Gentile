@@ -1,9 +1,10 @@
 #ifndef SEQUENTIALFFT_HPP
 #define SEQUENTIALFFT_HPP
 
-#include "../../FFTSolver.hpp"
-#include "../../utils/FFTUtils.hpp"
+
 #include <iostream>
+#include "../../../FFTSolver.hpp"
+#include "../../../utils/FFTUtils.hpp"
 
 using namespace std;
 namespace fftcore{

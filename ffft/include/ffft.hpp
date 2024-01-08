@@ -8,12 +8,17 @@
 
 #include "../src/fftcore/FFTSolver.hpp"
 
-// strategies
-#include "../src/fftcore/Strategy/SequentialFFT/SequentialFFT.hpp"
-#include "../src/fftcore/Strategy/fftwFFT/fftwFFT.hpp"
-#include "../src/fftcore/Strategy/MPIFFT/MPIFFT.hpp"
-#include "../src/fftcore/Strategy/OpenMP/OmpFFT.hpp"
-#include "../src/fftcore/Strategy/StockhamFFT/StockhamFFT.hpp"
+// strategies 1D
+#include "../src/fftcore/Strategy/1D/SequentialFFT/SequentialFFT.hpp"
+#include "../src/fftcore/Strategy/1D/fftwFFT/fftwFFT.hpp"
+#include "../src/fftcore/Strategy/1D/MPIFFT/MPIFFT.hpp"
+#include "../src/fftcore/Strategy/1D/OpenMP/OmpFFT.hpp"
+#include "../src/fftcore/Strategy/1D/StockhamFFT/StockhamFFT.hpp"
+
+// strategies 2D
+//#include "../src/fftcore/Strategy/2D/OpenMP/OmpFFT.hpp"
+
+
 
 //Timer
 
