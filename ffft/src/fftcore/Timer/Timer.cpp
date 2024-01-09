@@ -55,7 +55,7 @@ namespace fftcore{
        print("");
     }
 
-    const double Timer::get_last() const{
+    double Timer::get_last() const{
         return _durations.back().count();
     }
 
@@ -63,7 +63,7 @@ namespace fftcore{
         return dur.count();
     }
 
-    const double Timer::get_min() const{
+    double Timer::get_min() const{
         std::vector<double> counts(_durations.size());
 
         std::transform(_durations.begin(), _durations.end(), counts.begin(), _count);
