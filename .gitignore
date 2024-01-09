@@ -38,6 +38,7 @@
 .vscode
 *.dSYM
 .cursorignore
+*.DS_Store
 
 # CMake directories
 build/
