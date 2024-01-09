@@ -94,3 +94,27 @@ target_link_libraries(test_MPI_2D.out PUBLIC FFFT)
 target_include_directories(test_MPI_2D.out PUBLIC
                           "${PROJECT_SOURCE_DIR}/ffft/include"
                           )
+
+# CUDA
+find_package(CUDA)
+if(CUDA_FOUND)
+    enable_language(CUDA) #enable NVCC compiler
+    
+    #set policy to use CUDA_ARCHITECTURES
+    cmake_policy(SET CMP0104 NEW)
+
+    #set CUDA_ARCHITECTURES to compute capability 6.1
+    set(CMAKE_CUDA_ARCHITECTURES 61 62 70 72 75 80 86)
+
+    # Define executable target
+    add_executable(test_CUDA.out test/CUDA/test_CUDA.cu)
+
+    # link the library to link to the executable
+    target_link_libraries(test_CUDA.out PUBLIC FFFT cufft)
+
+    # specify the library's header file location
+    target_include_directories(test_CUDA.out PUBLIC
+                            "${PROJECT_SOURCE_DIR}/ffft/include"
+                            )
+endif()
+
