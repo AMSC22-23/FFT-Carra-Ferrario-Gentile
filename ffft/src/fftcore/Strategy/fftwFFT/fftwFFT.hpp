@@ -3,8 +3,8 @@
 
 #include <type_traits>
 #include <fftw3.h>
-#include "../../../FFTSolver.hpp"
-#include "../../../utils/FFTUtils.hpp"
+#include "../../FFTSolver.hpp"
+#include "../../utils/FFTUtils.hpp"
 
 namespace fftcore
 {
@@ -92,7 +92,6 @@ namespace fftcore
     template <typename FloatingType>
     void fftwFFT<FloatingType>::fft(CTensor_1D &input_output, fftcore::FFTDirection fftDirection) const
     {
-        //fft(const_cast<const CTensor_1D &>(input_output), input_output, fftDirection);
 
         int n = input_output.size();
 
@@ -132,7 +131,6 @@ namespace fftcore
     template <typename FloatingType>
     void fftwFFT<FloatingType>::fft(CTensor_2D &input_output, FFTDirection fftDirection) const
     {
-        fft(const_cast<const CTensor_2D &>(input_output), input_output, fftDirection);
 
         int n = input_output.dimension(0);
         int m = input_output.dimension(1);
@@ -163,15 +161,15 @@ namespace fftcore
     };
 
     template <typename FloatingType>
-    void fftwFFT<FloatingType>::fft(const RTensor_3D &, CTensor_3D &, FFTDirection) const
+    void fftwFFT<FloatingType>::fft(const RTensor_3D &input, CTensor_3D &output, FFTDirection fftDirection) const
     {
-        throw NotSupportedException("Operation is not supported");
+        memcpy(output.data(), input.data(), input.size() * sizeof(Complex));
+        fft(output, fftDirection);
     };
 
     template <typename FloatingType>
     void fftwFFT<FloatingType>::fft(CTensor_3D& input_output, FFTDirection fftDirection) const
     {
-        fft(const_cast<const CTensor_3D &>(input_output), input_output, fftDirection);
 
         int n = input_output.dimension(0);
         int m = input_output.dimension(1);

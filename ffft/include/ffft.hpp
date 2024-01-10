@@ -14,7 +14,7 @@
 
 // strategies 1D
 #include "../src/fftcore/Strategy/1D/SequentialFFT/SequentialFFT.hpp"
-#include "../src/fftcore/Strategy/1D/fftwFFT/fftwFFT.hpp"
+#include "../src/fftcore/Strategy/fftwFFT/fftwFFT.hpp"
 #include "../src/fftcore/Strategy/1D/MPIFFT/MPIFFT.hpp"
 #include "../src/fftcore/Strategy/1D/OpenMP/OmpFFT.hpp"
 #include "../src/fftcore/Strategy/1D/StockhamFFT/StockhamFFT.hpp"
