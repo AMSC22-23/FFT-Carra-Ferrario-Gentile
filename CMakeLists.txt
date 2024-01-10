@@ -96,7 +96,6 @@ target_include_directories(test_MPI_2D.out PUBLIC
                           )
 
 # CUDA
-cmake_policy(SET CMP0146 NEW) #policy for FindCUDA package
 find_package(CUDA)
 if(CUDA_FOUND)
     enable_language(CUDA) #enable NVCC compiler
