@@ -4,13 +4,13 @@
 #include "CudaUtils.cuh"
 
 template <typename FloatingType>
-__global__ void d_butterfly_kernel_cooleytukey(ComplexCuda<FloatingType> * __restrict__ input_output, int n2, int m2)
+__global__ void d_butterfly_kernel_cooleytukey(ComplexCuda<FloatingType> * __restrict__ input_output, unsigned m2)
 {
     unsigned int tid = threadIdx.x + blockIdx.x * blockDim.x;
     unsigned int k, j;
     ComplexCuda<FloatingType> w, t, u;
 
-    if (tid < n2){
+    if (tid < d_n2){
 
         j = tid & (m2 - 1);  // j = tid % m2
         k = (tid >> (__ffs(m2) - 1)) * m2 * 2;  // k = (tid / m2) * m
@@ -21,7 +21,7 @@ __global__ void d_butterfly_kernel_cooleytukey(ComplexCuda<FloatingType> * __res
 
         input_output[k + j] = u + t;
         input_output[k + j + m2] = u - t;
-        if(DEBUG) printf("Block %d, thread %d : (%d, %d) -> (%d, %d), exp = %d\n", blockIdx.x, threadIdx.x, k + j, k + j + m2, k + j, k + j + m2, n2 * j / m2);
+        if(DEBUG) printf("Block %d, thread %d : (%d, %d) -> (%d, %d), exp = %d\n", blockIdx.x, threadIdx.x, k + j, k + j + m2, k + j, k + j + m2, d_n2 * j / m2);
     }
 }
 
@@ -94,6 +94,9 @@ namespace fftcore
         char sign = (fftDirection == FFT_FORWARD) ? -1 : 1;
         gpuErrchk( cudaMemcpyToSymbol(d_fft_sign, &sign, sizeof(char)) );
 
+        //set n2 on device constant memory
+        gpuErrchk( cudaMemcpyToSymbol(d_n2, &n2, sizeof(unsigned int)) );
+
         //Cooley-Tukey iterative FFT
         numBlocks = (n2 + threadsPerBlock - 1) / threadsPerBlock; //set number of blocks so that each thread will process 2 elements
         int m, m2;
@@ -101,7 +104,7 @@ namespace fftcore
 
             m = 1 << s;  // 2^s
             m2 = m >> 1; // m2 = m/2
-            d_butterfly_kernel_cooleytukey<<<numBlocks, threadsPerBlock>>>(d_input_output, n2, m2);
+            d_butterfly_kernel_cooleytukey<<<numBlocks, threadsPerBlock>>>(d_input_output, m2);
 
         }
 

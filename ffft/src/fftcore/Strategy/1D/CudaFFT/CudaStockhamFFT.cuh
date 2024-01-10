@@ -4,13 +4,14 @@
 #include "CudaUtils.cuh"
 
 template <typename FloatingType>
-__global__ void d_butterfly_kernel_stockham(ComplexCuda<FloatingType> * __restrict__ d_input, ComplexCuda<FloatingType> * __restrict__ d_buffer, int n2, int m2)
+__global__ void d_butterfly_kernel_stockham(ComplexCuda<FloatingType> * __restrict__ d_input, ComplexCuda<FloatingType> * __restrict__ d_buffer, unsigned m2)
 {
     unsigned int tid = threadIdx.x + blockIdx.x * blockDim.x;
 
-    if (tid < n2)
+    if (tid < d_n2)
     {
-        unsigned int r = n2 / m2, r2 = r * 2;
+        unsigned int r = d_n2 >> (__ffs(m2) - 1); // r = n2 / m2
+        unsigned int r2 = r << 1; // r2 = 2 * r
         unsigned int k, j;
         ComplexCuda<FloatingType> w, t, u;
 
@@ -23,13 +24,11 @@ __global__ void d_butterfly_kernel_stockham(ComplexCuda<FloatingType> * __restri
         k = tid & (r - 1); // k = tid % r
 
         w = exp(ComplexCuda<FloatingType>(0, d_fft_sign * M_PI * j / m2));
-        //w = ComplexCuda<FloatingType>(cos(- M_PI * j / m2), sin(- M_PI * j / m2));
-
         u = d_input[j * r2 + k];
         t = w * d_input[j * r2 + k + r];
 
         d_buffer[j * r + k] = u + t;
-        d_buffer[j * r + n2 + k] = u - t; 
+        d_buffer[j * r + d_n2 + k] = u - t; 
 
         //printf("Block %d, thread %d : (%d, %d) -> (%d, %d) \n", blockIdx.x, threadIdx.x, j * r2 + k, j * r2 + k + r, j * r + k, j * r + n2 + k);
     }
@@ -106,12 +105,16 @@ namespace fftcore
         char sign = (fftDirection == FFT_FORWARD) ? 1 : -1;
         gpuErrchk( cudaMemcpyToSymbol(d_fft_sign, &sign, sizeof(char)) );
 
+        // set n2 on device constant memory 
+        gpuErrchk( cudaMemcpyToSymbol(d_n2, &n2, sizeof(unsigned int)) );
+
+        unsigned int m, m2;
         for(int s = 1; s <= log2n; ++s){
             
-            int m = 1 << s; 
-            int m2 = m >> 1;
+            m = 1 << s; 
+            m2 = m >> 1;
 
-            d_butterfly_kernel_stockham<<<numBlocks, threadsPerBlock>>>(d_input, d_buffer, n2, m2);
+            d_butterfly_kernel_stockham<<<numBlocks, threadsPerBlock>>>(d_input, d_buffer, m2);
 
             std::swap(d_input, d_buffer);
         }
