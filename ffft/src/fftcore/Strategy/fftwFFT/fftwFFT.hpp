@@ -32,6 +32,9 @@ namespace fftcore
 
         using Complex = std::complex<FloatingType>;
 
+        //this repetition is needed to avoid ambiguity (fftwFFT is the only FFTStrategy that inherits from FFT_1D, FFT_2D and FFT_3D)
+        using FloatTypeAlias = FloatingType;
+
         fftwFFT()
         {
             static_assert(std::is_same<FloatingType, double>::value, "Only double precision is supported");

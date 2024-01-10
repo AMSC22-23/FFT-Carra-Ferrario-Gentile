@@ -13,9 +13,12 @@ namespace fftcore{
 	class FFTStrategy{
 
 		using CTensor = Eigen::Tensor<std::complex<FloatingType>, Rank>;
-		using RTensor = Eigen::Tensor<FloatingType, Rank>;
+		using RTensor = Eigen::Tensor<FloatingType, Rank>;        
 
 		public:
+
+            //needed in test_template to access the floating type from outside
+            using FloatTypeAlias = FloatingType;
 
 			/**
 			* Complex to Complex out-of-place FFT
