@@ -4,7 +4,7 @@
 #include <iostream>
 #include "../ffft/include/ffft.hpp"
 
-template <class FFTStrategy1, class FFTStrategy2>
+template <int dim, class FFTStrategy1, class FFTStrategy2>
 void test_fft(char *argv[]){
 
     using FloatingType1 = typename FFTStrategy1::FloatTypeAlias;
@@ -14,13 +14,13 @@ void test_fft(char *argv[]){
     int n = 1 << x;
     std::cout << x << ",";
 
-    FFTSolver<1, FloatingType1> solver1(std::make_unique<FFTStrategy1>());
-    FFTSolver<1, FloatingType2> solver2(std::make_unique<FFTStrategy2>());
+    FFTSolver<dim, FloatingType1> solver1(std::make_unique<FFTStrategy1>());
+    FFTSolver<dim, FloatingType2> solver2(std::make_unique<FFTStrategy2>());
 
-    CTensorBase<1, FloatingType1> tensor1(n);
+    CTensorBase<dim, FloatingType1> tensor1(std::pow(n, dim));
     tensor1.get_tensor().setRandom();
 
-    CTensorBase<1, FloatingType2> tensor2(n);
+    CTensorBase<dim, FloatingType2> tensor2(std::pow(n, dim));
     tensor2.get_tensor() = tensor1.get_tensor().template cast<std::complex<FloatingType2>>(); // cast to different floating type
 
     solver1.compute_fft(tensor1, FFT_FORWARD);

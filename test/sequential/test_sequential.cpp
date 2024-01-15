@@ -1,13 +1,14 @@
 #include <iostream>
 #include <memory>
 #include "ffft.hpp"
-
+#include "../test_template.hpp"
 using namespace fftcore;
 
-int main(){
+int main(int argc, char *argv[]){
 {
         int n = 1 << 20;
-
+        test_fft<1, SequentialFFT<double>, fftwFFT<double>>(argv);
+        /*
         FFTSolver<1> sequential_solver(std::make_unique<SequentialFFT<>>());
         FFTSolver<1> fftw_solver(std::make_unique<fftwFFT<>>());
 
@@ -27,7 +28,7 @@ int main(){
         fftw_solver.get_timer().print();
 
         std::cout << "difference between sequential and fftw: " << (tensor_sequential.get_tensor().abs() - tensor_fftw_out.get_tensor().abs()).sum() << std::endl;
-
+        */
     } // 1D-C2C
 
     {
