@@ -2,13 +2,20 @@
 #include <memory>
 #include "ffft.hpp"
 #include "../test_template.hpp"
+
 using namespace fftcore;
 
-int main(int argc, char *argv[]){
+int main(int argc, char **argv){
+   test_fft<1, SequentialFFT<double>, fftwFFT<double>>(argv); 
+   test_fft<2, SequentialFFT_2D<double>, SequentialFFT_2D<double>>(argv); 
+   //test_fft<3, SequentialFFT<>, fftwFFT<>>(argv); 
+
+}
+/*
+int main(){
 {
         int n = 1 << 20;
-        test_fft<1, SequentialFFT<double>, fftwFFT<double>>(argv);
-        /*
+
         FFTSolver<1> sequential_solver(std::make_unique<SequentialFFT<>>());
         FFTSolver<1> fftw_solver(std::make_unique<fftwFFT<>>());
 
@@ -23,12 +30,11 @@ int main(int argc, char *argv[]){
 
         fftw_solver.compute_fft(tensor_fftw_in, tensor_fftw_out, FFT_FORWARD); //out-of-place
         fftw_solver.compute_fft(tensor_fftw_out, FFT_INVERSE); //in-place
-
-        sequential_solver.get_timer().print();
+sequential_solver.get_timer().print();
         fftw_solver.get_timer().print();
 
         std::cout << "difference between sequential and fftw: " << (tensor_sequential.get_tensor().abs() - tensor_fftw_out.get_tensor().abs()).sum() << std::endl;
-        */
+
     } // 1D-C2C
 
     {
@@ -80,3 +86,4 @@ int main(int argc, char *argv[]){
         std::cout << "Error (3D-FFTW): " << (tensor_fftw_in.get_tensor().abs() - tensor_fftw_out.get_tensor().abs()).sum() << std::endl;
     } // 3D-C2C
 }
+*/
