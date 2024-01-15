@@ -1,7 +1,11 @@
 #include <iostream>
 #include "ffft.hpp"
+#include "../test_template.hpp"
 
-int main(int arcg, char** argv){
+int main(int argc, char** argv){
+
+        test_fft<1, OmpFFT<>, SequentialFFT<>>(argc, argv);
+        /*
         int x = atoi(argv[1]);
         int n = 1 << x;
         std::cout<<x<<",";
@@ -37,4 +41,5 @@ int main(int arcg, char** argv){
         std::cout<<seq_f/omp_f<<","<<seq_i/omp_i<<",";
 
         std::cout << (tensor_omp.get_tensor().abs() - tensor_sequential.get_tensor().abs()).sum() << std::endl;
+        */
 }

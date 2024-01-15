@@ -1,12 +1,14 @@
 #include <iostream>
 #include <memory>
 #include "ffft.hpp"
-
+#include "../test_template.hpp"
 using namespace fftcore;
 
-int main(int arcg, char** argv)
+int main(int argc, char** argv)
 {
+    test_fft<2, OmpFFT_2D<double>, fftwFFT<double>>(argc, argv); 
 
+    /*
     int x = atoi(argv[1]);
     int n1 = 1 << x;
     x = atoi(argv[2]);
@@ -39,4 +41,5 @@ int main(int arcg, char** argv)
     omp_solver.get_timer().print("omp");
 
     std::cout << "difference : " << (tensor_sequential.get_tensor().abs() - tensor_omp.get_tensor().abs()).sum() << std::endl;
+    */
 }

@@ -1,11 +1,16 @@
 #include <iostream>
 #include <memory>
 #include "ffft.hpp"
+#include "../test_template.hpp"
 
 using namespace fftcore;
 
-int main(int arcg, char** argv)
+int main(int argc, char** argv)
 {
+
+   test_fft<2, SequentialFFT_2D<double>, fftwFFT<double>>(argc, argv); 
+
+    /*
 
     int x = atoi(argv[1]);
     int n1 = 1 << x;
@@ -47,5 +52,5 @@ int main(int arcg, char** argv)
 
     //std::cout << "difference between sequential and fftw: " << (tensor_sequential.get_tensor().abs() - tensor_fftw_out.get_tensor().abs()).sum() << std::endl;
     std::cout << "difference : " << (tensor_sequential.get_tensor().abs() - initial_tensor.get_tensor().abs()).sum() << std::endl;
-
+*/
 }
