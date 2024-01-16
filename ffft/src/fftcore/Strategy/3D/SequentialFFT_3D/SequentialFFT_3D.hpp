@@ -38,31 +38,27 @@ namespace fftcore{
     };
 
     /**
-     * This computes the FFT in 3 dimensions using Cooley-Tuckey algorithm. The method leverage on the .chip()
-     * method of Eigen::tensor to get the correct view of the plane and then of the line to transform.
-     *  
-     * The algorithm follows the following  steps considering the orientation (x,y,z) of the tensor:
+     * This computes the FFT in 3 dimensions using Cooley-Tuckey algorithm. The code may be tortuous, but 
+     * does not require any kind of overlay to acess data. The algorithm follows the following
+     * steps considering the orientation (x,y,z) of the tensor:
      * 1) For all the couples (y,z) compute all the one-dimensional structures along the x-dimension:
      * 2) For all the couples (x,z) compute all the one-dimensional structures along the y-dimension:
      * 3) For all the couples (x,y) compute all the one-dimensional structures along the z-dimension:
      *  
-     * The 
      * @author Edoardo Carrà
      */
     template <typename FloatingType>
     void SequentialFFT_3D<FloatingType>::fft(CTensor_3D &input_output, FFTDirection fftDirection) const
     {
-        using Complex   =   std::complex<FloatingType>;
+        using Complex = std::complex<FloatingType>;
 
         int num_planes, num_lines, num_elements;
-        Eigen::Tensor<Complex, 2> plane;
-        Eigen::Tensor<Complex, 1> line;  
-
+        int x, y, z , x1, y1, z1;
         int log2n;
+
         Complex w, wm, t, u;
         int m, m2;
 
-        
         const auto& dimensions  =   input_output.dimensions();
         const int X_DIMENSION   =   0,
                   Y_DIMENSION   =   1,
@@ -81,129 +77,121 @@ namespace fftcore{
         if(fftDirection == FFT_INVERSE){            
             FFTUtils::conjugate(input_output);
         }
+        
+        // cube_dir = 0 -> 2D transform of all x-y cube's planes 
+        for(int cube_dir=0; cube_dir<2; cube_dir++){
+            num_planes  =   cube_dir==0? z_dimension_size : x_dimension_size; 
 
-        num_planes = z_dimension_size; 
-
-        // loop over each direction of the plane
-        /* plane_dir = 0) For all the couples (y,z) compute all the one-dimensional structures along the x-dimension:
-         * plane_dir = 1) For all the couples (x,z) compute all the one-dimensional structures along the y-dimension:
-         */
-        for(int plane_dir=0; plane_dir<2; plane_dir++){
-
-            for(int plane_offset=0; plane_offset<num_planes; plane_offset++){
-            
-                auto plane = input_output.chip(plane_offset, Z_DIMENSION);
-
-                num_elements    =   plane_dir==X_DIMENSION? x_dimension_size : y_dimension_size;
-                num_lines       =   plane_dir==X_DIMENSION? y_dimension_size : x_dimension_size;
+            // 2D-tranform of the plane
+            for(int plane_dir=0; plane_dir<2; plane_dir++){
                 
-                log2n = std::log2(num_elements);
+                /* cube_dir = 0 && plane_dir = 0 transform lines orthogonal to the y-z plane
+                 * cube_dir = 0 && plane_dir = 1 transform lines orthogonal to the x-z plane
+                 * cube_dir = 1 && plane_dir = 0 transform lines orthogonal to the x-y plane
+                */
 
-                // During the first iteration, the access pattern follows row-major order. 
-                // Subsequent iterations adopt the column-major order, which is the standard 
-                // format for Eigen tensors.            
-                for(int line_offset=0; line_offset < num_lines; line_offset++){
-                    
-                    line=plane.chip(line_offset, plane_dir==X_DIMENSION? Y_DIMENSION : X_DIMENSION);
-                
+                for(int plane=0; plane<num_planes; plane++){
 
-                    // Bit-reversal permutation
-                    FFTUtils::bit_reversal_permutation(line);
+                    // skip this case which performs the same
+                    if(cube_dir==1 && plane_dir==1)continue;
 
-                    
-                    for (int s = 1; s <= log2n; ++s)
-                    {
-                        m   =   1 << s;  // 2 power s
-                        m2  =   m >> 1; // m2 = m/2 -1
-                        wm  =   exp(Complex(0, -2 * M_PI / m)); // w_m = e^(-2*pi/m)
+                    if(plane_dir==0){
+                        num_elements    =   cube_dir==0? x_dimension_size : z_dimension_size;
+                        num_lines       =   y_dimension_size;
+                    }
+                    else if(cube_dir==0){
+                        num_elements    =   y_dimension_size;
+                        num_lines       =   x_dimension_size;
+                    }else{
+                        num_elements    =   y_dimension_size;
+                        num_lines       =   z_dimension_size;
+                    }
 
-                        for(int k = 0; k < num_elements; k += m)
+                    log2n = std::log2(num_elements);
+
+                    // During the first iteration, the access pattern follows row-major order. 
+                    // Subsequent iterations adopt the column-major order, which is the standard 
+                    // format for Eigen tensors.            
+                    for(int line=0; line < num_lines; line++ ){
+                        
+                        // 1-D Cooley-Tukey FFT
+
+                        // Bit-reversal permutation
+                        for (int i = 0; i < num_elements; ++i)
                         {
-                            w = Complex(1, 0);
-                            for(int j = 0; j < m2; ++j)
+                            int rev = FFTUtils::reverseBits(i, log2n);
+                            if (i < rev)
                             {
-                                t   =   w * line(k + j + m2);
-                                u   =   line(k + j);
+                                if(cube_dir==0 && plane_dir==0){
+                                    x = i;
+                                    x1 = rev;
+                                    y = y1 = line;
+                                    z = z1 = plane;
+                                }else if(cube_dir==0 && plane_dir==1){
+                                    y = i;
+                                    y1 = rev;
+                                    x = x1 = line;
+                                    z = z1 = plane;
+                                }else if(cube_dir==1 && plane_dir==0){
+                                    z = i;
+                                    z1 = rev;
+                                    x = x1 = plane;
+                                    y = y1 = line;
+                                }
 
-                                line(k + j + m2)    =   u - t;
-                                line(k + j)         =   u + t;
-
-                                w *= wm;
+                                std::swap(input_output(x,y,z),input_output(x1,y1,z1));
                             }
                         }
-                    }//ONE-DIMENSIONAL FFT
 
-                    // copy the line back in the original tensor 
-                    if(plane_dir==X_DIMENSION){
-                        for (Eigen::Index x = 0; x < x_dimension_size; ++x) {
-                            input_output(x,line_offset,plane_offset)=line(x);
-                        }
-                    }else{
-                        for (Eigen::Index y = 0; y < y_dimension_size; ++y) {
-                            input_output(line_offset,y,plane_offset)=line(y);
-                        }
-                    }
-
-                }//Computes all lines on a plane
-            }//computes all planes in the cube
-        }//switch direction on the planes
-
-
-        log2n   =   std::log2(z_dimension_size);
-        num_elements    =   z_dimension_size;
-
-        // For all the couples (x,y) compute all the one-dimensional structures along the z-dimension:
-        for(Eigen::Index x=0; x<x_dimension_size; x++){
-            for(Eigen::Index y=0; y<y_dimension_size; y++){
-            
-                plane = input_output.chip(x,X_DIMENSION);
-                // dim 0 = y and dim 1 = z
-                line = plane.chip(y,0);
-                                
-                // Normal 1-D Cooley-Tukey FFT
-                
-                // Bit-reversal permutation
-                FFTUtils::bit_reversal_permutation(line);
-
-
-                Complex w, wm, t, u;
-                int m, m2;
-                for (int s = 1; s <= log2n; ++s)
-                {
-                    m = 1 << s;  // 2 power s
-                    m2 = m >> 1; // m2 = m/2 -1
-                    wm = exp(Complex(0, -2 * M_PI / m)); // w_m = e^(-2*pi/m)
-
-                    for(int k = 0; k < num_elements; k += m)
-                    {
-                        w = Complex(1, 0);
-                        for(int j = 0; j < m2; ++j)
+                        
+                        for (int s = 1; s <= log2n; ++s)
                         {
+                            m = 1 << s;  // 2 power s
+                            m2 = m >> 1; // m2 = m/2 -1
+                            wm = exp(Complex(0, -2 * M_PI / m)); // w_m = e^(-2*pi/m)
 
-                            t = w * line(k + j + m2);
-                            u = line(k + j);
+                            for(int k = 0; k < num_elements; k += m)
+                            {
+                                w = Complex(1, 0);
+                                for(int j = 0; j < m2; ++j)
+                                {
+                                    if(cube_dir==0 && plane_dir==0){
+                                        x = k + j + m2;
+                                        x1 = k + j;
+                                        y = y1 = line;
+                                        z = z1 = plane;
+                                    }else if(cube_dir==0 && plane_dir==1){
+                                        y = k + j + m2;
+                                        y1 = k + j;
+                                        x = x1 = line;
+                                        z = z1 = plane;
+                                    }else if(cube_dir==1 && plane_dir==0){
+                                        z = k + j + m2;
+                                        z1 = k + j;
+                                        x = x1 = plane;
+                                        y = y1 = line;
+                                    }
 
-                            line(k + j + m2) = u - t;
-                            line(k + j) = u + t;
+                                    t = w * input_output(x,y,z);
+                                    u = input_output(x1,y1,z1);
 
-                            w *= wm;
-                        }
-                    }
-                }//ONE-DIMENSIONAL FFT
+                                    input_output(x,y,z) = u - t;
+                                    input_output(x1,y1,z1) = u + t;
 
-                // copy the line back in the original tensor 
-                for (Eigen::Index z = 0; z < z_dimension_size; ++z) {
-                    input_output(x,y,z)=line(z);
-                }
-                
-            }//y
-        }// x
-
+                                    w *= wm;
+                                }
+                            }
+                        }//ONE-DIMENSIONAL FFT
+                    } // loop over the lines of one single plane
+                }// loop over the lines of all the planes
+            } // switch plane.
+        }
+        
         //re-conjugate and scale if inverse
         if(fftDirection == FFT_INVERSE){
             FFTUtils::conjugate(input_output);
             //scale
-            input_output = input_output * Complex(1.0/(dimensions[0]*dimensions[1]*dimensions[2]), 0);
+            input_output = input_output * Complex(1.0/(x_dimension_size * y_dimension_size * z_dimension_size), 0);
         }  
     };
 }
