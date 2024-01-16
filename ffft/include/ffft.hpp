@@ -31,9 +31,11 @@
 #include "../src/fftcore/Strategy/2D/MPIFFT/MPIFFT_2D.hpp"
 
 
+// strategies 3D
+#include "../src/fftcore/Strategy/3D/SequentialFFT_3D/SequentialFFT_3D.hpp"
+
 
 //Timer
-
 #include "../src/fftcore/Timer/Timer.hpp"
 
 // Tensor

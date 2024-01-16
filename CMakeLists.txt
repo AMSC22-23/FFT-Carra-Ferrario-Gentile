@@ -118,3 +118,13 @@ if(CUDA_FOUND)
                             )
 endif()
 
+# SEQ_3D
+# Define executable target
+add_executable(test_sequential_3D.out test/sequential_3D/test_sequential_3D.cpp)
+# link the library to link to the executable
+target_link_libraries(test_sequential_3D.out PUBLIC FFFT)
+# specify the library's header file location
+target_include_directories(test_sequential_3D.out PUBLIC
+                          "${PROJECT_SOURCE_DIR}/ffft/include"
+                          )
+
