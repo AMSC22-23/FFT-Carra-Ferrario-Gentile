@@ -27,7 +27,7 @@ add_subdirectory(ffft)
 
 # SEQUENTIAL
 # Define executable target
-add_executable(test_sequential.out test/sequential/test_sequential.cpp)
+add_executable(test_sequential.out test/1D/sequential/test_sequential.cpp)
 # link the library to link to the executable
 target_link_libraries(test_sequential.out PUBLIC FFFT)
 # specify the library's header file location
@@ -37,7 +37,7 @@ target_include_directories(test_sequential.out PUBLIC
 
 # MPI
 # Define executable target
-add_executable(test_MPI.out test/MPI/test_MPI.cpp)
+add_executable(test_MPI.out test/1D/MPI/test_MPI.cpp)
 # link the library to link to the executable
 target_link_libraries(test_MPI.out PUBLIC FFFT)
 # specify the library's header file location
@@ -47,7 +47,7 @@ target_include_directories(test_MPI.out PUBLIC
 
 # OMP
 # Define executable target
-add_executable(test_OMP.out test/OMP/test_OMP.cpp)
+add_executable(test_OMP.out test/1D/OMP/test_OMP.cpp)
 # link the library to link to the executable
 target_link_libraries(test_OMP.out PUBLIC FFFT)
 # specify the library's header file location
@@ -58,7 +58,7 @@ target_include_directories(test_OMP.out PUBLIC
 
 #STOCKHAM
 # Define executable target
-add_executable(test_stockham.out test/stockham/test_stockham.cpp)
+add_executable(test_stockham.out test/1D/stockham/test_stockham.cpp)
 # link the library to link to the executable
 target_link_libraries(test_stockham.out PUBLIC FFFT)
 # specify the library's header file location
@@ -68,7 +68,7 @@ target_include_directories(test_stockham.out PUBLIC
 
 # SEQ_2D
 # Define executable target
-add_executable(test_sequential_2D.out test/sequential_2D/test_sequential_2D.cpp)
+add_executable(test_sequential_2D.out test/2D/sequential_2D/test_sequential_2D.cpp)
 # link the library to link to the executable
 target_link_libraries(test_sequential_2D.out PUBLIC FFFT)
 # specify the library's header file location
@@ -78,7 +78,7 @@ target_include_directories(test_sequential_2D.out PUBLIC
 
 # OMP_2D
 # Define executable target
-add_executable(test_OMP_2D.out test/OMP_2D/test_OMP_2D.cpp)
+add_executable(test_OMP_2D.out test/2D/OMP_2D/test_OMP_2D.cpp)
 # link the library to link to the executable
 target_link_libraries(test_OMP_2D.out PUBLIC FFFT)
 # specify the library's header file location
@@ -87,7 +87,7 @@ target_include_directories(test_OMP_2D.out PUBLIC
                           )                    
 # MPI_2D
 # Define executable target
-add_executable(test_MPI_2D.out test/MPI/test_MPI_2D.cpp)
+add_executable(test_MPI_2D.out test/2D/MPI_2D/test_MPI_2D.cpp)
 # link the library to link to the executable
 target_link_libraries(test_MPI_2D.out PUBLIC FFFT)
 # specify the library's header file location
@@ -107,7 +107,7 @@ if(CUDA_FOUND)
     set(CMAKE_CUDA_ARCHITECTURES 61 62 70 72 75 80 86)
 
     # Define executable target
-    add_executable(test_CUDA.out test/CUDA/test_CUDA.cu)
+    add_executable(test_CUDA.out test/1D/CUDA/test_CUDA.cu)
 
     # link the library to link to the executable
     target_link_libraries(test_CUDA.out PUBLIC FFFT cufft)
@@ -120,7 +120,7 @@ endif()
 
 # SEQ_3D
 # Define executable target
-add_executable(test_sequential_3D.out test/sequential_3D/test_sequential_3D.cpp)
+add_executable(test_sequential_3D.out test/3D/sequential_3D/test_sequential_3D.cpp)
 # link the library to link to the executable
 target_link_libraries(test_sequential_3D.out PUBLIC FFFT)
 # specify the library's header file location

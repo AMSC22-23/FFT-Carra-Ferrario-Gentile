@@ -1,7 +1,7 @@
 #include <iostream>
 #include <memory>
 #include "ffft.hpp"
-#include "../test_template.hpp"
+#include "../../test_template.hpp"
 
 using namespace fftcore;
 
