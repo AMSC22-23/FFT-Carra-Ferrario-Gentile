@@ -86,6 +86,8 @@ namespace fftcore{
 			using RTensor_3D = Eigen::Tensor<FloatingType, 3>;
 			using CTensor_3D = Eigen::Tensor<std::complex<FloatingType>, 3>;
 			
+			using RTensor_2D = Eigen::Tensor<FloatingType, 2>;
+			using CTensor_2D = Eigen::Tensor<std::complex<FloatingType>, 2>;
 			virtual ~FFT_3D() = default;
 	};
 

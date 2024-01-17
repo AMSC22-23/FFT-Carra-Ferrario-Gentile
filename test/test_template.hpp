@@ -17,35 +17,44 @@ void test_fft(int argc, char *argv[]){
     using FloatingType1 = typename FFTStrategy1::FloatTypeAlias;
     using FloatingType2 = typename FFTStrategy2::FloatTypeAlias;
 
+
     MPI_Init(&argc, &argv);
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);    
     MPI_Datatype mpi_datatype1 = std::is_same<FloatingType1, double>::value ? MPI_C_DOUBLE_COMPLEX : MPI_C_FLOAT_COMPLEX;
 
-    // Retrieve command line argument describing the exponent of 2;
-    int x = atoi(argv[1]);
-    int n = 1 << x;
-    if( rank == 0){
-        std::cout << x << ",";
-    }
 
     FFTSolver<dim, FloatingType1> solver1(std::make_unique<FFTStrategy1>());
     FFTSolver<dim, FloatingType2> solver2(std::make_unique<FFTStrategy2>());
 
-    // Initialize the dimension of the tensors, with every dimension having size = n    
+    // Initialize the dimension of the tensors with the specified dimensions
+    assert( argc == (dim + 1) && "Usage: ./test_strategy_XD dim1, ..., dimX" ); 
     Eigen::array<Eigen::Index, dim> dimensions;
-    dimensions.fill(n);
+
+    // Calculate total elements and print selected dimension sizes
+    int total_elements_number = 0, tmp = 0;
+    for(int i = 0; i < dim; i++ )
+    {
+        if(rank == 0)
+            std::cout << argv[i+1] << ","; 
+        tmp = 1 << atoi(argv[i+1]);
+        total_elements_number += tmp;
+        dimensions[i] = tmp;
+    }
+
+    
 
     CTensorBase<dim, FloatingType1> tensor1(dimensions);
     CTensorBase<dim, FloatingType2> tensor2(dimensions);    
+
 
     // Set the random values on process 0
     if(rank == 0)
         tensor1.get_tensor().setRandom();
 
     // And copy it on the other processes
-    MPI_Bcast(tensor1.get_tensor().data(), std::pow(n, dim), mpi_datatype1, 0, MPI_COMM_WORLD);
+    MPI_Bcast(tensor1.get_tensor().data(), total_elements_number, mpi_datatype1, 0, MPI_COMM_WORLD);
 
     // Save the copy for the second solver
     if( rank == 0 ){
@@ -63,7 +72,7 @@ void test_fft(int argc, char *argv[]){
     }
 
     // Inverse
-    MPI_Bcast(tensor1.get_tensor().data(), std::pow(n, dim), mpi_datatype1, 0, MPI_COMM_WORLD);
+    MPI_Bcast(tensor1.get_tensor().data(), total_elements_number, mpi_datatype1, 0, MPI_COMM_WORLD);
     solver1.compute_fft(tensor1, FFT_INVERSE);
     double i1 = solver1.get_timer().get_last();
 
@@ -72,7 +81,7 @@ void test_fft(int argc, char *argv[]){
         std::cout<<",";
     }
 
-    // SOLVER 2 - Run only on main process 
+    // Solver 2 
     if(rank == 0){
 
         // Forward

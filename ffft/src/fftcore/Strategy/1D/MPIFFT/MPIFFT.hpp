@@ -2,19 +2,8 @@
 #define MPIFFT_HPP
 
 #define dout std::cout << "p" << rank <<": "
-#define INIT_TIME_MEASURE double start, end;
 
-#define MEASURE_TIME_START start = MPI_Wtime();
-
-#define MEASURE_TIME_END(message)                                                                                            \
-    do                                                                                                                       \
-    {                                                                                                                        \
-        end = MPI_Wtime();                                                                                                   \
-        if (rank == 0)                                                                                                       \
-        {                                                                                                                    \
-            /*std::cout << "p: " << rank << " " << message << ": " << (end - start)*1.0e6 << " microseconds" << std::endl;*/ \
-        }                                                                                                                    \
-    } while (0);
+#define ASSERT(left,operator,right) { if(!((left) operator (right))){ std::cerr << "ASSERT FAILED: " << #left << #operator << #right << " @ " << __FILE__ << " (" << __LINE__ << "). " << #left << "=" << (left) << "; " << #right << "=" << (right) << std::endl; } }
 
 
 #include <iostream>
@@ -112,7 +101,9 @@ void MPIFFT<FloatingType>::fft(CTensor_1D &global_tensor, fftcore::FFTDirection 
 
     // Assertions
     assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
-    assert((size <= n / 2 && std::ceil(log2p) == std::floor(log2p)) && "Process number must be a power of two and less or equal than n/2).");
+    //assert((size <= n / 2 && std::ceil(log2p) == std::floor(log2p)) && "Process number must be a power of two and less or equal than tensor.size()/2).");
+    ASSERT(size, <= , n/2);
+    ASSERT(std::ceil(log2p), ==, std::floor(log2p));
     // -------------------------------------
 
     // Length of the sub-vector related to each process
