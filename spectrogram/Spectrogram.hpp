@@ -1,8 +1,7 @@
 #ifndef SPECTROGRAM_HPP
 #define SPECTROGRAM_HPP
 
-#include "../../include/ffft.hpp"
-
+#include "ffft.hpp"
 
 namespace spectrogram{
     
