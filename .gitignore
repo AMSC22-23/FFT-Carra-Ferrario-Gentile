@@ -47,3 +47,5 @@ Release/
 CMakeFiles/
 sandbox/
 
+# Doxygen
+html/

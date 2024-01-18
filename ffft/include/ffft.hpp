@@ -1,8 +1,30 @@
 #ifndef FFTCORE_HPP
 #define FFTCORE_HPP
 
+/*! \mainpage AMSC project powered by Carrà Edoardo, Gentile Lorenzo, Ferrario Daniele.
+ *
+ * \section Introduction
+ * 
+ * FFTCore is a parallel C++ library designed for computing the Fast Fourier Transform design to be highly extensible, and easy to integrate in different applications.
+ * The Library contains different sequential and parallel implementation to compute the FFT in one or higher dimension based on Stockham and Cooley-Tuckey algorithms. 
+ *  
+ * \subsection Library folder structure
+ *   - `fftcore/`: this directory contains the core files of the library.
+ *   - `FFTSolver.hpp`: this header file provides direct access for users to perform FFT operations.
+ *   - `Strategy/`: this directory contains different strategies for performing the FFT. Some basic implementations are provided by default as the sequential one, MPI, OMP and CUDA.
+ *   - `Tensor/`: this directory contains the main tools to manipulate Eigen's tensor and do pre-processing and post-processing.
+ * \subsection  Supported strategies
+ *  At the moment the supported strategies are:
+ *  - Stockham only 1 dimensioanl.
+ *  - Cooley-Tuckey 1,2 and 3 dimensional.
+ *  - Cooley-Tuckey MPI 1,2 and 3 dimensional.
+ *  - Cooley-Tuckey OMP 1,2 and 3 dimensional.
+ *  - Cooley-Tuckey CUDA 1,2 and 3 dimensional.
+ */
+
 /**
-* Public headers of the library. Include this file in your project to use the ffft library
+* Public headers of the library. Include this file in your project to use the ffft library.
+*
 * @author Edoardo Carrà
 */
 
