@@ -1,7 +1,6 @@
 #ifndef SEQUENTIALFFT_2D_HPP
 #define SEQUENTIALFFT_2D_HPP
 
-
 #include <iostream>
 #include "../../../FFTSolver.hpp"
 #include "../../../utils/FFTUtils.hpp"
@@ -50,10 +49,13 @@ namespace fftcore{
     template <typename FloatingType>
     void SequentialFFT_2D<FloatingType>::fft(CTensor_2D &input_output, FFTDirection fftDirection) const
     {
-        int row, col, row1, col1;
-
         using Complex = std::complex<FloatingType>;
+
+        Eigen::Index row, col, row1, col1;
+        Complex w, wm, t, u;
+        Eigen::Index m, m2;
         const auto& dimensions = input_output.dimensions();
+
 
         //input dimensions check
         for(int i=0; i<2; i++){
@@ -66,20 +68,20 @@ namespace fftcore{
         }
 
         // loop over each dimension
-        for(int dim=0; dim<2; dim++){
-            int log2n = std::log2(dimensions[dim]);
+        for(unsigned int dim=0; dim<2; dim++){
+            unsigned int log2n = std::log2(dimensions[dim]);
 
             // During the first iteration, the access pattern follows row-major order. 
             // Subsequent iterations adopt the column-major order, which is the standard 
             // format for Eigen tensors.            
-            for(int offset=0; offset< dimensions[dim==0?1:0]; offset++ ){
+            for(Eigen::Index offset=0; offset< dimensions[dim==0?1:0]; offset++ ){
                 
                 // Normal 1-D Cooley-Tukey FFT
 
                 // Bit-reversal permutation
-                for (int i = 0; i < dimensions[dim]; ++i)
+                for (Eigen::Index i = 0; i < dimensions[dim]; ++i)
                 {
-                    int rev = FFTUtils::reverseBits(i, log2n);
+                    Eigen::Index rev = FFTUtils::reverseBits(i, log2n);
                     if (i < rev)
                     {
                         // In each iteration, one dimension will be accessed by offset, 
@@ -94,18 +96,16 @@ namespace fftcore{
                     }
                 }
 
-                Complex w, wm, t, u;
-                int m, m2;
-                for (int s = 1; s <= log2n; ++s)
+                for (unsigned int s = 1; s <= log2n; ++s)
                 {
                     m = 1 << s;  // 2 power s
                     m2 = m >> 1; // m2 = m/2 -1
                     wm = exp(Complex(0, -2 * M_PI / m)); // w_m = e^(-2*pi/m)
 
-                    for(int k = 0; k < dimensions[dim]; k += m)
+                    for(Eigen::Index k = 0; k < dimensions[dim]; k += m)
                     {
                         w = Complex(1, 0);
-                        for(int j = 0; j < m2; ++j)
+                        for(Eigen::Index j = 0; j < m2; ++j)
                         {
 
                             // In each iteration, one dimension will be accessed by offset, 
