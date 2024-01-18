@@ -46,10 +46,10 @@ namespace fftcore{
     {
 
         using Complex = std::complex<FloatingType>;
-        int n = input_output.size();
+        const Eigen::Index n = input_output.size();
         assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
 
-        int log2n = std::log2(n);
+        const unsigned int log2n = std::log2(n);
 
         //conjugate if inverse
         if(fftDirection == FFT_INVERSE){
@@ -60,18 +60,18 @@ namespace fftcore{
         FFTUtils::bit_reversal_permutation(input_output);
 
         Complex w, wm, t, u;
-        int m, m2;
+        Eigen::Index m, m2;
         // Cooley-Tukey iterative FFT
-        for (int s = 1; s <= log2n; ++s)
+        for (unsigned int s = 1; s <= log2n; ++s)
         {
             m = 1 << s;  // 2 power s
             m2 = m >> 1; // m2 = m/2 -1
             wm = exp(Complex(0, -2 * M_PI / m)); // w_m = e^(-2*pi/m)
 
-            for(int k = 0; k < n; k += m)
+            for(Eigen::Index k = 0; k < n; k += m)
             {
                 w = Complex(1, 0);
-                for(int j = 0; j < m2; ++j)
+                for(Eigen::Index j = 0; j < m2; ++j)
                 {
                     t = w * input_output[k + j + m2];
                     u = input_output[k + j];

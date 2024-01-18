@@ -50,9 +50,10 @@ namespace fftcore{
 
         using Complex = std::complex<FloatingType>;
         // dimension of the 
-        int n = io_tensor.size();
+        const Eigen::Index n = io_tensor.size();
         Complex w, wm, t, u;
-        int m, m2, rev, log2n = std::log2(n);
+        Eigen::Index m, m2, rev;
+        const unsigned int log2n = std::log2(n);
 
         assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
 
@@ -74,7 +75,7 @@ namespace fftcore{
             * write access to the tensor. 
             */
             #pragma omp for
-            for (int i = 0; i < io_tensor.size(); ++i)
+            for (Eigen::Index i = 0; i < n; ++i)
             {
                 rev = FFTUtils::reverseBits(i, log2n);
                 if (i < rev)
@@ -86,7 +87,7 @@ namespace fftcore{
             /*
             * F_1 : outer loop that executes log(n) iterations (stage). Loop-carried data dependence
             */
-            for (int s = 1; s <= log2n; ++s) {
+            for (unsigned int s = 1; s <= log2n; ++s) {
                 m = 1 << s;         // 2 power s
                 m2 = m >> 1;        // m2 = m/2 -1
                 wm = exp(Complex(0,-2*M_PI/m));
@@ -99,7 +100,7 @@ namespace fftcore{
                 *       dependence.
                 */
                 #pragma omp for
-                for (int k = 0; k < n; k += m) {
+                for (Eigen::Index k = 0; k < n; k += m) {
                     w=Complex(1,0);		    
                     
                     /*
@@ -107,7 +108,7 @@ namespace fftcore{
                             a butterfly computation. Loop independent data dependence
                     */
                     #pragma omp simd
-                    for (int j = 0; j < m2; ++j) {
+                    for (Eigen::Index j = 0; j < m2; ++j) {
 
                         t = w * io_tensor[j + k + m2];
                         u = io_tensor[j + k];
