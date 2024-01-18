@@ -76,26 +76,27 @@ namespace fftcore{
         
         #pragma omp parallel
         {
-            int num_planes, num_lines, num_elements;
-            int x, y, z , x1, y1, z1;
-            int log2n;
+            Eigen::Index num_planes, num_lines, num_elements;
+            Eigen::Index x, y, z , x1, y1, z1;
+            unsigned int log2n;
 
             Complex w, wm, t, u;
-            int m, m2;
+            Eigen::Index m, m2;
+            Eigen::Index rev;
 
             // cube_dir = 0 -> 2D transform of all x-y cube's planes 
-            for(int cube_dir=0; cube_dir<2; cube_dir++){
+            for(unsigned int cube_dir=0; cube_dir<2; cube_dir++){
                 num_planes  =   cube_dir==0? z_dimension_size : x_dimension_size; 
 
                 // 2D-tranform of the plane
-                for(int plane_dir=0; plane_dir<2; plane_dir++){
+                for(unsigned int plane_dir=0; plane_dir<2; plane_dir++){
                     
                     /* cube_dir = 0 && plane_dir = 0 transform lines orthogonal to the y-z plane
                     * cube_dir = 0 && plane_dir = 1 transform lines orthogonal to the x-z plane
                     * cube_dir = 1 && plane_dir = 0 transform lines orthogonal to the x-y plane
                     */
 
-                    for(int plane=0; plane<num_planes; plane++){
+                    for(Eigen::Index plane=0; plane<num_planes; plane++){
 
                         // skip this case which performs the same
                         if(cube_dir==1 && plane_dir==1)continue;
@@ -118,14 +119,14 @@ namespace fftcore{
                         // Subsequent iterations adopt the column-major order, which is the standard 
                         // format for Eigen tensors.          
                         #pragma omp for
-                        for(int line=0; line < num_lines; line++ ){
+                        for(Eigen::Index line=0; line < num_lines; line++ ){
                             
                             // 1-D Cooley-Tukey FFT
 
                             // Bit-reversal permutation
-                            for (int i = 0; i < num_elements; ++i)
+                            for (Eigen::Index i = 0; i < num_elements; ++i)
                             {
-                                int rev = FFTUtils::reverseBits(i, log2n);
+                                rev = FFTUtils::reverseBits(i, log2n);
                                 if (i < rev)
                                 {
                                     if(cube_dir==0 && plane_dir==0){
@@ -150,16 +151,16 @@ namespace fftcore{
                             }
 
                             
-                            for (int s = 1; s <= log2n; ++s)
+                            for (unsigned int s = 1; s <= log2n; ++s)
                             {
                                 m = 1 << s;  // 2 power s
                                 m2 = m >> 1; // m2 = m/2 -1
                                 wm = exp(Complex(0, -2 * M_PI / m)); // w_m = e^(-2*pi/m)
 
-                                for(int k = 0; k < num_elements; k += m)
+                                for(Eigen::Index k = 0; k < num_elements; k += m)
                                 {
                                     w = Complex(1, 0);
-                                    for(int j = 0; j < m2; ++j)
+                                    for(Eigen::Index j = 0; j < m2; ++j)
                                     {
                                         if(cube_dir==0 && plane_dir==0){
                                             x = k + j + m2;
