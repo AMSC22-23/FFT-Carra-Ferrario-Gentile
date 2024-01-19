@@ -40,7 +40,7 @@ def plot_all_txt_files(directory):
         ax.axis('off')
 
     plt.tight_layout()
-    plt.show()
+    plt.savefig("test.png")
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -51,6 +51,5 @@ if __name__ == "__main__":
     if not os.path.isdir(directory):
         print("The provided path is not a directory.")
         sys.exit(1)
-
     # Plot the matrices from all .txt files in the specified directory in order
     plot_all_txt_files(directory)

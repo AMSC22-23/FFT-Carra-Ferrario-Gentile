@@ -47,5 +47,6 @@ Release/
 CMakeFiles/
 sandbox/
 
+spectroram/output
 # Doxygen
 html/

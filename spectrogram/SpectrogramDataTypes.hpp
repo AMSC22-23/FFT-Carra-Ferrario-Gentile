@@ -2,6 +2,7 @@
 #define SPECTROGRAM_DATA_TYPES_HPP
 
 #include <fstream>
+#include <iomanip>
 #include "../ffft/include/ffft.hpp"
 
 namespace spectrogram{

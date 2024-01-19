@@ -20,8 +20,8 @@ namespace spectrogram{
         // Floating type retrieved by the one selected in the strategy
         using FloatingType = typename FFTStrategy::FloatTypeAlias;
 
-        using Frame = Frame<FloatingType>;
-        using Spectrogram = Spectrogram<FloatingType>;
+        using Frame_t = Frame<FloatingType>;
+        using Spectrogram_t = Spectrogram<FloatingType>;
         using CTensor_1D = fftcore::CTensorBase<1, FloatingType>;
 
         public:
@@ -34,7 +34,7 @@ namespace spectrogram{
             /**
              * @brief Returns the spectrograms computed by the generator.
             */
-            const std::vector<Spectrogram>& get_spectrograms() const { return _spectrograms; };
+            const std::vector<Spectrogram_t>& get_spectrograms() const { return _spectrograms; };
         private:
 
             //current parameters
@@ -45,10 +45,10 @@ namespace spectrogram{
             FFTSolver<1, FloatingType> _fft_solver;
 
             // This buffer will initially hold audio frames and then be transformed into intermediate FFT results
-            std::vector<Frame> _data;
+            std::vector<Frame_t> _data;
 
             //This vector will hold the final spectrograms
-            std::vector<Spectrogram> _spectrograms;
+            std::vector<Spectrogram_t> _spectrograms;
     };
 
     /**
@@ -82,13 +82,13 @@ namespace spectrogram{
         _data.reserve(num_frames);
 
         for(unsigned int i = 0; i < num_frames; i++){
-            _data.push_back(Frame(signal, frame_lenght, frame_step, i));
+            _data.push_back(Frame_t(signal, frame_lenght, frame_step, i));
         }
 
         unsigned int last_frame_start = num_frames * frame_step;
 
         if(pad_end && last_frame_start < signal_lenght){
-            _data.push_back(Frame(signal, frame_lenght, last_frame_start));
+            _data.push_back(Frame_t(signal, frame_lenght, last_frame_start));
             num_frames++;
         }
 
@@ -117,7 +117,7 @@ namespace spectrogram{
         unsigned int num_bins = assume_real ? _frame_lenght / 2 + 1 : _frame_lenght;
 
         //construct the spectrogram   
-        Spectrogram spectrogram(num_bins, _num_frames);
+        Spectrogram_t spectrogram(num_bins, _num_frames);
 
         //copy the FFT results into the spectrogram
         Index1D offset = {0};
