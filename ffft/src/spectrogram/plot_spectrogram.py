@@ -31,7 +31,7 @@ def plot_all_txt_files(directory):
 
     for ax, file_path in zip(axes, txt_files):
         matrix, rows, cols = read_matrix_from_file(file_path)
-        im = ax.imshow(matrix, cmap='gray')
+        im = ax.imshow(np.log10(matrix)*20, origin='lower', cmap='jet', aspect='auto', interpolation='gaussian',vmin=0, vmax=20);
         ax.set_title(os.path.basename(file_path))
         plt.colorbar(im, ax=ax)
 
