@@ -1,4 +1,5 @@
-#include "../spectrogram/Spectrogram.hpp"
+#include "../../ffft/src/spectrogram/Spectrogram.hpp"
+
 #include <cmath>
 
 using namespace spectrogram;
@@ -26,7 +27,8 @@ int main(void){
 
     unsigned int file_index = 0;
     for(auto &spectrogram : spectrograms){
-        spectrogram.write_to_file("../spectrogram/output/spectrogram_" + std::to_string(file_index) + ".txt");
+        spectrogram.write_to_file("output/" + std::to_string(file_index) + ".txt");
+
         file_index++;
     }
 

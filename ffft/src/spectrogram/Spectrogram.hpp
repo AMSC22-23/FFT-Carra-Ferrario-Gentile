@@ -1,7 +1,7 @@
 #ifndef SPECTROGRAM_HPP
 #define SPECTROGRAM_HPP
 
-#include "../ffft/include/ffft.hpp"
+#include "../../include/ffft.hpp"
 #include "SpectrogramDataTypes.hpp"
 
 using namespace fftcore;

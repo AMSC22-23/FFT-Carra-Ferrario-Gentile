@@ -3,7 +3,7 @@
 
 #include <fstream>
 #include <iomanip>
-#include "../ffft/include/ffft.hpp"
+#include "../../include/ffft.hpp"
 
 namespace spectrogram{
 
