@@ -70,7 +70,6 @@ namespace spectrogram{
             frame_step = frame_lenght;
         }
 
-        assert((signal_lenght & (signal_lenght - 1)) == 0 && "Signal lenght must be a power of 2");
         assert(signal_lenght >= frame_lenght && "Signal lenght must be greater than frame lenght");
         assert((frame_lenght & (frame_lenght - 1)) == 0 && "Frame lenght must be a power of 2");
         assert(frame_lenght >= frame_step && "Frame lenght must be greater than frame step");
