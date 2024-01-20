@@ -88,7 +88,7 @@ namespace fftcore{
 
             // HEADER CHECK    
             getline(input_file, line);
-            if(!MtxFilesIOUtils::load_mtx_tensor_file_settings(line, is_complex_data, is_symmetric)){
+            if(!fftcore::utils::load_mtx_tensor_file_settings(line, is_complex_data, is_symmetric)){
                 return;
             }
 
@@ -99,7 +99,7 @@ namespace fftcore{
             while(getline(input_file, line)){
                 
                 
-                str_values = MtxFilesIOUtils::split_str_by_whitespace(line);
+                str_values = fftcore::utils::split_str_by_whitespace(line);
                 
                 // Reading tensor specs (second line of file)
                 if(reading_tensor_header){
@@ -139,8 +139,9 @@ namespace fftcore{
                         return std::stoi(str)-1;
                     });     
 
+
                     // Setting the current line data in the tensor
-                    MtxFilesIOUtils::tensor_set_value(tensor, current_coordinates, str_values);
+                    fftcore::utils::tensor_set_value(tensor, current_coordinates, str_values);
 
                     nnz_count++;
                     current_coordinates.clear();

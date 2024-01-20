@@ -28,7 +28,7 @@ namespace fftcore{
          * Load into params the properties of the data inside the mtx file.
          * @return false if the header is incorrect or incomplete, true in the other case.
         */
-        bool load_mtx_tensor_file_settings(const string &header, bool &is_complex_data, bool is_symmetric){
+        bool load_mtx_tensor_file_settings(const std::string &header, bool &is_complex_data, bool is_symmetric){
 
             std::string help_header_template = "The header of the matrix file should match this template:\n%%MatrixMarket tensor coordinate <real/complex> <general/symmetric>\n";
             
@@ -81,36 +81,35 @@ namespace fftcore{
 
         }
 
-            template<typename DataType, int Rank>
-            void _set_value(Eigen::Tensor<DataType, Rank>& tensor, std::vector<int> coordinates, std::vector<std::string> str_values){
-                bool num_of_entries_check = str_values.size() == Rank + 1;
-                assert(num_of_entries_check && "Error: real data is incomplete or badly formatted.");
+        template<typename DataType, int Rank>
+        void tensor_set_value(Eigen::Tensor<DataType, Rank>& tensor, std::vector<int> coordinates, std::vector<std::string> str_values){
+            bool num_of_entries_check = str_values.size() == (Rank + 1);
+            assert(num_of_entries_check && "Error: real data is incomplete or badly formatted.");
 
-                double current_value;
-                current_value = stod(str_values.at(
-                    Rank // Last index if number is real
-                ));       
+            double current_value;
+            current_value = stod(str_values.at(
+                Rank // Last index if number is real
+            ));       
+            // Setting the value into the tensor
+            tensor(coordinates) = current_value;
+        }
 
-                // Setting the value into the tensor
-                tensor(coordinates) = current_value;
-            }
+        template<typename DataType, int Rank>
+        void tensor_set_value(Eigen::Tensor<std::complex<DataType>, Rank>& tensor, std::vector<int> coordinates, std::vector<std::string> str_values){
+            bool num_of_entries_check = str_values.size() == Rank + 2;
+            assert(num_of_entries_check && "Error: complex data is incomplete or badly formatted.");
 
-            template<int Rank>
-            void tensor_set_value(Eigen::Tensor<std::complex<double>, Rank>& tensor, std::vector<int> coordinates, std::vector<std::string> str_values){
-                bool num_of_entries_check = str_values.size() == Rank + 2;
-                assert(num_of_entries_check && "Error: complex data is incomplete or badly formatted.");
+            std::complex<double> current_value;
+            current_value.real(stod(str_values.at(
+                Rank // Index of real part
+            )));       
+            current_value.imag(stod(str_values.at(
+                Rank+1 // Index of imaginary part
+            )));
 
-                std::complex<double> current_value;
-                current_value.real(stod(str_values.at(
-                    Rank // Index of real part
-                )));       
-                current_value.imag(stod(str_values.at(
-                    Rank+1 // Index of imaginary part
-                )));
-
-                // Setting the value into the tensor
-                tensor(coordinates) = current_value;
-            }
+            // Setting the value into the tensor
+            tensor(coordinates) = current_value;
+        }
     }
 }
 
