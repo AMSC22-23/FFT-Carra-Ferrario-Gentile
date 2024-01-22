@@ -4,7 +4,7 @@ using namespace spectrogram;
 
 //modifiable parameters
 using FloatingType = double;
-using Strategy = fftwFFT<FloatingType>;
+using Strategy = StockhamFFT<FloatingType>;
 
 //type aliases
 using ComplexType = std::complex<FloatingType>;
