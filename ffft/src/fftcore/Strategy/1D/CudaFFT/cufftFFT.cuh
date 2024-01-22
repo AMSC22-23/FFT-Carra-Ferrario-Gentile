@@ -17,6 +17,9 @@ namespace fftcore
     template <typename FloatingType = double>
     class cufftFFT : public FFT_1D<FloatingType>
     {
+
+    static_assert(std::is_same<FloatingType, double>::value == true && "Only double precision is supported");
+
     public:
         using typename FFT_1D<FloatingType>::RTensor_1D;
         using typename FFT_1D<FloatingType>::CTensor_1D;
@@ -51,8 +54,10 @@ namespace fftcore
     template <typename FloatingType>
     void cufftFFT<FloatingType>::fft(CTensor_1D &input_output, fftcore::FFTDirection fftDirection) const
     {
+        using cudakernels::d_scale;
+        using ComplexCuda = typename cudakernels::ComplexCuda<FloatingType>;
 
-        int n = input_output.size();
+        const TensorIdx n = input_output.size();
         
         cufftHandle plan;
 
@@ -65,7 +70,7 @@ namespace fftcore
         cudaDeviceSynchronize();
 
         if(fftDirection == FFT_INVERSE){
-            d_scale<<<(n + 255) / 256, 256>>>(reinterpret_cast<ComplexCuda<FloatingType>*>(d_data), n);
+            d_scale<<<(n + 255) / 256, 256>>>(reinterpret_cast<ComplexCuda*>(d_data), n);
         }
 
         cudaMemcpy(input_output.data(), d_data, n * sizeof(cufftDoubleComplex), cudaMemcpyDeviceToHost);

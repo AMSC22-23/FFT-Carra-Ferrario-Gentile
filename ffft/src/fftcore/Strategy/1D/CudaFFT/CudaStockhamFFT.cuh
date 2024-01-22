@@ -3,34 +3,41 @@
 
 #include "CudaUtils.cuh"
 
-template <typename FloatingType>
-__global__ void d_butterfly_kernel_stockham(ComplexCuda<FloatingType> * __restrict__ d_input, ComplexCuda<FloatingType> * __restrict__ d_buffer, unsigned m2)
+using cudakernels::d_fft_sign;
+using cudakernels::d_n2;
+
+namespace cudakernels
 {
-    unsigned int tid = threadIdx.x + blockIdx.x * blockDim.x;
+    template <typename FloatingType>
+    __global__ void d_butterfly_kernel_stockham(ComplexCuda<FloatingType> * __restrict__ d_input, ComplexCuda<FloatingType> * __restrict__ d_buffer, unsigned m2)
+    {   
+        using ComplexCuda = cudakernels::ComplexCuda<FloatingType>;
+        unsigned int tid = threadIdx.x + blockIdx.x * blockDim.x;
 
-    if (tid < d_n2)
-    {
-        unsigned int r = d_n2 >> (__ffs(m2) - 1); // r = n2 / m2
-        unsigned int r2 = r << 1; // r2 = 2 * r
-        unsigned int k, j;
-        ComplexCuda<FloatingType> w, t, u;
+        if (tid < d_n2)
+        {
+            unsigned int r = d_n2 >> (__ffs(m2) - 1); // r = n2 / m2
+            unsigned int r2 = r << 1; // r2 = 2 * r
+            unsigned int k, j;
+            ComplexCuda w, t, u;
 
-        /* old version, not coalesced
-        j = tid % m2;
-        k = (tid / m2);
-        */
+            /* old version, not coalesced
+            j = tid % m2;
+            k = (tid / m2);
+            */
 
-        j = tid >> (__ffs(r) - 1); // j = tid / r
-        k = tid & (r - 1); // k = tid % r
+            j = tid >> (__ffs(r) - 1); // j = tid / r
+            k = tid & (r - 1); // k = tid % r
 
-        w = exp(ComplexCuda<FloatingType>(0, d_fft_sign * M_PI * j / m2));
-        u = d_input[j * r2 + k];
-        t = w * d_input[j * r2 + k + r];
+            //w = exp(ComplexCuda(0, d_fft_sign * M_PI * j / m2));
+            w = ComplexCuda(__cosf(d_fft_sign * M_PI * j / m2), __sinf(d_fft_sign * M_PI * j / m2));
+            u = d_input[j * r2 + k];
+            t = w * d_input[j * r2 + k + r];
 
-        d_buffer[j * r + k] = u + t;
-        d_buffer[j * r + d_n2 + k] = u - t; 
+            d_buffer[j * r + k] = u + t;
+            d_buffer[j * r + d_n2 + k] = u - t; 
 
-        //printf("Block %d, thread %d : (%d, %d) -> (%d, %d) \n", blockIdx.x, threadIdx.x, j * r2 + k, j * r2 + k + r, j * r + k, j * r + n2 + k);
+        }
     }
 }
 
@@ -51,8 +58,7 @@ namespace fftcore
         using typename FFT_1D<FloatingType>::RTensor_1D;
         using typename FFT_1D<FloatingType>::CTensor_1D;
 
-        using Complex = std::complex<FloatingType>;
-        using ComplexCuda = ComplexCuda<FloatingType>;
+        using ComplexCuda = typename cudakernels::ComplexCuda<FloatingType>;
 
         CudaStockhamFFT(){
             gpuErrchk( cudaFree(0) );  // initialize CUDA context to avoid delay on first call
@@ -85,13 +91,15 @@ namespace fftcore
     template <typename FloatingType>
     void CudaStockhamFFT<FloatingType>::fft(CTensor_1D &input_output, fftcore::FFTDirection fftDirection) const
     {
+        using cudakernels::d_butterfly_kernel_stockham;
+        using cudakernels::d_scale;
 
-        int n = input_output.size(), n2 = n / 2;
+        const TensorIdx n = input_output.size(), n2 = n / 2;
         assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
 
-        int threadsPerBlock = THREADS_PER_BLOCK;
-        int numBlocks = (n2 + threadsPerBlock - 1) / threadsPerBlock;
-        int log2n = std::log2(n);
+        unsigned int threadsPerBlock = THREADS_PER_BLOCK;
+        unsigned int numBlocks = (n2 + threadsPerBlock - 1) / threadsPerBlock;
+        unsigned int log2n = std::log2(n);
 
         // allocate memory on device
         ComplexCuda *d_input, *d_buffer;
@@ -106,10 +114,10 @@ namespace fftcore
         gpuErrchk( cudaMemcpyToSymbol(d_fft_sign, &sign, sizeof(char)) );
 
         // set n2 on device constant memory 
-        gpuErrchk( cudaMemcpyToSymbol(d_n2, &n2, sizeof(unsigned int)) );
+        gpuErrchk( cudaMemcpyToSymbol(d_n2, &n2, sizeof(TensorIdx)) );
 
-        unsigned int m, m2;
-        for(int s = 1; s <= log2n; ++s){
+        TensorIdx m, m2;
+        for(unsigned int s = 1; s <= log2n; ++s){
             
             m = 1 << s; 
             m2 = m >> 1;

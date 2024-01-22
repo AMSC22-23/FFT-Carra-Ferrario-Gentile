@@ -3,25 +3,37 @@
 
 #include "CudaUtils.cuh"
 
-template <typename FloatingType>
-__global__ void d_butterfly_kernel_cooleytukey(ComplexCuda<FloatingType> * __restrict__ input_output, unsigned m2)
+using cudakernels::d_fft_sign;
+using cudakernels::d_n2;
+
+namespace cudakernels
 {
-    unsigned int tid = threadIdx.x + blockIdx.x * blockDim.x;
-    unsigned int k, j;
-    ComplexCuda<FloatingType> w, t, u;
 
-    if (tid < d_n2){
+    /**
+     * @brief This kernel computes one stage of Cooley-Tukey FFT algorithm. It is called log2(n) times by the cpu driver code.
+    */
+    template <typename FloatingType>
+    __global__ void d_butterfly_kernel_cooleytukey(ComplexCuda<FloatingType> * __restrict__ input_output, unsigned m2)
+    {
+        using ComplexCuda = typename cudakernels::ComplexCuda<FloatingType>;
 
-        j = tid & (m2 - 1);  // j = tid % m2
-        k = (tid >> (__ffs(m2) - 1)) * m2 * 2;  // k = (tid / m2) * m
+        unsigned int tid = threadIdx.x + blockIdx.x * blockDim.x;
+        unsigned int k, j;
+        ComplexCuda w, t, u;
 
-        w = exp(ComplexCuda<FloatingType>(0, d_fft_sign * M_PI * j / m2));
-        t = w * input_output[k + j + m2];
-        u = input_output[k + j];
+        if (tid < d_n2){
 
-        input_output[k + j] = u + t;
-        input_output[k + j + m2] = u - t;
-        if(DEBUG) printf("Block %d, thread %d : (%d, %d) -> (%d, %d), exp = %d\n", blockIdx.x, threadIdx.x, k + j, k + j + m2, k + j, k + j + m2, d_n2 * j / m2);
+            j = tid & (m2 - 1);  // j = tid % m2
+            k = (tid >> (__ffs(m2) - 1)) * m2 * 2;  // k = (tid / m2) * m
+
+            // w = exp(ComplexCuda(0, d_fft_sign * M_PI * j / m2));
+            w = ComplexCuda(__cosf(d_fft_sign * M_PI * j / m2), __sinf(d_fft_sign * M_PI * j / m2));
+            t = w * input_output[k + j + m2];
+            u = input_output[k + j];
+
+            input_output[k + j] = u + t;
+            input_output[k + j + m2] = u - t;
+        }
     }
 }
 
@@ -42,8 +54,7 @@ namespace fftcore
         using typename FFT_1D<FloatingType>::RTensor_1D;
         using typename FFT_1D<FloatingType>::CTensor_1D;
 
-        using Complex = std::complex<FloatingType>;
-        using ComplexCuda = ComplexCuda<FloatingType>;
+        using ComplexCuda = typename cudakernels::ComplexCuda<FloatingType>;
 
         CudaCooleyTukeyFFT(){
             gpuErrchk( cudaFree(0) ); //initialize CUDA context to avoid delay on first call
@@ -76,8 +87,12 @@ namespace fftcore
     template <typename FloatingType>
     void CudaCooleyTukeyFFT<FloatingType>::fft(CTensor_1D &input_output, fftcore::FFTDirection fftDirection) const
         {
+        
+        using cudakernels::d_butterfly_kernel_cooleytukey;
+        using cudakernels::d_bit_reversal_permutation;
+        using cudakernels::d_scale;
 
-        int n = input_output.size(), n2 = n / 2, log2n = std::log2(n);
+        const TensorIdx n = input_output.size(), n2 = n / 2, log2n = std::log2(n);
 
         //allocate memory on device
         ComplexCuda *d_input_output;
@@ -87,8 +102,8 @@ namespace fftcore
         gpuErrchk( cudaMemcpy(d_input_output, input_output.data(), n * sizeof(ComplexCuda), cudaMemcpyHostToDevice) );
 
         //bit reversal permutation on device
-        int threadsPerBlock = THREADS_PER_BLOCK;
-        int numBlocks = (n + threadsPerBlock - 1) / threadsPerBlock;
+        unsigned int threadsPerBlock = THREADS_PER_BLOCK;
+        unsigned int numBlocks = (n + threadsPerBlock - 1) / threadsPerBlock;
         d_bit_reversal_permutation<<<numBlocks, threadsPerBlock>>>(d_input_output, n, log2n);
 
         //set fftDirection on device constant memory
@@ -96,12 +111,12 @@ namespace fftcore
         gpuErrchk( cudaMemcpyToSymbol(d_fft_sign, &sign, sizeof(char)) );
 
         //set n2 on device constant memory
-        gpuErrchk( cudaMemcpyToSymbol(d_n2, &n2, sizeof(unsigned int)) );
+        gpuErrchk( cudaMemcpyToSymbol(d_n2, &n2, sizeof(TensorIdx)) );
 
         //Cooley-Tukey iterative FFT
         numBlocks = (n2 + threadsPerBlock - 1) / threadsPerBlock; //set number of blocks so that each thread will process 2 elements
-        int m, m2;
-        for(int s = 1; s <= log2n; ++s){
+        TensorIdx m, m2;
+        for(unsigned int s = 1; s <= log2n; ++s){
 
             m = 1 << s;  // 2^s
             m2 = m >> 1; // m2 = m/2
