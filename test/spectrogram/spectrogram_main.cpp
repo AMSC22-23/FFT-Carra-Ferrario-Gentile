@@ -12,6 +12,7 @@ using CTensor_1D = fftcore::CTensorBase<1, FloatingType>;
 
 #define N_SIGNALS 3
 
+
 using std::filesystem::path;
 path wav_directory = "../wav_samples", output_directory = "output";
 
@@ -19,7 +20,7 @@ int main(void){
 
     std::vector<CTensor_1D> signals(N_SIGNALS);
 
-    for(unsigned int i = 0; i < signals.size(); i++){
+    for(TensorIdx i = 0; i < signals.size(); i++){
         signals[i] = CTensor_1D(1024);
         for(unsigned int j = 0; j < signals[i].get_tensor().size(); j++){
             signals[i].get_tensor()(j) = ComplexType(std::sin((i + 1) * (j + 1)), 0);
@@ -56,7 +57,7 @@ int main(void){
     // Now iterate over the directory contents
     for (const auto &entry : std::filesystem::directory_iterator(wav_directory)) {
         if (entry.path().extension() == ".wav") {
-            spectrogram_generator.load_audio(entry.path(), 1024, 512);
+            spectrogram_generator.load_audio(entry.path(), 1024, 256);
             spectrogram_generator.compute_spectrogram();
             path filename = output_directory / entry.path().filename().replace_extension(".txt");
             spectrogram_generator.get_last_spectrogram().write_to_file(filename);

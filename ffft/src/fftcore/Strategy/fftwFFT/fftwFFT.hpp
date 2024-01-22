@@ -71,7 +71,7 @@ namespace fftcore
     void fftwFFT<FloatingType>::fft(const RTensor_1D &input, CTensor_1D &output, FFTDirection) const
     {
 
-        int n = input.size();
+        const TensorIdx n = input.size();
 
         FloatingType *in = nullptr;
         fftw_complex *out = nullptr;
@@ -84,7 +84,7 @@ namespace fftcore
         fftw_execute(plan);
 
         // Adding conjugate symmetric components (fftw does not do it by default)
-        for (int i = n / 2 + 1; i < n; ++i)
+        for (TensorIdx i = n / 2 + 1; i < n; ++i)
         {
             output(i) = std::conj(output(n - i));
         }
@@ -96,10 +96,10 @@ namespace fftcore
     void fftwFFT<FloatingType>::fft(CTensor_1D &input_output, fftcore::FFTDirection fftDirection) const
     {
 
-        int n = input_output.size();
+        const TensorIdx n = input_output.size();
 
         fftw_complex *in = nullptr;
-        int direction = fftDirection == FFT_FORWARD ? FFTW_FORWARD : FFTW_BACKWARD;
+        const int direction = fftDirection == FFT_FORWARD ? FFTW_FORWARD : FFTW_BACKWARD;
 
         in = reinterpret_cast<fftw_complex *>(input_output.data());
 
@@ -135,11 +135,11 @@ namespace fftcore
     void fftwFFT<FloatingType>::fft(CTensor_2D &input_output, FFTDirection fftDirection) const
     {
 
-        int n = input_output.dimension(0);
-        int m = input_output.dimension(1);
+        const TensorIdx n = input_output.dimension(0);
+        const TensorIdx m = input_output.dimension(1);
 
         fftw_complex *in = nullptr;
-        int direction = fftDirection == FFT_FORWARD ? FFTW_FORWARD : FFTW_BACKWARD;
+        const int direction = fftDirection == FFT_FORWARD ? FFTW_FORWARD : FFTW_BACKWARD;
 
         in = reinterpret_cast<fftw_complex *>(input_output.data());
 
@@ -174,12 +174,12 @@ namespace fftcore
     void fftwFFT<FloatingType>::fft(CTensor_3D& input_output, FFTDirection fftDirection) const
     {
 
-        int n = input_output.dimension(0);
-        int m = input_output.dimension(1);
-        int l = input_output.dimension(2);
+        const TensorIdx n = input_output.dimension(0);
+        const TensorIdx m = input_output.dimension(1);
+        const TensorIdx l = input_output.dimension(2);
 
         fftw_complex *in = nullptr;
-        int direction = fftDirection == FFT_FORWARD ? FFTW_FORWARD : FFTW_BACKWARD;
+        const int direction = fftDirection == FFT_FORWARD ? FFTW_FORWARD : FFTW_BACKWARD;
 
         in = reinterpret_cast<fftw_complex *>(input_output.data());
 

@@ -22,6 +22,9 @@ namespace fftcore{
         public:
         NotSupportedException(const std::string& message): std::runtime_error(message) {}
     };
+
+    //Type for tensor sizes and indices
+    using TensorIdx = Eigen::Index;
 }
 
 #endif //FFTDATATYPES_HPP

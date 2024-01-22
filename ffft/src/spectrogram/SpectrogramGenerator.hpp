@@ -40,13 +40,13 @@ namespace spectrogram{
                  * @param frame_step The step between two consecutive frames, in samples. It default to frame_lenght.
                  * @param pad_end If false, the last frame is discarded if it lies partially outside the signal. If true, the last frame is padded with zeros to match the frame lenght.
                 */
-            void load_audio(CTensor_1D &signal, unsigned int frame_lenght, unsigned int frame_step = 0, bool pad_end = false);
+            void load_audio(CTensor_1D &signal, TensorIdx frame_lenght, TensorIdx frame_step = 0, bool pad_end = false);
 
             /**
              * @brief Loads the signal from a .wav file. It relies on the AudioFile external header.
              * @param filename The path to the .wav file.
             */
-            void load_audio(std::filesystem::path filename, unsigned int frame_lenght, unsigned int frame_step = 0, bool pad_end = false);
+            void load_audio(std::filesystem::path filename, TensorIdx frame_lenght, TensorIdx frame_step = 0, bool pad_end = false);
 
             /**
              * @brief Computes the spectrogram from the loaded signal. All the spectrograms are stored in a vector inside the generator.
@@ -68,8 +68,8 @@ namespace spectrogram{
         private:
 
             //current parameters
-            unsigned int _signal_lenght, _frame_lenght;
-            unsigned int _num_frames;
+            TensorIdx _signal_lenght, _frame_lenght;
+            TensorIdx _num_frames;
 
             // FFT solver
             FFTSolver<1, FloatingType> _fft_solver;
@@ -84,9 +84,9 @@ namespace spectrogram{
     };
 
     template<class FFTStrategy>
-    void SpectrogramGenerator<FFTStrategy>::load_audio(CTensor_1D &signal, unsigned int frame_lenght, unsigned int frame_step, bool pad_end){
+    void SpectrogramGenerator<FFTStrategy>::load_audio(CTensor_1D &signal, TensorIdx frame_lenght, TensorIdx frame_step, bool pad_end){
 
-        unsigned int signal_lenght = signal.get_tensor().size();
+        TensorIdx signal_lenght = signal.get_tensor().size();
 
         //if frame_step is not specified, it is set to frame_lenght
         if(frame_step == 0){
@@ -98,19 +98,19 @@ namespace spectrogram{
         assert(frame_lenght >= frame_step && "Frame lenght must be greater than frame step");
 
         //compute the number of frames(excluding the last one if pad_end is false)
-        unsigned int num_frames = (signal_lenght - frame_lenght) / frame_step + 1;
+        TensorIdx num_frames = (signal_lenght - frame_lenght) / frame_step + 1;
         
         //clear the data vector and reserve space for the frames
         _transform_buffer.clear();
         _transform_buffer.reserve(num_frames);
 
         //load the frames into the data vector
-        for(unsigned int i = 0; i < num_frames; i++){
+        for(TensorIdx i = 0; i < num_frames; i++){
             _transform_buffer.push_back(Frame_t(signal, frame_lenght, frame_step, i));
         }
 
         //if pad_end is true, the last frame is loaded separately
-        unsigned int last_frame_start = num_frames * frame_step;
+        TensorIdx last_frame_start = num_frames * frame_step;
         if(pad_end && last_frame_start < signal_lenght){
             _transform_buffer.push_back(Frame_t(signal, frame_lenght, last_frame_start));
             num_frames++;
@@ -125,7 +125,7 @@ namespace spectrogram{
     }
 
     template<class FFTStrategy>
-    void SpectrogramGenerator<FFTStrategy>::load_audio(std::filesystem::path filename, unsigned int frame_lenght, unsigned int frame_step, bool pad_end){
+    void SpectrogramGenerator<FFTStrategy>::load_audio(std::filesystem::path filename, TensorIdx frame_lenght, TensorIdx frame_step, bool pad_end){
 
         using Complex = std::complex<FloatingType>;
 
@@ -143,7 +143,7 @@ namespace spectrogram{
 
         //convert to 1D tensor
         CTensor_1D signal(audio_file.getNumSamplesPerChannel());
-        for(unsigned int i = 0; i < signal.get_tensor().size(); i++){
+        for(TensorIdx i = 0; i < signal.get_tensor().size(); i++){
             signal.get_tensor()(i) = Complex(audio_file.samples[0][i], 0);
         }
 
@@ -157,7 +157,7 @@ namespace spectrogram{
         assert(_is_loaded && "No signal loaded");
 
         //for slicing with Eigen
-        using Index1D = std::array<Eigen::Index, 1>;
+        using Index1D = std::array<TensorIdx, 1>;
 
         //compute the FFT of each frame
         for(auto &frame : _transform_buffer){
@@ -173,7 +173,7 @@ namespace spectrogram{
         //copy the FFT results into the spectrogram and square the absolute value to get the power spectrum 
         Index1D offset = {0};
         Index1D extent = {num_bins};
-        for(unsigned int i = 0; i < _num_frames; i++){
+        for(TensorIdx i = 0; i < _num_frames; i++){
             spectrogram.get_tensor().chip(i, 1) = _transform_buffer[i].get_tensor().slice(offset, extent).abs().square();
         }
 

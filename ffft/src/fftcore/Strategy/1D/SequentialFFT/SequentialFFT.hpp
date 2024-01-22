@@ -51,7 +51,8 @@ namespace fftcore{
     {
 
         using Complex = std::complex<FloatingType>;
-        const Eigen::Index n = input_output.size();
+
+        const TensorIdx n = input_output.size();
         assert(!(n & (n - 1)) && "FFT length must be a power of 2.");
 
         const unsigned int log2n = std::log2(n);
@@ -65,7 +66,7 @@ namespace fftcore{
         FFTUtils::bit_reversal_permutation(input_output);
 
         Complex w, wm, t, u;
-        Eigen::Index m, m2;
+        TensorIdx m, m2;
         // Cooley-Tukey iterative FFT
         for (unsigned int s = 1; s <= log2n; ++s)
         {
@@ -73,10 +74,10 @@ namespace fftcore{
             m2 = m >> 1; // m2 = m/2 -1
             wm = exp(Complex(0, -2 * M_PI / m)); // w_m = e^(-2*pi/m)
 
-            for(Eigen::Index k = 0; k < n; k += m)
+            for(TensorIdx k = 0; k < n; k += m)
             {
                 w = Complex(1, 0);
-                for(Eigen::Index j = 0; j < m2; ++j)
+                for(TensorIdx j = 0; j < m2; ++j)
                 {
                     t = w * input_output[k + j + m2];
                     u = input_output[k + j];

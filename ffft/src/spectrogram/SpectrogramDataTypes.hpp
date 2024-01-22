@@ -28,7 +28,7 @@ namespace spectrogram{
             /**
              * @brief Constructor for frames that lie completely inside the signal. If pad_end is false, only this constructor should be called.
             */
-            Frame(CTensorBase<1, FloatingType> &signal, unsigned int frame_lenght, unsigned int frame_step, unsigned int frame_index) : CTensorBase<1, FloatingType>(frame_lenght){
+            Frame(CTensorBase<1, FloatingType> &signal, TensorIdx frame_lenght, TensorIdx frame_step, TensorIdx frame_index) : CTensorBase<1, FloatingType>(frame_lenght){
 
                 Index1D offset = {frame_index * frame_step};
                 Index1D extent = {frame_lenght};
@@ -40,9 +40,9 @@ namespace spectrogram{
              * @brief Constructor for frames that lie partially outside the signal. If pad_end is true, this constructor is called for the last frame. 
              * @note The last frame is padded with zeros to the right to match the frame lenght (the base constructor initializes the tensor with zeros)
             */
-            Frame(CTensorBase<1, FloatingType> &signal, unsigned int frame_lenght, unsigned int last_frame_start) : CTensorBase<1, FloatingType>(frame_lenght){
+            Frame(CTensorBase<1, FloatingType> &signal, TensorIdx frame_lenght, TensorIdx last_frame_start) : CTensorBase<1, FloatingType>(frame_lenght){
 
-                unsigned int last_frame_lenght = signal.get_tensor().size() - last_frame_start;
+                TensorIdx last_frame_lenght = signal.get_tensor().size() - last_frame_start;
 
                 memcpy(this->get_tensor().data(), signal.get_tensor().data() + last_frame_start, last_frame_lenght * sizeof(FloatingType));
             
@@ -58,7 +58,7 @@ namespace spectrogram{
     class Spectrogram{
 
         public:
-            Spectrogram(unsigned int num_frames, unsigned int frame_lenght) : _tensor(Eigen::Tensor<FloatingType, 2>(num_frames, frame_lenght)){};
+            Spectrogram(TensorIdx num_frames, TensorIdx frame_lenght) : _tensor(Eigen::Tensor<FloatingType, 2>(num_frames, frame_lenght)){};
 
             void write_to_file(std::filesystem::path filename) const;
 
@@ -83,8 +83,8 @@ namespace spectrogram{
 
             file << _tensor.dimension(0) << " " << _tensor.dimension(1) << std::endl;
 
-            for(int i = 0; i < _tensor.dimension(0); i++){
-                for(int j = 0; j < _tensor.dimension(1); j++){
+            for(TensorIdx i = 0; i < _tensor.dimension(0); i++){
+                for(TensorIdx j = 0; j < _tensor.dimension(1); j++){
                     file << _tensor(i, j) << " ";
                 }
                 file << std::endl;
