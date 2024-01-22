@@ -3,6 +3,5 @@
 
 int main(int argc, char *argv[]){
 
-    test_fft<CudaStockhamFFT<double>, fftwFFT<double>>(argv);
-
+    test_fft<1, CudaStockhamFFT<>, fftwFFT<>>(argc, argv);
 }

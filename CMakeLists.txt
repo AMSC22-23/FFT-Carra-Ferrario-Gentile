@@ -105,7 +105,7 @@ target_include_directories(test_MPI_3D.out PUBLIC
                           "${PROJECT_SOURCE_DIR}/ffft/include"
                           )
 # CUDA
-#find_package(CUDA)
+find_package(CUDA)
 if(CUDA_FOUND)
     enable_language(CUDA) #enable NVCC compiler
     
