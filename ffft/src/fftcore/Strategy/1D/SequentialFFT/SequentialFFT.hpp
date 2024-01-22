@@ -9,6 +9,11 @@
 using namespace std;
 namespace fftcore{
 
+    /**
+     * @brief Sequential implementation of the 1 dimensional FFT using Cooley-Tuckey algorithm
+     *      
+     * @author: Lorenzo Gentile, Daniele Ferrario
+     */
     template<typename FloatingType = double>
     class SequentialFFT : public FFT_1D<FloatingType>
     {

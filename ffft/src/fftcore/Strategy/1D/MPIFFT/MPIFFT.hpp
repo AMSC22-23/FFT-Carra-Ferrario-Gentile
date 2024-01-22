@@ -14,6 +14,11 @@
 using namespace fftcore;
 using namespace std;
 
+/**
+ * @brief MPI implementation of the 1 dimensional FFT
+ * 
+ * @author Daniele Ferrario
+*/
 template <typename FloatingType = double>
 class MPIFFT : public FFT_1D<FloatingType>
 {

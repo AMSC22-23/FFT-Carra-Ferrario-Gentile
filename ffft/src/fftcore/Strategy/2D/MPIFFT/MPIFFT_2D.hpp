@@ -13,7 +13,9 @@ using namespace fftcore;
 using namespace std;
 
 /**
- * @brief MPIFFT_2D strategy simply executes the fft 
+ * @brief MPI implementation of the 2 dimensional FFT
+ * 
+ * MPIFFT_2D strategy simply executes the fft 
  * on every row of the input matrix, and then on every column, using
  * one dimensional MPIFFT strategy.
  * 

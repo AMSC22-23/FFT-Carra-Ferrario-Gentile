@@ -8,6 +8,11 @@
 using namespace std;
 namespace fftcore{
 
+    /**
+     * @brief Sequential implementation of the 3 dimensional FFT using Cooley-Tukey algorithm and Eigen chip method
+     *
+     * @author Edoardo Carrà
+     */
     template<typename FloatingType = double>
     class SequentialFFT_3D : public FFT_3D<FloatingType>
     {

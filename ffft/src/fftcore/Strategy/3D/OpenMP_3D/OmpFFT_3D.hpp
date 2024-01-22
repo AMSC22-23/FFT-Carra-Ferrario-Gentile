@@ -9,6 +9,11 @@
 using namespace std;
 namespace fftcore{
 
+    /**
+     * @brief OpenMP implementation of the 3 dimensional FFT
+     * 
+     * @author Edoardo Carrà
+     */
     template<typename FloatingType = double>
     class OmpFFT_3D : public FFT_3D<FloatingType>
     {

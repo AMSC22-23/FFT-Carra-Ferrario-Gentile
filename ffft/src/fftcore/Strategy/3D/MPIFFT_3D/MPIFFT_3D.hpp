@@ -13,7 +13,9 @@ using namespace fftcore;
 using namespace std;
 
 /**
- * @brief MPIFFT_3D strategy simply executes the 2D fft 
+ * @brief MPI implementation of the 3 dimensional FFT
+ * 
+ * MPIFFT_3D strategy simply executes the 2D fft 
  * on every slice of the input tensor.
  * 
  * @author Daniele Ferrario 

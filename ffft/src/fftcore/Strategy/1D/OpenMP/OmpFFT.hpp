@@ -9,6 +9,11 @@
 
 namespace fftcore{
 
+    /**
+     * @brief OpenMP implementation of the 1 dimensional FFT 
+     * 
+     * @author Edoardo Carrà
+    */
     template<typename FloatingType = double>
     class OmpFFT:
     public FFT_1D<FloatingType>{

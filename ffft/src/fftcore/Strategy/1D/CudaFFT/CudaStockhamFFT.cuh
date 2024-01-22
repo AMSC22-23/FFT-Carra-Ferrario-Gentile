@@ -38,7 +38,7 @@ namespace fftcore
 {
 
     /**
-     * @brief This class implements a version of the Stockham FFT algorithm on the GPU.
+     * @brief CUDA implementation of the 1 dimensional FFT using Stockham algorithm
      * @details The algorithm is a radix-2 decimation-in-time (DIT) FFT. It avoids the bit reversal step, which is inherently cache unfriendly, at the cost of a more complex indexing scheme and the need for a temporary buffer. It achieves a better performance than the Cooley-Tukey algorithm on the GPU for large input sizes.
      * @todo Implement precomputation of twiddle factors in constant memory.
      * @author Lorenzo Gentile

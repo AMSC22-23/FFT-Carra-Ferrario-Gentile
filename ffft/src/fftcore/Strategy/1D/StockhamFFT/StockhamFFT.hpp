@@ -9,7 +9,7 @@ using namespace std;
 namespace fftcore{
 
     /**
-     * @brief This class provides a sequential FFT implementation based on the Stockham algorithm.
+     * @brief Sequential implementation of the 1 dimensional FFT using Stockham algorithm
      * The Stockham algorithm is a variation of the traditional Cooley-Tukey algorithm, with the advantage of avoiding the bit reversal step. Only 1D FFTs are supported for now.
      * @todo Implement R2C transform
      * @author Lorenzo Gentile

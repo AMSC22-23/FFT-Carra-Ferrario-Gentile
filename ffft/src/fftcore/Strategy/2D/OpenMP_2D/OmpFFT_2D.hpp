@@ -10,6 +10,11 @@
 using namespace std;
 namespace fftcore{
 
+    /**
+     * @brief OpenMP implementation of the 2 Dimensional FFT 
+     * 
+     * @author Edoardo Carrà
+    */
     template<typename FloatingType = double>
     class OmpFFT_2D : public FFT_2D<FloatingType>
     {

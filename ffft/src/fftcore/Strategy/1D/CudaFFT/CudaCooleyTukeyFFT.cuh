@@ -28,7 +28,8 @@ __global__ void d_butterfly_kernel_cooleytukey(ComplexCuda<FloatingType> * __res
 namespace fftcore
 {   
     /**
-     * @brief This class implements a version of Cooley-Tukey 1-D FFT algorithm in CUDA.
+     * /**
+     * @brief CUDA implementation of the 1 dimensional FFT using Cooley-Tuckey algorithm
      * @details The algorithm is a radix-2 decimation-in-time (DIT) FFT. It needs a bit reversal permutation of the input data, and when called in inverse mode it computes the roots of unity with opposite sign.
      * @todo Implement precomputation of twiddle factors in constant memory.
      * @author Lorenzo Gentile
