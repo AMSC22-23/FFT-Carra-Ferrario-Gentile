@@ -95,6 +95,16 @@ target_include_directories(test_MPI_2D.out PUBLIC
                           "${PROJECT_SOURCE_DIR}/ffft/include"
                           )
 
+# MPI_OMP_2D
+# Define executable target
+add_executable(test_MPI_OMP_2D.out test/2D/MPI_OMP_2D/test_MPI_OMP_2D.cpp)
+# link the library to link to the executable
+target_link_libraries(test_MPI_OMP_2D.out PUBLIC FFFT)
+# specify the library's header file location
+target_include_directories(test_MPI_OMP_2D.out PUBLIC
+                          "${PROJECT_SOURCE_DIR}/ffft/include"
+                          )
+
 # MPI_3D
 # Define executable target
 add_executable(test_MPI_3D.out test/3D/MPI_3D/test_MPI_3D.cpp)
@@ -157,10 +167,10 @@ target_include_directories(spectrogram.out PUBLIC
                           "${PROJECT_SOURCE_DIR}/ffft/include"
                           )
 
-add_executable(test.out sandbox/ferra_sandbox/test.cpp)
+#add_executable(test.out sandbox/ferra_sandbox/test.cpp)
 # link the library to link to the executable
-target_link_libraries(test.out PUBLIC FFFT)
+#target_link_libraries(test.out PUBLIC FFFT)
 # specify the library's header file location
-target_include_directories(test.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )
+#target_include_directories(test.out PUBLIC
+#                         "${PROJECT_SOURCE_DIR}/ffft/include"
+#                          )

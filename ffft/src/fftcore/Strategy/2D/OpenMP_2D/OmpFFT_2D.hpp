@@ -72,7 +72,7 @@ namespace fftcore{
             assert(!(dimensions[i] & (dimensions[i] - 1)) && "All dimensions of the input must be a power of 2.");
         }
 
-         //conjugate if inverse
+        //conjugate if inverse
         if(fftDirection == FFT_INVERSE){            
             FFTUtils::conjugate(input_output);
         }
