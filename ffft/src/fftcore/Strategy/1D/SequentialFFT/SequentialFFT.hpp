@@ -10,7 +10,7 @@ using namespace std;
 namespace fftcore{
 
     /**
-     * @brief Sequential implementation of the 1 dimensional FFT using Cooley-Tuckey algorithm
+     * @brief Sequential implementation of the 1 dimensional FFT using Cooley-Tukey algorithm
      *      
      * @author: Lorenzo Gentile, Daniele Ferrario
      */

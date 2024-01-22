@@ -44,7 +44,7 @@ namespace fftcore{
     };
 
     /**
-     * This computes the FFT in 3 dimensions using Cooley-Tuckey algorithm. The code may be tortuous, but 
+     * This computes the FFT in 3 dimensions using Cooley-Tukey algorithm. The code may be tortuous, but 
      * does not require any kind of overlay to acess data. The algorithm follows the following
      * steps considering the orientation (x,y,z) of the tensor:
      * 1) For all the couples (y,z) compute all the one-dimensional structures along the x-dimension:

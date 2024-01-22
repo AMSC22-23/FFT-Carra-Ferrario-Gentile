@@ -45,9 +45,9 @@ namespace fftcore{
     };
 
     /**
-     * This compute FFT in 2 dimensions using Cooley-Tuckey algorithm using OpenMP. The algorithm follows the following
+     * This compute FFT in 2 dimensions using Cooley-Tukey algorithm using OpenMP. The algorithm follows the following
      * steps:
-     * - First, the rows are transformed using the Cooley-Tuckey algorithm for one dimensional data. This first
+     * - First, the rows are transformed using the Cooley-Tukey algorithm for one dimensional data. This first
      *   step is performed in row-major order. Each thread computes independently a subset of rows. 
      * - Second, the columns are transformed, accessing the elements in column-major order.
      *   Each thread computes independently a subset of columns. 

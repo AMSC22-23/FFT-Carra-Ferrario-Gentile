@@ -9,7 +9,7 @@ using namespace std;
 namespace fftcore{
 
     /**
-     * @brief Sequential implementation of the 2 dimensional FFT using Cooley-Tuckey algorithm
+     * @brief Sequential implementation of the 2 dimensional FFT using Cooley-Tukey algorithm
      * 
      * @author Edoardo Carrà
     */
@@ -43,9 +43,9 @@ namespace fftcore{
     };
 
     /**
-     * This compute FFT in 2 dimensions using Cooley-Tuckey algorithm. The algorithm follows the following
+     * This compute FFT in 2 dimensions using Cooley-Tukey algorithm. The algorithm follows the following
      * steps:
-     * - First, the rows are transformed using the Cooley-Tuckey algorithm for one dimensional data. This first
+     * - First, the rows are transformed using the Cooley-Tukey algorithm for one dimensional data. This first
      *   step is performed in row-major order.
      * - Second, the columns are transformed, accessing the elements in column-major order.
      *  

@@ -29,9 +29,9 @@ The library is designed to be fast and easy to use. Here is a simple example of 
 #include "ffft.hpp"
 ```
 
-2. Create a solver and assign it to a strategy, which in this case is the Cooley-Tuckey sequential FFT for two dimensional objects working with double: 
+2. Create a solver and assign it to a strategy, which in this case is the Cooley-Tukey sequential FFT for two dimensional objects working with double: 
 ```c++
-FFTSolver<2, double> solver(std::make_unique<SequentialFFT_2D>());
+FFTSolver<2, double> solver(std::make_unique<SequentialFFT_2D<double>>());
  ```
 
 3. Create and initialize randomly the structure to store the two-dimensional data of size 3x4, using the default wrapper provided by the library:

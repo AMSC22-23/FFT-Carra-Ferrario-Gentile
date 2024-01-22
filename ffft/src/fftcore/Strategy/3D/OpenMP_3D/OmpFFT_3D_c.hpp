@@ -44,7 +44,7 @@ namespace fftcore{
     };
 
     /**
-     * This computes the FFT in 3 dimensions using Cooley-Tuckey algorithm. The method using Eigen::tensor's .chip()
+     * This computes the FFT in 3 dimensions using Cooley-Tukey algorithm. The method using Eigen::tensor's .chip()
      * method to obtain the appropriate view of both the plane and the one dimensional line to transform.
      * While this approach leads to a more comprehensive code structure, it is less efficient.
      *  

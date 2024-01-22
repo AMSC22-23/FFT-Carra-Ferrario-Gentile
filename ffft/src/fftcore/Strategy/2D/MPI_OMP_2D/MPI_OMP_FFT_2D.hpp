@@ -101,7 +101,7 @@ namespace fftcore{
      *             +---+---+---+---+
      *              
      *          2) Transformation: using OmpFFT strategy for computing 1 dimensional data, each column is transformed using 
-     *             Cooley-Tuckey algorithm.
+     *             Cooley-Tukey algorithm.
      * 
      *              In the previous example, each MPI process will compute four 1 dimensional fft using omp.
      * 
@@ -122,7 +122,7 @@ namespace fftcore{
      *             
      *              
      *          2) Transformation: using OmpFFT strategy for computing 1 dimensional data, each row is transformed using 
-     *             Cooley-Tuckey algorithm.
+     *             Cooley-Tukey algorithm.
      * 
      * - FINAL PHASE : each row is gathered by the rank 0 process and saved the global tensor. 
      * 
