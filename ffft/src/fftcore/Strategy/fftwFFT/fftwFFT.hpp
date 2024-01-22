@@ -10,7 +10,9 @@ namespace fftcore
 {
     /**
      * @brief This class provides an FFT implementation based on the FFTW library.
+     * 
      * It is used for benchmarking purposes. It doesn't support R2C in dimensions higher than 1.
+     * 
      * @todo For now R2C has only forward mode. Consider if and how to implement inverse (C2R ?)
      * @author Lorenzo Gentile
      * @date 2023-12-06

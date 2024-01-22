@@ -15,15 +15,26 @@ namespace fftcore{
     template<int Rank, typename FloatingType = double>
 	using RTensorBase = TensorFFTBase<FloatingType, Rank>;
 
-	// FFT_DIRECTION
-	enum FFTDirection{FFT_FORWARD,FFT_INVERSE};
+	/**
+     * @brief Represents the direction of the fft.
+     *   
+     */
+	enum FFTDirection{
+                      FFT_FORWARD, /** Forward FFT direction*/
+                      FFT_INVERSE  /** Inverse FFT direction */
+                      };
 
+    /**
+     * @brief A runtime exception for methods that are not supported yet
+     */
     class NotSupportedException : public std::runtime_error {
         public:
         NotSupportedException(const std::string& message): std::runtime_error(message) {}
     };
 
-    //Type for tensor sizes and indices
+    /**
+     * Type for tensor sizes and indices
+     */
     using TensorIdx = Eigen::Index;
 }
 
