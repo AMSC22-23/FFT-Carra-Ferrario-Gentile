@@ -156,11 +156,3 @@ target_link_libraries(spectrogram.out PUBLIC FFFT)
 target_include_directories(spectrogram.out PUBLIC
                           "${PROJECT_SOURCE_DIR}/ffft/include"
                           )
-
-add_executable(test.out sandbox/ferra_sandbox/test.cpp)
-# link the library to link to the executable
-target_link_libraries(test.out PUBLIC FFFT)
-# specify the library's header file location
-target_include_directories(test.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )
