@@ -77,24 +77,33 @@ namespace spectrogram{
     void Spectrogram<FloatingType>::write_to_file(std::filesystem::path filename) const{
 
         std::ofstream file(filename);
+        if(!file.is_open()){
+            std::cerr << "Unable to open file " << filename << std::endl;
+            return;
+        }
+
         file << std::scientific << std::setprecision(2);
 
-        if(file.is_open()){
+        // Reserve output buffer
+        std::ostringstream oss;
+        oss << std::scientific << std::setprecision(2);
 
-            file << _tensor.dimension(0) << " " << _tensor.dimension(1) << std::endl;
+        // Write dimensions
+        oss << _tensor.dimension(0) << " " << _tensor.dimension(1) << "\n";
 
-            for(TensorIdx i = 0; i < _tensor.dimension(0); i++){
-                for(TensorIdx j = 0; j < _tensor.dimension(1); j++){
-                    file << _tensor(i, j) << " ";
-                }
-                file << std::endl;
+        // Write data
+        for(TensorIdx i = 0; i < _tensor.dimension(0); i++){
+            for(TensorIdx j = 0; j < _tensor.dimension(1); j++){
+                oss << _tensor(i, j) << " ";
             }
-            file.close();
-            std::cout << "Spectrogram written to file " << filename << std::endl;
+            oss << "\n";
         }
-        else{
-            std::cerr << "Unable to open file " << filename << std::endl;
-        }
+
+        // Write the accumulated string to file in one go
+        file << oss.str();
+        file.close();
+
+        std::cout << "Spectrogram written to file " << filename << std::endl;
     }
 }
 
