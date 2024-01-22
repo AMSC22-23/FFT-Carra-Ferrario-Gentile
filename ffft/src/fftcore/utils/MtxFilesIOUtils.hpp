@@ -11,7 +11,7 @@
 namespace fftcore{
     namespace utils {
 
-        std::vector<std::string> split_str_by_whitespace(const std::string& input) {
+        inline std::vector<std::string> split_str_by_whitespace(const std::string& input) {
             std::istringstream iss(input);
             std::vector<std::string> result;
 
@@ -28,7 +28,7 @@ namespace fftcore{
          * Load into params the properties of the data inside the mtx file.
          * @return false if the header is incorrect or incomplete, true in the other case.
         */
-        bool load_mtx_tensor_file_settings(const std::string &header, bool &is_complex_data, bool is_symmetric){
+        inline bool load_mtx_tensor_file_settings(const std::string &header, bool &is_complex_data, bool is_symmetric){
 
             std::string help_header_template = "The header of the matrix file should match this template:\n%%MatrixMarket tensor coordinate <real/complex> <general/symmetric>\n";
             
@@ -82,7 +82,7 @@ namespace fftcore{
         }
 
         template<typename DataType, int Rank>
-        void tensor_set_value(Eigen::Tensor<DataType, Rank>& tensor, std::vector<int> coordinates, std::vector<std::string> str_values){
+        inline void tensor_set_value(Eigen::Tensor<DataType, Rank>& tensor, std::vector<int> coordinates, std::vector<std::string> str_values){
             bool num_of_entries_check = str_values.size() == (Rank + 1);
             assert(num_of_entries_check && "Error: real data is incomplete or badly formatted.");
 
@@ -95,7 +95,7 @@ namespace fftcore{
         }
 
         template<typename DataType, int Rank>
-        void tensor_set_value(Eigen::Tensor<std::complex<DataType>, Rank>& tensor, std::vector<int> coordinates, std::vector<std::string> str_values){
+        inline void tensor_set_value(Eigen::Tensor<std::complex<DataType>, Rank>& tensor, std::vector<int> coordinates, std::vector<std::string> str_values){
             bool num_of_entries_check = str_values.size() == Rank + 2;
             assert(num_of_entries_check && "Error: complex data is incomplete or badly formatted.");
 

@@ -1,10 +1,11 @@
 #ifndef MTXFILESIO_HPP
 #define MTXFILESIO_HPP
 
-#include<unsupported/Eigen/SparseExtra>
+#include <unsupported/Eigen/SparseExtra>
 #include <Eigen/Sparse>
 #include <Eigen/Dense>
 #include <unsupported/Eigen/CXX11/Tensor>
+
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -58,10 +59,10 @@ namespace fftcore{
         template<typename DataType, int Rank>
         void load_tensor_mtx(Eigen::Tensor<DataType, Rank> &tensor, const std::string &path){
 
-            ifstream input_file(path);
-            string line;
+            std::ifstream input_file(path);
+            std::string line;
             if(!input_file.is_open()){
-                std::cerr << "Could not open the file at '" << path << "'." << endl;  
+                std::cerr << "Could not open the file at '" << path << "'." << std::endl;  
             }
 
 
@@ -78,16 +79,16 @@ namespace fftcore{
             int nnz_count = 0; // Actual number
 
             // Size of each dimension
-            vector<long> dim_sizes;
+            std::vector<long> dim_sizes;
             
             // Sub string values for each line
-            vector<string> str_values;
+            std::vector<std::string> str_values;
 
             // Current line coordinates
-            vector<int> current_coordinates;
+            std::vector<int> current_coordinates;
 
             // HEADER CHECK    
-            getline(input_file, line);
+            std::getline(input_file, line);
             if(!fftcore::utils::load_mtx_tensor_file_settings(line, is_complex_data, is_symmetric)){
                 return;
             }
@@ -96,7 +97,7 @@ namespace fftcore{
             assert(are_complex_data_check && "Error: file data type doesn't match the provided data structure.");
 
             // DATA LOADING
-            while(getline(input_file, line)){
+            while(std::getline(input_file, line)){
                 
                 
                 str_values = fftcore::utils::split_str_by_whitespace(line);
@@ -112,11 +113,11 @@ namespace fftcore{
                     
                     // Set the dimension sizes
                     for(int i=0; i<str_values.size()-1; i++){
-                        dim_sizes.push_back(stol(str_values[i]));
+                        dim_sizes.push_back(std::stol(str_values[i]));
                     }
 
                     // Set the target nnz entries to load
-                    nnz_header = stoi(str_values.at(str_values.size()-1));   
+                    nnz_header = std::stoi(str_values.at(str_values.size()-1));   
 
                     // Calculating the total tensor size (dim1*dim2*...dimn)
                     int total_tensor_size = 1;
