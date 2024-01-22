@@ -1,55 +1,42 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import sys
 import os
-import glob
+import sys
+import matplotlib.pyplot as plt
+import numpy as np
 
-def read_matrix_from_file(file_path):
-    with open(file_path, 'r') as file:
-        # Read the first line to get the dimensions
-        rows, cols = map(int, file.readline().strip().split())
+# Check if a directory path is provided
+if len(sys.argv) != 2:
+    print("Usage: python plot_spectrograms.py <path_to_directory>")
+    sys.exit(1)
 
-        # Read the rest of the lines into a 2D list
-        matrix = [list(map(float, line.strip().split())) for line in file]
+# Get the directory path from the command line argument
+directory_path = sys.argv[1]
 
-    return np.array(matrix), rows, cols
+# Function to plot a single spectrogram
+def plot_spectrogram(data, nrows, ncols, filename):
+    # Create a new figure for the spectrogram
+    fig, ax = plt.subplots(figsize=(10, 5))
+    # Compute aspect ratio
+    aspect_ratio = ncols / (2 * nrows)
+    # Plot the spectrogram
+    cax = ax.imshow(data, aspect=aspect_ratio, cmap='magma', vmin=0, vmax=30, origin='lower')
+    fig.colorbar(cax, ax=ax)
+    # Save the figure in a specified directory
+    fig.savefig(os.path.join(directory_path, filename), bbox_inches='tight')
+    # Close the figure to prevent overlap with next plots
+    plt.close(fig)
 
-def plot_all_txt_files(directory):
-    # Use glob to match all .txt files in the directory and sort them
-    txt_files = sorted(glob.glob(os.path.join(directory, '*.txt')))
-    num_files = len(txt_files)
-
-    # Calculate the number of rows and columns for the subplot grid
-    num_cols = int(np.ceil(np.sqrt(num_files)))
-    num_rows = int(np.ceil(num_files / num_cols))
-
-    # Create a figure and a set of subplots
-    fig, axes = plt.subplots(num_rows, num_cols, figsize=(15, 15))
-
-    # Flatten the axes array for easy iteration
-    axes = axes.flatten()
-
-    for ax, file_path in zip(axes, txt_files):
-        matrix, rows, cols = read_matrix_from_file(file_path)
-        im = ax.imshow(np.log10(matrix)*20, origin='lower', cmap='jet', aspect='auto', interpolation='gaussian',vmin=0, vmax=20);
-        ax.set_title(os.path.basename(file_path))
-        plt.colorbar(im, ax=ax)
-
-    # Hide any unused subplots
-    for ax in axes[num_files:]:
-        ax.axis('off')
-
-    plt.tight_layout()
-    plt.savefig("test.png")
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python plot_spectrogram.py <directory>")
-        sys.exit(1)
-
-    directory = sys.argv[1]
-    if not os.path.isdir(directory):
-        print("The provided path is not a directory.")
-        sys.exit(1)
-    # Plot the matrices from all .txt files in the specified directory in order
-    plot_all_txt_files(directory)
+# Walk through the directory and read each file
+for idx, filename in enumerate(os.listdir(directory_path)):
+    if filename.endswith('.txt'):
+        filepath = os.path.join(directory_path, filename)
+        with open(filepath, 'r') as f:
+            # Read the first line to get the number of rows and columns
+            nrows, ncols = map(int, f.readline().split())
+            
+            # Read the spectrogram data
+            data = np.array([list(map(float, line.split())) for line in f])
+        
+        # Generate a filename for the PNG
+        png_filename = filename.replace('.txt', '.png')
+        # Plot and save the spectrogram as a PNG
+        plot_spectrogram(data, nrows, ncols, png_filename)

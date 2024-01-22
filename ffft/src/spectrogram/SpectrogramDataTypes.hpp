@@ -3,6 +3,12 @@
 
 #include <fstream>
 #include <iomanip>
+#include <cmath>
+#include <complex>
+#include <array>
+#include <vector>
+#include <filesystem>
+
 #include "../../include/ffft.hpp"
 
 namespace spectrogram{
@@ -54,9 +60,7 @@ namespace spectrogram{
         public:
             Spectrogram(unsigned int num_frames, unsigned int frame_lenght) : _tensor(Eigen::Tensor<FloatingType, 2>(num_frames, frame_lenght)){};
 
-            void write_to_file(std::string filename);
-
-            //void plot(); TODO?
+            void write_to_file(std::filesystem::path filename) const;
 
             Eigen::Tensor<FloatingType, 2>& get_tensor() { return _tensor; };
         private:
@@ -70,7 +74,7 @@ namespace spectrogram{
      * @param filename The name of the file to write to.
     */
     template<typename FloatingType>
-    void Spectrogram<FloatingType>::write_to_file(std::string filename){
+    void Spectrogram<FloatingType>::write_to_file(std::filesystem::path filename) const{
 
         std::ofstream file(filename);
         file << std::scientific << std::setprecision(2);
