@@ -33,12 +33,12 @@ namespace fftcore{
 
 
     template<typename FloatingType>
-    void OmpFFT<FloatingType>::fft(const CTensor_1D& input, CTensor_1D& output, FFTDirection) const {
+    void OmpFFT<FloatingType>::fft(const CTensor_1D& /*input*/, CTensor_1D& /*output*/, FFTDirection) const {
         throw NotSupportedException("Operation is not supported");
     };
 
     template<typename FloatingType>
-    void OmpFFT<FloatingType>::fft(const RTensor_1D&, CTensor_1D&, FFTDirection) const {
+    void OmpFFT<FloatingType>::fft(const RTensor_1D& /*input*/, CTensor_1D& /*output*/, FFTDirection) const {
         throw NotSupportedException("Operation is not supported");
     };
 

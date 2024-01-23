@@ -42,13 +42,13 @@ namespace fftcore{
     template <typename FloatingType>
     void MPIFFT<FloatingType>::fft(const CTensor_1D &input, CTensor_1D &output, FFTDirection) const
     {
-        std::cout << "fft 1-d C-C out-of-place" << std::endl;
+        throw NotSupportedException("Out-of-place 1-D FFT is not supported yet.");
     };
 
     template <typename FloatingType>
-    void MPIFFT<FloatingType>::fft(const RTensor_1D &, CTensor_1D &, FFTDirection) const
+    void MPIFFT<FloatingType>::fft(const RTensor_1D & /*input*/, CTensor_1D & /*output*/, FFTDirection) const
     {
-        std::cout << "fft 1-d R-C out-of-place" << std::endl;
+        throw NotSupportedException("Real to complex 1-D FFT is not supported yet.");
     };
 
     /**

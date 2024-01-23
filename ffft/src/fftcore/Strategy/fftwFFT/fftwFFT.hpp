@@ -11,9 +11,8 @@ namespace fftcore
     /**
      * @brief This class provides an FFT implementation based on the FFTW library.
      * 
-     * It is used for benchmarking purposes. It doesn't support R2C in dimensions higher than 1.
+     * It is used for benchmarking purposes. It doesn't support R2C.
      * 
-     * @todo For now R2C has only forward mode. Consider if and how to implement inverse (C2R ?)
      * @author Lorenzo Gentile
      * @date 2023-12-06
     */
@@ -166,10 +165,9 @@ namespace fftcore
     };
 
     template <typename FloatingType>
-    void fftwFFT<FloatingType>::fft(const RTensor_3D &input, CTensor_3D &output, FFTDirection fftDirection) const
+    void fftwFFT<FloatingType>::fft(const RTensor_3D &/*input*/, CTensor_3D &/*output*/, FFTDirection /*fftDirection*/) const
     {
-        memcpy(output.data(), input.data(), input.size() * sizeof(Complex));
-        fft(output, fftDirection);
+        throw NotSupportedException("Operation is not supported");
     };
 
     template <typename FloatingType>
