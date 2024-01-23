@@ -7,7 +7,6 @@
 #define FRAMES_PER_BUFFER (2048)
 #define NUM_SECONDS     (3)
 #define NUM_CHANNELS    (2)
-#define DITHER_FLAG     (0) 
 
 
 /* Select sample format. */
@@ -35,18 +34,20 @@ namespace zazamrealtime{
         public:
             void record(std::vector<Scalar> &audio_output);
         private:
+
             static int record_callback(const void *inputBuffer, void *outputBuffer,
                             unsigned long framesPerBuffer,
                             const PaStreamCallbackTimeInfo* timeInfo,
                             PaStreamCallbackFlags statusFlags,
                             void *userData);
 
+            void finalize(const paTestData &data, const PaError &err);
     };
 
     template<typename Scalar>
     void Recorder<Scalar>::record(std::vector<Scalar> &audio_output){
-        PaStreamParameters  inputParameters,
-                        outputParameters;
+
+        PaStreamParameters  inputParameters, outputParameters;
         PaStream*           stream;
         PaError             err = paNoError;
         paTestData          data;
@@ -57,27 +58,32 @@ namespace zazamrealtime{
         SAMPLE              max, val;
         double              average;
 
-        printf("patest_record.c\n"); fflush(stdout);
-
         data.maxFrameIndex = totalFrames = NUM_SECONDS * SAMPLE_RATE; /* Record for a few seconds. */
         data.frameIndex = 0;
         numSamples = totalFrames * NUM_CHANNELS;
         numBytes = numSamples * sizeof(SAMPLE);
         data.recordedSamples = (SAMPLE *) malloc( numBytes ); /* From now on, recordedSamples is initialised. */
+
         if( data.recordedSamples == NULL )
         {
             printf("Could not allocate record array.\n");
-            goto done;
+            finalize(data, err);
+            return; 
         }
+
         for( i=0; i<numSamples; i++ ) data.recordedSamples[i] = 0;
 
         err = Pa_Initialize();
-        if( err != paNoError ) goto done;
+        if( err != paNoError ){
+            finalize(data, err);
+            return; 
+        }
 
         inputParameters.device = Pa_GetDefaultInputDevice(); /* default input device */
         if (inputParameters.device == paNoDevice) {
             fprintf(stderr,"Error: No default input device.\n");
-            goto done;
+            finalize(data, err);
+            return; 
         }
         inputParameters.channelCount = 2;                    /* stereo input */
         inputParameters.sampleFormat = PA_SAMPLE_TYPE;
@@ -94,10 +100,19 @@ namespace zazamrealtime{
                 paClipOff,      /* we won't output out of range samples so don't bother clipping them */
                 record_callback,
                 &data );
-        if( err != paNoError ) goto done;
+
+        if( err != paNoError ){ 
+            finalize(data, err);
+            return; 
+        }
 
         err = Pa_StartStream( stream );
-        if( err != paNoError ) goto done;
+
+        if( err != paNoError ){
+            finalize(data, err);
+            return; 
+        }
+
         printf("\n=== Now recording!! Please speak into the microphone. ===\n"); fflush(stdout);
 
         while( ( err = Pa_IsStreamActive( stream ) ) == 1 )
@@ -105,15 +120,28 @@ namespace zazamrealtime{
             Pa_Sleep(1000);
             printf("index = %d\n", data.frameIndex ); fflush(stdout);
         }
-        if( err < 0 ) goto done;
+
+        if( err < 0 ){
+            finalize(data, err);
+            return; 
+        }
 
         err = Pa_CloseStream( stream );
-        if( err != paNoError ) goto done;
+
+        if( err != paNoError ){
+            finalize(data, err);
+            return; 
+        }
 
         audio_output.insert(audio_output.end(), data.recordedSamples, data.recordedSamples+numSamples);
-        
+        finalize(data, err);
         return;
-    done:
+        
+    }   
+
+    template<typename Scalar>
+    void Recorder<Scalar>::finalize(const paTestData &data, const PaError &err){
+
         Pa_Terminate();
         if( data.recordedSamples )       /* Sure it is NULL or valid. */
             free( data.recordedSamples );
@@ -122,12 +150,9 @@ namespace zazamrealtime{
             fprintf( stderr, "An error occurred while using the portaudio stream\n" );
             fprintf( stderr, "Error number: %d\n", err );
             fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
-            err = 1;          /* Always return 0 or 1, but no other return codes. */
         }
-        abort();
 
-    }   
-
+    }
 
     template<typename Scalar>
     int Recorder<Scalar>::record_callback( const void *inputBuffer, void *outputBuffer,

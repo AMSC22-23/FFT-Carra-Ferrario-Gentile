@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <unsupported/Eigen/CXX11/Tensor>
+#include "FFTDataTypes.hpp"
 
 namespace FFTUtils{
 

@@ -8,6 +8,7 @@
 #include "../../ffft/src/fftcore/utils/FFTUtils.hpp"
 #include "../../ffft/src/spectrogram/SpectrogramGenerator.hpp"
 #include "../../ffft/src/spectrogram/SpectrogramDataTypes.hpp"
+#include "../../ffft/include/ffft/fftcore.hpp"
 #include "HashGenerator.hpp"
 
 #include <memory>

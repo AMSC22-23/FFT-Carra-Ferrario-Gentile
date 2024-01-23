@@ -42,11 +42,10 @@ void Sequencer::sequence(MusicTensor<double> &song_tensor, Song &result, std::st
     Matrix_d song_matrix;
 
     // Initialize the FFFT solver
-    FFTSolver<1, double> solver(std::make_unique<OmpFFT<double>>());
     int sequence_window = 1 << 11;
     
     // Calculate spectogram
-    spectrogram::SpectrogramGenerator<fftwFFT<>> spectrogram_generator;
+    spectrogram::SpectrogramGenerator<fftcore::fftwFFT<>> spectrogram_generator;
     spectrogram_generator.load_audio(song_tensor, sequence_window, sequence_window);
     spectrogram_generator.compute_spectrogram();
     auto spectrograms = spectrogram_generator.get_spectrograms(); 

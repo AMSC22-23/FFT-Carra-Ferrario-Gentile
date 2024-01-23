@@ -9,7 +9,7 @@
 #include <vector>
 #include <filesystem>
 
-#include "ffft/fftcore.hpp"
+#include "../../include/ffft/spectrogram.hpp"
 
 namespace spectrogram{
 
