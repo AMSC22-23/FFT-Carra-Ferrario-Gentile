@@ -44,6 +44,8 @@ namespace fftcore{
 
     /**
      * Openmp in-place implementation of Cooley-Tukey algorithm 
+     * 
+     * For more details about the solution, look at the report.
      * @author: Edoardo Carra
     */
     template<typename FloatingType>

@@ -7,8 +7,6 @@
 #include <limits>
 #include <type_traits>
 
-using namespace fftcore; //<-- investgate why removing this line still compiles
-
 namespace spectrogram{
     
     /**

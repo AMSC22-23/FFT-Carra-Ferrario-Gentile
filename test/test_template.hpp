@@ -2,14 +2,16 @@
 #define TEST_FFT_HPP
 
 #include <iostream>
-#include "../ffft/include/ffft.hpp"
 #include <vector>
+#include "../ffft/include/ffft.hpp"
 
 /**
  * @brief A templeted function to compare two different strategies.
  * @note If using a MPI strategy, only use it as FFTStrategy1.
  * @author Lorenzo Gentile, Daniele Ferrario
 */
+using namespace fftcore;
+
 template <int dim, class FFTStrategy1, class FFTStrategy2>
 void test_fft(int argc, char *argv[]){
 

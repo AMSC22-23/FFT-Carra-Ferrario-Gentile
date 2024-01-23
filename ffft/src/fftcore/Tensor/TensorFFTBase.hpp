@@ -7,12 +7,17 @@ namespace fftcore{
 
 
     /**
-    * TensorFFTBase behaves as a wrapper for Eigen::Tensor objects.
-    * It's meant to be used as it is or as a base class for type specific
-    * wrappers. 
-    * @see TimeTensor, FreqTensor
-    * @author Daniele Ferrario
-    */
+     * @brief A wrapper for Eigen::Tensor
+     * 
+     * TensorFFTBase behaves as a wrapper for Eigen::Tensor objects.
+     * It's meant to be used as it is or as a base class for type specific
+     * wrappers.  This hides the use of Eigen tensors and allows the user to define their own
+     *   cleaning and manipulation methods for input/output specific to their application through the
+     *   extension of the TensorFFTBase class.
+     * 
+     * @see TimeTensor, FreqTensor
+     * @author Daniele Ferrario
+     */
     template<typename DataType, int Rank>
     class TensorFFTBase{
         public:

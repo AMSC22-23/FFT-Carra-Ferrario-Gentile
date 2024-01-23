@@ -11,7 +11,9 @@ namespace fftcore{
     /**
      * @brief Sequential implementation of the 1 dimensional FFT using Stockham algorithm
      * 
-     * The Stockham algorithm is a variation of the traditional Cooley-Tukey algorithm, with the advantage of avoiding the bit reversal step. Only 1D FFTs are supported for now.
+     * The Stockham algorithm is a variation of the traditional Cooley-Tukey algorithm, with the 
+     * advantage of avoiding the bit reversal step. Only 1D FFTs are supported for now.
+     * 
      * @todo Implement R2C transform
      * @author Lorenzo Gentile
      * @date 2023-12-18

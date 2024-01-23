@@ -17,6 +17,8 @@ namespace spectrogram{
      * @brief This class represents a single frame of a signal. It extends TensorFFTBase.
      * It provides two constructors: one for frames that lie completely inside the signal and one for frames that lie partially outside the signal.
     */
+    using namespace fftcore;
+
     template<typename FloatingType>
     class Frame : public CTensorBase<1, FloatingType>
     {

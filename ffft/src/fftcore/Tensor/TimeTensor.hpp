@@ -6,29 +6,30 @@
 #include "TensorFFTBase.hpp"
 #include "utils/MtxFilesIO.hpp"
 
+namespace fftcore{
+    /**
+     * This template extends the TensorFFTBase template to
+     * handle data in the time domain, providing additional
+     * utility methods.
+     * @author: Daniele Ferrario
+    */
+    template<typename DataType>
+    class TimeTensor : public TensorFFTBase<DataType, 1>{
+        public:
 
-/**
- * This template extends the TensorFFTBase template to
- * handle data in the time domain, providing additional
- * utility methods.
- * @author: Daniele Ferrario
-*/
-template<typename DataType>
-class TimeTensor : public TensorFFTBase<DataType, 1>{
-    public:
+            // Inherit constructor
+            using TensorFFTBase<DataType, 1>::TensorFFTBase;
 
-        // Inherit constructor
-        using TensorFFTBase<DataType, 1>::TensorFFTBase;
+            // @Todo: time splicing methods
+            
+            void load_from_file(const std::string&);
 
-        // @Todo: time splicing methods
-        
-        void load_from_file(const std::string&);
+    };
 
-};
-
-template<typename DataType>
-void TimeTensor<DataType>::load_from_file(const std::string &path){
-    MtxFilesIO::load_mat_mtx<DataType, 1>(this->get_tensor(), path);
+    template<typename DataType>
+    void TimeTensor<DataType>::load_from_file(const std::string &path){
+        MtxFilesIO::load_mat_mtx<DataType, 1>(this->get_tensor(), path);
+    }
 }
 
 #endif // TIMETENSOR_HPP

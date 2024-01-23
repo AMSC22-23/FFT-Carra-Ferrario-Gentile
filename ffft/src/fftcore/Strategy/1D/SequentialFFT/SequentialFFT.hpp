@@ -12,6 +12,9 @@ namespace fftcore{
     /**
      * @brief Sequential implementation of the 1 dimensional FFT using Cooley-Tukey algorithm
      *      
+     * We provide a link to the <a href="https://en.wikipedia.org/wiki/Cooley%E2%80%93Tukey_FFT_algorithm" wikipedia page</a> of the Cooley-Tukey
+     * algorithm for computing the FFT. This class provides a very basic implementation of the algorithm with no kind of optimization.
+     * 
      * @author: Lorenzo Gentile, Daniele Ferrario
      */
     template<typename FloatingType = double>
