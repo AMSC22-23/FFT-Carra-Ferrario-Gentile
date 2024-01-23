@@ -39,22 +39,16 @@ namespace fftcore{
 
     };
 
-    /**
-     * @brief Out-of-place of 3-D complex tensors 
-    */
     template <typename FloatingType>
-    void MPIFFT_3D<FloatingType>::fft(const CTensor_3D &input, CTensor_3D &output, FFTDirection) const
+    void MPIFFT_3D<FloatingType>::fft(const CTensor_3D &/*input*/, CTensor_3D &/*output*/, FFTDirection/*fftDirection*/) const
     {
-        std::cout << "fft 3-d C-C out-of-place" << std::endl;
+        throw NotSupportedException("MPIFFT_3D doesn't support out-of-place 3D FFT");
     };
 
-    /**
-     * @brief Out-of-place Real to Complex of real 3-D tensors 
-    */
     template <typename FloatingType>
-    void MPIFFT_3D<FloatingType>::fft(const RTensor_3D &, CTensor_3D &, FFTDirection) const
+    void MPIFFT_3D<FloatingType>::fft(const RTensor_3D &/*input*/, CTensor_3D &/*output*/, FFTDirection/*fftDirection*/) const
     {
-        std::cout << "fft 3-d R-C out-of-place" << std::endl;
+        throw NotSupportedException("MPIFFT_3D doesn't support out-of-place 3D FFT");
     };
 
     /**

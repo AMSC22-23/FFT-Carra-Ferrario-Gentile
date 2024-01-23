@@ -39,22 +39,16 @@ namespace fftcore{
 
     };
 
-    /**
-     * @brief Out-of-place of 2-D complex tensors (Matrices)
-    */
     template <typename FloatingType>
-    void MPI_OMP_FFT_2D<FloatingType>::fft(const CTensor_2D &input, CTensor_2D &output, FFTDirection) const
+    void MPI_OMP_FFT_2D<FloatingType>::fft(const CTensor_2D &/*input*/, CTensor_2D &/*output*/, FFTDirection/*fftDirection*/) const
     {
-        std::cout << "fft 2-d C-C out-of-place" << std::endl;
+        throw NotSupportedException("MPI_OMP_FFT_2D doesn't support out-of-place 2D FFT");
     };
 
-    /**
-     * @brief Out-of-place Real to Complex of real 2-D tensors (Matrices)
-    */
     template <typename FloatingType>
-    void MPI_OMP_FFT_2D<FloatingType>::fft(const RTensor_2D &, CTensor_2D &, FFTDirection) const
+    void MPI_OMP_FFT_2D<FloatingType>::fft(const RTensor_2D &/*input*/, CTensor_2D &/*output*/, FFTDirection/*fftDirection*/) const
     {
-        std::cout << "fft 2-d R-C out-of-place" << std::endl;
+        throw NotSupportedException("MPI_OMP_FFT_2D doesn't support out-of-place 2D FFT");
     };
 
     /**
@@ -238,7 +232,7 @@ namespace fftcore{
         }
         
         // for all columns of the local_tensor we have to perform an MPI_Alltoallv due to col-major format
-        for(int local_col_index=0; local_col_index<y_local_dimension_size;local_col_index++){
+        for(unsigned int local_col_index=0; local_col_index<y_local_dimension_size;local_col_index++){
             int starting_index_of_the_local_col = local_col_index*x_dimension_size;
             MPI_Alltoallv(MPI_IN_PLACE, NULL, NULL, MPI_DATATYPE_NULL,
                         &local_tensor.data()[starting_index_of_the_local_col], send_counts.data(), send_displ.data(), mpi_datatype, MPI_COMM_WORLD);
@@ -246,13 +240,13 @@ namespace fftcore{
 
         CTensor_2D local_tensor_transposed(x_block_size, y_block_size*size);
         const unsigned int x_local_transposed_dimension_size = x_block_size;
-        const unsigned int y_local_transposed_dimension_size = y_block_size*size;
+        //const unsigned int y_local_transposed_dimension_size = y_block_size*size;
         
         // block transposition in order to use the 
         for(int n_block=0; n_block<size; n_block++)
         {
-            for(int i=0; i<x_block_size; i++){
-                for(int j=0; j<y_block_size; j++){
+            for(unsigned int i=0; i<x_block_size; i++){
+                for(unsigned int j=0; j<y_block_size; j++){
                     local_tensor_transposed(i,j+n_block*y_block_size) = local_tensor(i+n_block*x_block_size,j);
                 }
             }
@@ -275,7 +269,7 @@ namespace fftcore{
 
         //gather all rows
         int col_local, col_global;
-        for(int j=0; j<y_dimension_size; j++){
+        for(unsigned int j=0; j<y_dimension_size; j++){
             col_local = j*x_block_size;
             col_global = j*x_dimension_size;
 

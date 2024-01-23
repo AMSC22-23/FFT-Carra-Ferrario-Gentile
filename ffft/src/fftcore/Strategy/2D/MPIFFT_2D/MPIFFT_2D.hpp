@@ -45,18 +45,18 @@ namespace fftcore{
      * @brief Out-of-place of 2-D complex tensors (Matrices)
     */
     template <typename FloatingType>
-    void MPIFFT_2D<FloatingType>::fft(const CTensor_2D &input, CTensor_2D &output, FFTDirection) const
+    void MPIFFT_2D<FloatingType>::fft(const CTensor_2D &/*input*/, CTensor_2D &/*output*/, FFTDirection /*fftDirection*/) const
     {
-        std::cout << "fft 2-d C-C out-of-place" << std::endl;
+        throw NotSupportedException("MPIFFT_2D doesn't support out-of-place 2D FFT");
     };
 
     /**
      * @brief Out-of-place Real to Complex of real 2-D tensors (Matrices)
     */
     template <typename FloatingType>
-    void MPIFFT_2D<FloatingType>::fft(const RTensor_2D &, CTensor_2D &, FFTDirection) const
+    void MPIFFT_2D<FloatingType>::fft(const RTensor_2D &/*input*/, CTensor_2D &/*output*/, FFTDirection/*fftDirection*/) const
     {
-        std::cout << "fft 2-d R-C out-of-place" << std::endl;
+        throw NotSupportedException("MPIFFT_2D doesn't support out-of-place 2D FFT");
     };
 
     /**
