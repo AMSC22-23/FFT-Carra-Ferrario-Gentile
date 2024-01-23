@@ -1,11 +1,10 @@
 #ifndef SPECTROGRAM_GENERATOR_HPP
 #define SPECTROGRAM_GENERATOR_HPP
 
-#include "SpectrogramDataTypes.hpp"
-#include "AudioFile.h"
-
 #include <limits>
 #include <type_traits>
+#include "AudioFile.h"
+#include "SpectrogramDataTypes.hpp"
 
 namespace spectrogram{
     
@@ -31,19 +30,22 @@ namespace spectrogram{
         public:
             SpectrogramGenerator() : _fft_solver(std::make_unique<FFTStrategy>()), _is_loaded(false) {};
 
-                /**
-                 * @brief Loads the signal from an existing tensor. The signal is divided into frames and stored inside the generator.
-                 * @param signal The signal to be transformed into a spectrogram.
-                 * @param frame_lenght The lenght of the frame window, in samples. It must be a power of 2.
-                 * @param frame_step The step between two consecutive frames, in samples. It default to frame_lenght.
-                 * @param pad_end If false, the last frame is discarded if it lies partially outside the signal. If true, the last frame is padded with zeros to match the frame lenght.
-                */
+            /**
+             * @brief Loads the signal from an existing tensor. The signal is divided into frames and stored inside the generator.
+             * @param signal The signal to be transformed into a spectrogram.
+             * @param frame_lenght The lenght of the frame window, in samples. It must be a power of 2.
+             * @param frame_step The step between two consecutive frames, in samples. It default to frame_lenght.
+             * @param pad_end If false, the last frame is discarded if it lies partially outside the signal. If true, the last frame is padded with zeros to match the frame lenght.
+             */
             void load_audio(CTensor_1D &signal, TensorIdx frame_lenght, TensorIdx frame_step = 0, bool pad_end = false);
 
             /**
              * @brief Loads the signal from a .wav file. It relies on the AudioFile external header.
              * @param filename The path to the .wav file.
-            */
+             * @param frame_lenght The lenght of the frame window, in samples. It must be a power of 2.
+             * @param frame_step The step between two consecutive frames, in samples. It default to frame_lenght.
+             * @param pad_end If false, the last frame is discarded if it lies partially outside the signal. If true, the last frame is padded with zeros to match the frame lenght.
+             */
             void load_audio(std::filesystem::path filename, TensorIdx frame_lenght, TensorIdx frame_step = 0, bool pad_end = false);
 
             /**
@@ -55,7 +57,7 @@ namespace spectrogram{
             void compute_spectrogram(bool decibel_scale = true, bool assume_real = true);
 
             /**
-             * @brief Returns ta reference to all the spectrograms computed by the generator.
+             * @brief Returns a reference to all the spectrograms computed by the generator.
             */
             std::vector<Spectrogram_t>& get_spectrograms() { return _spectrograms; };
 

@@ -4,7 +4,7 @@
 #include "../../ffft/src/fftcore/Strategy/MPIFFT/MPIFFT.hpp"
 #include "../../ffft/src/fftcore/FFTSolver.hpp"
 */
-#include "ffft.hpp"
+#include "ffft/fftcore.hpp"
 #include <memory>
 #include <cmath>
 

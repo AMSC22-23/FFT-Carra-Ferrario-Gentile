@@ -1,9 +1,5 @@
-#include <iostream>
-#include <memory>
-#include "ffft.hpp"
 #include "../../test_template.hpp"
 
-using namespace fftcore;
 
 int main(int argc, char** argv)
 {

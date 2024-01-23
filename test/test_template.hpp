@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <vector>
-#include "../ffft/include/ffft.hpp"
+#include "ffft/fftcore.hpp"
 
 /**
  * @brief A templeted function to compare two different strategies.

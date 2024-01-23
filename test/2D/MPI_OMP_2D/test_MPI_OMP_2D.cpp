@@ -1,6 +1,6 @@
 #include <iostream>
 #include <memory>
-#include "ffft.hpp"
+#include "ffft/fftcore.hpp"
 
 using namespace fftcore;
 

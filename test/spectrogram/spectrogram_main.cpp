@@ -1,4 +1,4 @@
-#include "../../ffft/src/spectrogram/SpectrogramGenerator.hpp"
+#include "ffft/spectrogram.hpp"
 
 using namespace spectrogram;
 
@@ -20,9 +20,9 @@ int main(void){
 
     std::vector<CTensor_1D> signals(N_SIGNALS);
 
-    for(TensorIdx i = 0; i < signals.size(); i++){
+    for(unsigned long i = 0; i < signals.size(); i++){
         signals[i] = CTensor_1D(1024);
-        for(unsigned int j = 0; j < signals[i].get_tensor().size(); j++){
+        for(fftcore::TensorIdx j = 0; j < signals[i].get_tensor().size(); j++){
             signals[i].get_tensor()(j) = ComplexType(std::sin((i + 1) * (j + 1)), 0);
         }
     }

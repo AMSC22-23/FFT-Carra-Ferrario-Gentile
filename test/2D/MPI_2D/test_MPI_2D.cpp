@@ -1,11 +1,4 @@
-
-#include "ffft.hpp"
-#include <memory>
-#include <cmath>
 #include "../../test_template.hpp"
-
-using namespace fftcore;
-
 
 
 // USAGE :
