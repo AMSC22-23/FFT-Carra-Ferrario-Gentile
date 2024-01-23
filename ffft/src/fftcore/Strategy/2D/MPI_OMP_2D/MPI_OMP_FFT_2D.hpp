@@ -139,6 +139,8 @@ namespace fftcore{
         MPI_Comm_size(MPI_COMM_WORLD, &size);
         MPI_Datatype mpi_datatype = std::is_same<FloatingType, double>::value ? MPI_C_DOUBLE_COMPLEX : MPI_C_FLOAT_COMPLEX;
 
+        assert(!(size & (size - 1)) && "MPI SIZE must be a power of 2.");
+
         unsigned int x_dimension_size, y_dimension_size;
         void* tensor_data;
         
