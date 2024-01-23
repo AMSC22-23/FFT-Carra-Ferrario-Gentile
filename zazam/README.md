@@ -1,7 +1,6 @@
 # Zazam
 
-Zazam is a simple music detection library built in C++, based on FFFT library. Together, they 
-constitute my proposal for the final project of "Advanced Methods for Scientifing Computing" course at PoliMi for the a.y. 23/24. 
+Zazam is a simple music detection library built in C++, based on FFFT library.
 
 ## Required software 
 This library depends on two libraries: `ffft` and `PortAudio`.
@@ -52,7 +51,7 @@ Identificator identificator("../local_dataset/hashes");
 identificator.identify(sample.hash, result); 
 ```
 ## Notes on performance
-The library works very well overall. As expected, the peak performances are reached with a good microphone and so a good sample quality. Moreover, the algorithm works the best with samples which are uniquely associatable to a certain song, rather then simple patterns which do not contain sensible variations in frequency domain.
+The library works very well overall. As expected, peak performances are reached with a good microphone and so a good sample quality. Moreover, the algorithm works the best with samples which are uniquely associatable to a certain song, rather then simple patterns which do not contain sensible variations in frequency domain.
 ## References 
 The algorithm has been adapted from Joseph DeChicchis's paper 'A Music Identification Algorithm which Utilizes the Fourier
 Analysis of Audio Signals'.
