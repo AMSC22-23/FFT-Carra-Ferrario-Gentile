@@ -13,12 +13,18 @@ This library depends on two modules: `Eigen v3.3.9` and `fftw3`, both of these m
 fftw3 is a state-of-the-art library widely used in the scientific community for its efficiency and accuracy. In the context of this library, it is utilized primarily for testing the correctness and performance of the different implementations.
 
 ## Contents
-This repository contains four main components:
-1. **ffft**: The library itself. [go](./ffft/)
-2. **Tests**: This directory contains various test cases for evaluating the performance and accuracy of different implementation strategies in the library. [go](./test/)
-3. **Cluster Setup Procedure**: a procedure for setting up a cluster for running MPI tests. [go](./MPI_Cluster_Setup)
-4. **Benchmark Tool**: some scripts to run tests on different workloads, in order to compare different FFT strategies. [go](./benchmark/)
-5. **Spectogram**: a simple application that computes the audio spectrogram using the ffft library, simulating a real case scenario. [go](./)
+This repository contains 3 main components:
+
+1. 🛠️ **ffft**: The library itself. [go](./ffft/)
+2. 👻 **Spectrogram**: a simple application that computes the audio spectrogram using the ffft library, simulating a real case scenario.[go](./)
+3. 🎵 **Zazam**: a music identification library based on ffft **Spectrogram** modules. [go](./zazam)
+
+And 3 utility components:
+
+5. **Tests**: This directory contains various test cases for evaluating the performance and accuracy of different implementation strategies in the library. [go](./test/)
+6. **Cluster Setup Procedure**: a procedure for setting up a cluster for running MPI tests. [go](./MPI_Cluster_Setup)
+7. **Benchmark Tool**: some scripts to run tests on different workloads, in order to compare different FFT strategies. [go](./benchmark/)
+
 
 ## The FFFT library
 ### A simple example
@@ -110,4 +116,6 @@ where N is the log2 of the size of the input and M and Z have to be specified in
 
 ### Documentation
 For a comprehensive understanding of the library's structure and usage within your project, please refer to the [documentation](./doc/). This contains a report on the numerical methodology and on the code organization as well as some results on the performance of the library.
-
+## Zazam
+Zazam is a direct example of use of FFFT library. See the details at the corresponding folder.
+[Go to Zazam README.md](./zazam/README.md)
