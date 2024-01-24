@@ -37,8 +37,10 @@
 #include "../../src/fftcore/Strategy/1D/OpenMP/OmpFFT.hpp"
 #include "../../src/fftcore/Strategy/1D/StockhamFFT/StockhamFFT.hpp"
 
+#ifdef USE_CUDA
 #include "../../src/fftcore/Strategy/1D/CudaFFT/CudaStockhamFFT/CudaStockhamFFT.cuh"
 #include "../../src/fftcore/Strategy/1D/CudaFFT/CudaCooleyTukeyFFT/CudaCooleyTukeyFFT.cuh"
+#endif
 
 // strategies 2D
 #include "../../src/fftcore/Strategy/2D/SequentialFFT_2D/SequentialFFT_2D.hpp"

@@ -1,9 +1,6 @@
 #ifndef CUDACOOLEYTUKEY_HPP
 #define CUDACOOLEYTUKEY_HPP
 
-#ifndef USE_CUDA
-    #error "FFFT was built without CUDA support."
-#endif
 
 #ifdef __CUDACC__
 #include "../CudaCommon/CudaCommon.cuh"
@@ -31,6 +28,7 @@ namespace fftcore
     template <typename FloatingType = double>
     class CudaCooleyTukeyFFT : public FFT_1D<FloatingType>
     {
+
     public:
         using typename FFT_1D<FloatingType>::RTensor_1D;
         using typename FFT_1D<FloatingType>::CTensor_1D;
