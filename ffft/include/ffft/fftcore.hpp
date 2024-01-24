@@ -28,10 +28,6 @@
 * @author Edoardo Carrà
 */
 
-#ifdef __CUDACC__
-#define EIGEN_NO_CUDA //to avoid compilation warnings, eigen is only used in host code
-#endif
-
 #include "../../src/fftcore/FFTSolver.hpp"
 
 // strategies 1D
@@ -41,10 +37,8 @@
 #include "../../src/fftcore/Strategy/1D/OpenMP/OmpFFT.hpp"
 #include "../../src/fftcore/Strategy/1D/StockhamFFT/StockhamFFT.hpp"
 
-#ifdef USE_CUDA
 #include "../../src/fftcore/Strategy/1D/CudaFFT/CudaStockhamFFT/CudaStockhamFFT.cuh"
 #include "../../src/fftcore/Strategy/1D/CudaFFT/CudaCooleyTukeyFFT/CudaCooleyTukeyFFT.cuh"
-#endif
 
 // strategies 2D
 #include "../../src/fftcore/Strategy/2D/SequentialFFT_2D/SequentialFFT_2D.hpp"

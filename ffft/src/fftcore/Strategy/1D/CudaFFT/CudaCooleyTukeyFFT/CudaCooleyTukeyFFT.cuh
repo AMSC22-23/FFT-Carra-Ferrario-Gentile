@@ -1,6 +1,10 @@
 #ifndef CUDACOOLEYTUKEY_HPP
 #define CUDACOOLEYTUKEY_HPP
 
+#ifndef USE_CUDA
+    #error "FFFT was built without CUDA support."
+#endif
+
 #ifdef __CUDACC__
 #include "../CudaCommon/CudaCommon.cuh"
 

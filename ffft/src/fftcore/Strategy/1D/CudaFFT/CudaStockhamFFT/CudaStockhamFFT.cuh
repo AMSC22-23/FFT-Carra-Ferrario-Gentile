@@ -1,6 +1,10 @@
 #ifndef CUDASTOCKHAMFFT_CUH
 #define CUDASTOCKHAMFFT_CUH
 
+#ifndef USE_CUDA
+    #error "FFFT was built without CUDA support."
+#endif
+
 #ifdef __CUDACC__
 #include "../CudaCommon/CudaCommon.cuh"
 
@@ -11,9 +15,11 @@ namespace fftcore::cudakernels
 }
 #endif // __CUDACC__
 
+
+
+
 namespace fftcore
 {
-
     /**
      * @brief CUDA implementation of the 1 dimensional FFT using Stockham algorithm
      * @details The algorithm is a radix-2 decimation-in-time (DIT) FFT. It avoids the bit reversal step, which is inherently cache unfriendly, at the cost of a more complex indexing scheme and the need for a temporary buffer. It achieves a better performance than the Cooley-Tukey algorithm on the GPU for large input sizes.
@@ -24,6 +30,7 @@ namespace fftcore
     template <typename FloatingType = double>
     class CudaStockhamFFT : public FFT_1D<FloatingType>
     {
+    
     public:
         using typename FFT_1D<FloatingType>::RTensor_1D;
         using typename FFT_1D<FloatingType>::CTensor_1D;
