@@ -5,7 +5,7 @@
 #include <type_traits>
 #include "AudioFile.h"
 #include "SpectrogramDataTypes.hpp"
-#include "../fftcore/FFTSolver.hpp"
+
 namespace spectrogram{
     
     /**
