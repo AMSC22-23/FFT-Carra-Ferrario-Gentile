@@ -1,21 +1,12 @@
-#ifndef CUDACOOLEYTUKEY_HPP
-#define CUDACOOLEYTUKEY_HPP
+#include "CudaCooleyTukeyFFT.cuh"
+#include "../CudaCommon/CudaCommon.cuh"
 
-#include "CudaUtils.cuh"
-
-using cudakernels::d_fft_sign;
-using cudakernels::d_n2;
-
-namespace cudakernels
+namespace fftcore::cudakernels
 {
-
-    /**
-     * @brief This kernel computes one stage of Cooley-Tukey FFT algorithm. It is called log2(n) times by the cpu driver code.
-    */
     template <typename FloatingType>
     __global__ void d_butterfly_kernel_cooleytukey(ComplexCuda<FloatingType> * __restrict__ input_output, unsigned m2)
     {
-        using ComplexCuda = typename cudakernels::ComplexCuda<FloatingType>;
+        using ComplexCuda = ComplexCuda<FloatingType>;
 
         unsigned int tid = threadIdx.x + blockIdx.x * blockDim.x;
         unsigned int k, j;
@@ -39,37 +30,14 @@ namespace cudakernels
 
 namespace fftcore
 {   
-    /**
-     * /**
-     * @brief CUDA implementation of the 1 dimensional FFT using Cooley-Tukey algorithm
-     * @details The algorithm is a radix-2 decimation-in-time (DIT) FFT. It needs a bit reversal permutation of the input data, and when called in inverse mode it computes the roots of unity with opposite sign.
-     * @todo Implement precomputation of twiddle factors in constant memory.
-     * @author Lorenzo Gentile
-     * @date 2024-01-09
-    */
-    template <typename FloatingType = double>
-    class CudaCooleyTukeyFFT : public FFT_1D<FloatingType>
+
+    using cudautils::gpuAssert;
+
+    template <typename FloatingType>
+    CudaCooleyTukeyFFT<FloatingType>::CudaCooleyTukeyFFT()
     {
-    public:
-        using typename FFT_1D<FloatingType>::RTensor_1D;
-        using typename FFT_1D<FloatingType>::CTensor_1D;
-
-        using ComplexCuda = typename cudakernels::ComplexCuda<FloatingType>;
-
-        CudaCooleyTukeyFFT(){
-            gpuErrchk( cudaFree(0) ); //initialize CUDA context to avoid delay on first call
-        }
-
-        void fft(const CTensor_1D &, CTensor_1D &, FFTDirection) const;
-
-        void fft(const RTensor_1D &, CTensor_1D &, FFTDirection) const;
-
-        void fft(CTensor_1D &, FFTDirection) const;
-
-        ~CudaCooleyTukeyFFT() = default;
-    private:
-        static constexpr int THREADS_PER_BLOCK = 32;
-    };
+        gpuErrchk( cudaFree(0) ); //initialize CUDA context
+    }
 
     template <typename FloatingType>
     void CudaCooleyTukeyFFT<FloatingType>::fft(const CTensor_1D &input, CTensor_1D &output, FFTDirection fftDirection) const
@@ -91,6 +59,8 @@ namespace fftcore
         using cudakernels::d_butterfly_kernel_cooleytukey;
         using cudakernels::d_bit_reversal_permutation;
         using cudakernels::d_scale;
+        using cudakernels::d_fft_sign, cudakernels::d_n2;
+        using ComplexCuda = cudakernels::ComplexCuda<FloatingType>;
 
         const TensorIdx n = input_output.size(), n2 = n / 2, log2n = std::log2(n);
 
@@ -137,6 +107,10 @@ namespace fftcore
         gpuErrchk( cudaFree(d_input_output) );
     };
 
-}
+} // namespace fftcore
 
-#endif // CUDACOOLEYTUKEY_HPP
+namespace fftcore
+{
+    template class CudaCooleyTukeyFFT<float>;
+    template class CudaCooleyTukeyFFT<double>;
+} // namespace fftcore

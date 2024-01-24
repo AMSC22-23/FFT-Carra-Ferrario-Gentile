@@ -41,10 +41,9 @@
 #include "../../src/fftcore/Strategy/1D/OpenMP/OmpFFT.hpp"
 #include "../../src/fftcore/Strategy/1D/StockhamFFT/StockhamFFT.hpp"
 
-#ifdef __CUDACC__
-#include "../../src/fftcore/Strategy/1D/CudaFFT/CudaCooleyTukeyFFT.cuh"
-#include "../../src/fftcore/Strategy/1D/CudaFFT/CudaStockhamFFT.cuh"
-#include "../../src/fftcore/Strategy/1D/CudaFFT/cufftFFT.cuh"
+#ifdef USE_CUDA
+#include "../../src/fftcore/Strategy/1D/CudaFFT/CudaStockhamFFT/CudaStockhamFFT.cuh"
+#include "../../src/fftcore/Strategy/1D/CudaFFT/CudaCooleyTukeyFFT/CudaCooleyTukeyFFT.cuh"
 #endif
 
 // strategies 2D

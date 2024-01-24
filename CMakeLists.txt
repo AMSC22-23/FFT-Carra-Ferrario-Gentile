@@ -25,6 +25,21 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 # Include ffft library
 add_subdirectory(ffft)
 
+# Define macro for CUDA if CUDA is found
+find_package(CUDA)
+if(CUDA_FOUND)
+    add_definitions(-DUSE_CUDA)
+    # CUDA
+    # Define executable target
+    add_executable(test_CUDA.out test/1D/CUDA/test_CUDA.cpp)
+    # link the library to link to the executable
+    target_link_libraries(test_CUDA.out PUBLIC FFFT)
+    # specify the library's header file location
+    target_include_directories(test_CUDA.out PUBLIC
+                          "${PROJECT_SOURCE_DIR}/ffft/include"
+                          )
+endif()
+
 # SEQUENTIAL
 # Define executable target
 add_executable(test_sequential.out test/1D/sequential/test_sequential.cpp)
@@ -114,29 +129,7 @@ target_link_libraries(test_MPI_3D.out PUBLIC FFFT)
 target_include_directories(test_MPI_3D.out PUBLIC
                           "${PROJECT_SOURCE_DIR}/ffft/include"
                           )
-# CUDA
-find_package(CUDA)
-if(CUDA_FOUND)
-    enable_language(CUDA) #enable NVCC compiler
-    
-    #set policy to use CUDA_ARCHITECTURES
-    cmake_policy(SET CMP0104 NEW)
-
-    #set CUDA_ARCHITECTURES to compute capability 6.1
-    set(CMAKE_CUDA_ARCHITECTURES 61 62 70 72 75 80 86)
-
-    # Define executable target
-    add_executable(test_CUDA.out test/1D/CUDA/test_CUDA.cu)
-
-    # link the library to link to the executable
-    target_link_libraries(test_CUDA.out PUBLIC FFFT cufft)
-
-    # specify the library's header file location
-    target_include_directories(test_CUDA.out PUBLIC
-                            "${PROJECT_SOURCE_DIR}/ffft/include"
-                            )
-endif()
-
+                                
 # SEQ_3D
 # Define executable target
 add_executable(test_sequential_3D.out test/3D/sequential_3D/test_sequential_3D.cpp)
