@@ -12,7 +12,6 @@ using CTensor_1D = fftcore::CTensorBase<1, FloatingType>;
 
 #define N_SIGNALS 3
 
-
 using std::filesystem::path;
 path wav_directory = "../wav_samples", output_directory = "output";
 
