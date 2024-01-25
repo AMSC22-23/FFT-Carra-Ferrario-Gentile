@@ -30,8 +30,8 @@ namespace fftcore{
 	template<int Rank, typename FloatingType = double>
 	class FFTSolver{
 
-		using CTensorBase = TensorFFTBase<std::complex<FloatingType>, Rank>;
-		using RTensorBase = TensorFFTBase<FloatingType, Rank>;
+		using CTensorBase_t = CTensorBase<Rank, FloatingType>;
+		using RTensorBase_t = RTensorBase<Rank, FloatingType>;
 
 		public:
 			FFTSolver(std::unique_ptr<FFTStrategy<Rank, FloatingType>>&& strategy): _fftstrategy(std::move(strategy))
@@ -48,7 +48,7 @@ namespace fftcore{
 			* @param [out] output a reference to the output complex TensorFFTBase that contains the transformed data.
 			* @param [in] dir the fft direction.
 			*/ 
-			void compute_fft(const CTensorBase& input, CTensorBase& output, FFTDirection dir)
+			void compute_fft(const CTensorBase_t& input, CTensorBase_t& output, FFTDirection dir)
 			{
 				_timer.start();
 				_fftstrategy->fft(input.get_tensor(), output.get_tensor(), dir);
@@ -63,7 +63,7 @@ namespace fftcore{
 			* @param [out] output a reference to the output complex TensorFFTBase that contains the transformed data.
 			* @param [in] dir the fft direction.
 			*/ 
-			void compute_fft(const RTensorBase& input, CTensorBase& output, FFTDirection dir)
+			void compute_fft(const RTensorBase_t& input, CTensorBase_t& output, FFTDirection dir)
 			{
 				_timer.start();
 				_fftstrategy->fft(input.get_tensor(), output.get_tensor(), dir);
@@ -77,7 +77,7 @@ namespace fftcore{
 			*	loosing the original tensor.
 			* @param [in] dir the fft direction.
 			*/ 
-			void compute_fft(CTensorBase& input_output, FFTDirection dir)
+			void compute_fft(CTensorBase_t& input_output, FFTDirection dir)
 			{
 				_timer.start();
 				_fftstrategy->fft(input_output.get_tensor(), dir);

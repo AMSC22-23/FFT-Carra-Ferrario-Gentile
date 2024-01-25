@@ -8,16 +8,20 @@
 
 namespace fftcore{
 
-    //TensorBase generic type aliases 
+    /**
+     * @brief Public typename for TensotFFTBase templated on complex scalar type.
+    */
     template<int Rank, typename FloatingType = double>
     using CTensorBase = TensorFFTBase<std::complex<FloatingType>, Rank>;
 
+    /**
+     * @brief Public typename for TensotFFTBase templated on real scalar type.
+    */
     template<int Rank, typename FloatingType = double>
 	using RTensorBase = TensorFFTBase<FloatingType, Rank>;
 
 	/**
-     * @brief Represents the direction of the fft.
-     *   
+     * @brief Represents the direction of the fft.  
      */
 	enum FFTDirection{
                       FFT_FORWARD, /** Forward FFT direction*/
