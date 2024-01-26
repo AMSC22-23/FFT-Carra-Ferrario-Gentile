@@ -15,6 +15,11 @@ using namespace fftcore;
 template <int dim, class FFTStrategy1, class FFTStrategy2>
 void test_fft_mpi(int argc, char *argv[]){
 
+    if(argc != dim + 1)
+    {
+        std::cout << "Usage: " << argv[0] << " <dim1> <dim2> ... <dimN>" << std::endl;
+        return;
+    }
 
     using FloatingType1 = typename FFTStrategy1::FloatTypeAlias;
     using FloatingType2 = typename FFTStrategy2::FloatTypeAlias;
