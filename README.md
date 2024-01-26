@@ -3,27 +3,28 @@
 AMSC project powered by Carrà Edoardo, Gentile Lorenzo, Ferrario Daniele.
 
 ## Introduction
-Fast and FOUrious FOUrier Transform (FFFT) is a parallel C++ library designed for computing the Fast Fourier Transform design to be highly extensible, and easy to integrate in different applications.
+Fast and FOUrious FOUrier Transform (FFFT) is a parallel C++ library designed for computing the Fast Fourier Transform designed to be highly extensible, and easy to integrate in different applications.
 
 ## Required software
 
-This library depends on two modules: `Eigen v3.3.9` and `fftw3`, both of these modules are available in the **mk modules**.
-
+This library depends on two modules: `Eigen v3.3.9` and `fftw3`, both of these modules are available in the **[mk modules](https://github.com/pcafrica/mk)**.
 
 fftw3 is a state-of-the-art library widely used in the scientific community for its efficiency and accuracy. In the context of this library, it is utilized primarily for testing the correctness and performance of the different implementations.
+### For CUDA
+The ffft library provides a CUDA implementation of the FFT. In order to compile the library with CUDA support, you need to have a version of Cuda Toolkit installed on your system. The library has been tested with version 12.3.\
+**Important**: CUDA is incompatible with the version of Eigen bundled in the mk modules (Eigen 3.3.9). If you want to use CUDA, you need at least Eigen 3.4.0. You can download it from [here](https://gitlab.com/libeigen/eigen/-/releases/3.4.0). 
 
 ## Contents
-This repository contains 3 main components:
+This repository contains 2 main components:
 
-1. 🛠️ **ffft**: The library itself. [go](./ffft/)
-2. 👻 **Spectrogram**: a simple application that computes the audio spectrogram using the ffft library, simulating a real case scenario.[go](./)
-3. 🎵 **Zazam**: a music identification library based on ffft **Spectrogram** modules. [go](./zazam)
+1. 🛠️ **[ffft](./ffft)**: The library itself. It is made up of 2 modules: the **fftcore** module and the **Spectrogram** module.
+2. 🎵 **[Zazam](./zazam)**: a music identification library based on ffft **Spectrogram** module.
 
 And 3 utility components:
 
-5. **Tests**: This directory contains various test cases for evaluating the performance and accuracy of different implementation strategies in the library. [go](./test/)
-6. **Cluster Setup Procedure**: a procedure for setting up a cluster for running MPI tests. [go](./MPI_Cluster_Setup)
-7. **Benchmark Tool**: some scripts to run tests on different workloads, in order to compare different FFT strategies. [go](./benchmark/)
+5. **[Tests](./test)**: This directory contains various test cases for evaluating the performance and accuracy of different implementation strategies in the library.
+6. **[Cluster Setup Procedure](./MPI_Cluster_Setup/)**: a procedure for setting up a cluster for running MPI tests.
+7. **[Benchmark Tool](./benchmark/)**: some scripts to run tests on different workloads, in order to compare different FFT strategies.
 
 
 ## The FFFT library
@@ -73,12 +74,14 @@ int main(){
 
 ### Library folder structure
 A brief description of the library structure. For more details, always refer to the [documentation](./doc/).
-- `ffft/src/fftcore/`: 
-    - [`FFTSolver.hpp`](./ffft/src/fftcore/FFTSolver.hpp): this header file provides direct access for users to perform FFT operations.
-    - [`Strategy/`](./ffft/src/fftcore/Strategy): this directory contains different strategies for performing the FFT, both in parallel and in sequential. At the moment only 1, 2 and 3 dimensional data are supported.
-    - [`Tensor/`](./ffft/src/fftcore/Tensor): a module that contains the main tools to manipulate Eigen's tensor and do pre-processing and post-processing.
-    - [`Timer/`](./ffft/src/fftcore/Timer): a module that allows to time the solve method.
-    - [`utils/`](./ffft/src/fftcore/utils): a module that contains some library utilities.
+- `ffft/src/`:
+    - [`fftcore/`](./ffft/src/fftcore/): the core module of the library.
+        - [`FFTSolver.hpp`](./ffft/src/fftcore/FFTSolver.hpp): this header file provides direct access for users to perform FFT operations.
+        - [`Strategy/`](./ffft/src/fftcore/Strategy): this directory contains different strategies for performing the FFT, both in parallel and in sequential. At the moment only 1, 2 and 3 dimensional data are supported.
+        - [`Tensor/`](./ffft/src/fftcore/Tensor): a module that contains the main tools to manipulate Eigen's tensors and do pre-processing and post-processing.
+        - [`Timer/`](./ffft/src/fftcore/Timer): a module that allows to time the solve method.
+        - [`utils/`](./ffft/src/fftcore/utils): a module that contains some library utilities.
+    - [`spectrogram/`](./ffft/src/spectrogram/): a module that provides methods to compute spectrograms.
 
 ### Compiling
 To build the executable, make sure you have loaded the needed modules (ONLY IF YOU ARE USING mk modules)
@@ -91,21 +94,25 @@ $ mkdir build
 $ cd build
 $ cmake -DFFTW3_DIR=${mkFftwPrefix} ..
 ```
-or if you are not using mk modules, specify fftw installation path insted of *mkFftwPrefix*.
+or if you are not using mk modules, specify fftw installation path insted of *mkFftwPrefix*.\
+Here you can also specify the flag `-DUSE_FAST_MATH=ON` to enable aggressive optimizations for math operations (use with caution).
 
-Finally, build the test by typing `cmake --build . --target TESTNAME.out`, choosing from the following list of tests currently available:
-```
-test_MPI.out
-test_MPI_2D.out
-test_MPI_3D.out
-test_OMP.out
-test_OMP_2D.out
-test_OMP_3D.out
-test_sequential.out
-test_sequential_2D.out
-test_sequential_3D.out
-test_stockham.out
-```
+Now you can build the shared object of the library with the command `make FFFT`, or directly build the tests with `make` (builds all available tests) or `make TESTNAME.out` (builds a specific test). The available tests are:
+
+
+- test_MPI.out
+- test_MPI_2D.out
+- test_MPI_3D.out
+- test_OMP.out
+- test_OMP_2D.out
+- test_OMP_3D.out
+- test_MPI_OMP_2D.out
+- test_sequential.out
+- test_sequential_2D.out
+- test_sequential_3D.out
+- test_stockham.out
+- test_spectrogram.out
+- test_CUDA.out
 
 
 An executable for each test will be created into `/build`, and can be executed through
