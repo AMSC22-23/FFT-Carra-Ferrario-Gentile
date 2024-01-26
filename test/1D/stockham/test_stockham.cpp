@@ -2,5 +2,5 @@
 
 int main(int argc, char **argv)
 {
-    test_fft<1, StockhamFFT<double>, fftwFFT<double>>(argc, argv); 
+    test_fft<1, StockhamFFT<double>, SequentialFFT<double>>(argc, argv); 
 }
