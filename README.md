@@ -17,7 +17,7 @@ The ffft library provides a CUDA implementation of the FFT. In order to compile 
 ## Contents
 This repository contains 2 main components:
 
-1. 🛠️ **[ffft](./ffft)**: The library itself. It is made up of 2 modules: the **fftcore** module and the **Spectrogram** module.
+1. 🛠️ **[ffft](./ffft)**: The library itself. It is made up of 2 modules: the **fftcore** module and the **Spectrogram** module. The former contains a collection of various FFT algorithm implementations, while the latter enables the creation of a visual representation of the spectrum of frequencies in a signal as it varies over time.
 2. 🎵 **[Zazam](./zazam)**: a music identification library based on ffft **Spectrogram** module.
 
 And 3 utility components:
@@ -59,7 +59,7 @@ Complete code:
 
 int main(){
     // Create the solver
-    FFTSolver<2, double> solver(std::make_unique<SequentialFFT_2D>());
+    FFTSolver<2, double> solver(std::make_unique<SequentialFFT_2D<double>>());
 
     // Create and initialize the data
     CTensorBase<2, double> data(3,4); 
