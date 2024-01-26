@@ -31,9 +31,11 @@ void test_fft_mpi(int argc, char *argv[]){
     MPI_Comm_size(MPI_COMM_WORLD, &size);    
     MPI_Datatype mpi_datatype1 = std::is_same<FloatingType1, double>::value ? MPI_C_DOUBLE_COMPLEX : MPI_C_FLOAT_COMPLEX;
 
+    Eigen::Tensor<double, 0> error_inverse;
+    Eigen::Tensor<double, 0> error_forward;
 
-    FFTSolver<dim, FloatingType1> solver1(std::make_unique<FFTStrategy1>());
-    FFTSolver<dim, FloatingType2> solver2(std::make_unique<FFTStrategy2>());
+    FFTSolver<dim, FloatingType1> solver(std::make_unique<FFTStrategy1>());
+    FFTSolver<dim, FloatingType2> solver_baseline(std::make_unique<FFTStrategy2>());
 
     // Initialize the dimension of the tensors with the specified dimensions
     assert( argc == (dim + 1) && "Usage: ./test_strategy_XD dim1, ..., dimX" ); 
@@ -50,63 +52,77 @@ void test_fft_mpi(int argc, char *argv[]){
         dimensions[i] = tmp;
     }
 
-    
+    double f2; 
 
-    CTensorBase<dim, FloatingType1> tensor1(dimensions);
-    CTensorBase<dim, FloatingType2> tensor2(dimensions);    
+    CTensorBase<dim, FloatingType1> tensor(dimensions);
+    CTensorBase<dim, FloatingType2> tensor_baseline(dimensions);    
 
 
     // Set the random values on process 0
     if(rank == 0)
-        tensor1.get_tensor().setRandom();
+        tensor.get_tensor().setRandom();
 
     // And copy it on the other processes
-    MPI_Bcast(tensor1.get_tensor().data(), total_elements_number, mpi_datatype1, 0, MPI_COMM_WORLD);
+    MPI_Bcast(tensor.get_tensor().data(), total_elements_number, mpi_datatype1, 0, MPI_COMM_WORLD);
 
     // Save the copy for the second solver
     if( rank == 0 ){
-        tensor2.get_tensor() = tensor1.get_tensor().template cast<std::complex<FloatingType2>>(); // cast to different floating type
+        tensor_baseline.get_tensor() = tensor.get_tensor().template cast<std::complex<FloatingType2>>(); // cast to different floating type
     }
 
     // SOLVER 1 - Use MPI Solver here
     
     // Forward
-    solver1.compute_fft(tensor1, FFT_FORWARD);
-    double f1 = solver1.get_timer().get_last();
+    solver.compute_fft(tensor, FFT_FORWARD);
+    double f1 = solver.get_timer().get_last();
     if(rank == 0){
-        solver1.get_timer().print_last_formatted();
+        solver.get_timer().print_last_formatted();
         std::cout<<",";
+
+        // Forward baseline
+        solver_baseline.compute_fft(tensor_baseline, FFT_FORWARD);
+        f2 = solver_baseline.get_timer().get_last();
+        solver_baseline.get_timer().print_last_formatted();
+        std::cout<<",";
+
+        // norm inf of the error after the transformation
+        error_forward = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).maximum();
+
+        // norm L1
+        //error_forward = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).sum();
     }
 
     // Inverse
-    MPI_Bcast(tensor1.get_tensor().data(), total_elements_number, mpi_datatype1, 0, MPI_COMM_WORLD);
-    solver1.compute_fft(tensor1, FFT_INVERSE);
-    double i1 = solver1.get_timer().get_last();
+    MPI_Bcast(tensor.get_tensor().data(), total_elements_number, mpi_datatype1, 0, MPI_COMM_WORLD);
+    solver.compute_fft(tensor, FFT_INVERSE);
+    double i1 = solver.get_timer().get_last();
 
     if(rank == 0){
-        solver1.get_timer().print_last_formatted();
+        solver.get_timer().print_last_formatted();
         std::cout<<",";
     }
 
     // Solver 2 
     if(rank == 0){
 
-        // Forward
-        solver2.compute_fft(tensor2, FFT_FORWARD);
-        double f2 = solver2.get_timer().get_last();
-        solver2.get_timer().print_last_formatted();
-        std::cout<<",";
-        
         // Inverse
-        solver2.compute_fft(tensor2, FFT_INVERSE);
-        double i2 = solver2.get_timer().get_last();
-        solver2.get_timer().print_last_formatted();
+        solver_baseline.compute_fft(tensor_baseline, FFT_INVERSE);
+        double i2 = solver_baseline.get_timer().get_last();
+        solver_baseline.get_timer().print_last_formatted();
         std::cout<<",";
 
         // print speedup
         std::cout<<f2/f1<<","<<i2/i1<<",";
+        
+        // norm inf of the error after the inverse
+        error_inverse = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).maximum();
 
-        std::cout << (tensor1.get_tensor().abs() - tensor2.get_tensor().abs()).sum() << std::endl;
+        // norm L1
+        //error_inverse = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).sum();
+
+        // print error inverse 
+        std::cout << error_forward << ",";
+        std::cout << error_inverse << std::endl;
     }
 
     MPI_Finalize();
