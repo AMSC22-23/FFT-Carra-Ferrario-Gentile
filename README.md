@@ -121,6 +121,11 @@ $ ./test_NAME.out N (M Z)
 ```
 where N is the log2 of the size of the input and M and Z have to be specified in the case of multidimensional tests.
 
+Each test assesses the performance of a specified strategy against a second one. The evaluation is conducted on a dataset of complex numbers of size $2^n$ (or $\times 2^m \times 2^z$ for multidimensional datasets), populated with random values. The strategies are evaluated in both the forward and inverse directions.
+
+The output of the test is as follows:
+`n(,m,z), time_forward_tested_strategy, time_forward_baseline_strategy, time_inverse_tested_strategy, time_inverse_baseline_strategy, speedup_forward, speedup_inverse, error_forward, error_inverse`
+
 ### Documentation
 For a comprehensive understanding of the library's structure and usage within your project, please refer to the [documentation](./doc/). This contains a report on the numerical methodology and on the code organization as well as some results on the performance of the library.
 ## Zazam
