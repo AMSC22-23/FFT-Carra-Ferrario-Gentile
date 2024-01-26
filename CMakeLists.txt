@@ -22,6 +22,14 @@ set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
+# Add an option for enabling fast math
+option(USE_FAST_MATH "Enable fast math optimizations." OFF)
+
+if(USE_FAST_MATH)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -funsafe-math-optimizations")
+    message(STATUS "Enabled fast math optimizations (-Ofast -funsafe-math-optimizations)")
+endif()
+
 # Include ffft library
 add_subdirectory(ffft)
 
