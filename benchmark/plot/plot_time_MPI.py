@@ -15,16 +15,22 @@ def convert_to_float(value):
         return float(value.replace(' us', '')) / 1000
     else:
         return None
-
-    
+ 
 testname = sys.argv[1]
-header1 = sys.argv[2]
-header2 = sys.argv[3]
+NUM_PROC = sys.argv[2]
+header1 = sys.argv[3]
+header2 = sys.argv[4]
+dim=int(sys.argv[5])
+if dim==1:
+    # Run the benchmark script and capture its output
+    csv_data = subprocess.check_output(['../speedup/benchmark.sh ../../build/' + testname + ' ' + NUM_PROC + ' ' + header1 + ' ' + header2], shell=True)
+elif dim==2:
+    csv_data = subprocess.check_output(['../speedup/benchmark2D.sh ../../build/' + testname + ' ' + NUM_PROC + ' ' + header1 + ' ' + header2], shell=True)
+else:
+    csv_data = subprocess.check_output(['../speedup/benchmark3D.sh ../../build/' + testname + ' ' + NUM_PROC + ' ' + header1 + ' ' + header2], shell=True)
 
-# Run the benchmark script and capture its output
-csv_data = subprocess.check_output(['./benchmark.sh ../build/' + testname + ' ' + header1 + ' ' + header2], shell=True)
 
-print(csv_data)
+#print(csv_data)
 
 # Read the data into a pandas DataFrame
 data = pd.read_csv(StringIO(csv_data.decode('utf-8')))
@@ -46,7 +52,7 @@ for col in time_columns:
 
 # Calculate and plot n*log(n) line
 n_values = data['n']
-n_log_n_values = 2**n_values * n_values 
+n_log_n_values = 2**(dim*n_values) * (dim*n_values)
 #scale it 
 n_log_n_values = n_log_n_values / n_log_n_values[0] * data[time_columns[3]][0]
 plt.plot(n_values, n_log_n_values, label='n*log(n)', linestyle='--') 
@@ -58,6 +64,8 @@ plt.title('FFT Implementations Performance')
 plt.legend()
 plt.grid(True)
 
-
+plt.yscale('log')
+    
+ 
 # Save plot to PNG
-plt.savefig('plot.png')
+plt.savefig(sys.argv[6])
