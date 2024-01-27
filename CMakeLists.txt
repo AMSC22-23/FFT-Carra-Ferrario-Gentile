@@ -30,138 +30,35 @@ if(USE_FAST_MATH)
     message(STATUS "Enabled fast math optimizations (-Ofast -funsafe-math-optimizations)")
 endif()
 
-# Include ffft library
-add_subdirectory(ffft)
+# find required packages
+find_package(MPI REQUIRED)
+cmake_policy(SET CMP0074 NEW)
+find_package(OpenMP REQUIRED)
+find_package(Eigen3 REQUIRED NO_MODULE
+		HINTS $ENV{mkEigenPrefix})
 
+# Check if CUDA is available and add CUDA source files
+find_package(CUDA)
 if(CUDA_FOUND)
-    # Define macro for compilation
-    add_definitions(-DUSE_CUDA)
-    # Define executable target
-    add_executable(test_CUDA.out test/1D/CUDA/test_CUDA.cpp)
-    # link the library to link to the executable
-    target_link_libraries(test_CUDA.out PUBLIC FFFT)
-    # specify the library's header file location
-    target_include_directories(test_CUDA.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )
+    #Eigen3 version has to be >= 3.4, otherwise CUDA will not work
+    if(Eigen3_VERSION VERSION_LESS 3.4)
+        message(WARNING "Eigen3 version is less than 3.4, which is incompatible with CUDA. Disabling CUDA.")
+        set(CUDA_FOUND FALSE)
+    else()
+        # Enable CUDA language
+        enable_language(CUDA) #enable NVCC compiler
+
+        # Add CUDA macro for conditional compilation
+        add_definitions(-DUSE_CUDA)
+
+        # Set policy to use CUDA_ARCHITECTURES
+        cmake_policy(SET CMP0104 NEW)
+
+        # Set CUDA_ARCHITECTURES to compute capability 6.1
+        set(CMAKE_CUDA_ARCHITECTURES 61 62 70 72 75 80 86)
+    endif()
 endif()
 
-# SEQUENTIAL
-# Define executable target
-add_executable(test_sequential.out test/1D/sequential/test_sequential.cpp)
-# link the library to link to the executable
-target_link_libraries(test_sequential.out PUBLIC FFFT)
-# specify the library's header file location
-target_include_directories(test_sequential.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )
-
-# MPI
-# Define executable target
-add_executable(test_MPI.out test/1D/MPI/test_MPI.cpp)
-# link the library to link to the executable
-target_link_libraries(test_MPI.out PUBLIC FFFT)
-# specify the library's header file location
-target_include_directories(test_MPI.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )
-
-# OMP
-# Define executable target
-add_executable(test_OMP.out test/1D/OMP/test_OMP.cpp)
-# link the library to link to the executable
-target_link_libraries(test_OMP.out PUBLIC FFFT)
-# specify the library's header file location
-target_include_directories(test_OMP.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )
-
-
-#STOCKHAM
-# Define executable target
-add_executable(test_stockham.out test/1D/stockham/test_stockham.cpp)
-# link the library to link to the executable
-target_link_libraries(test_stockham.out PUBLIC FFFT)
-# specify the library's header file location
-target_include_directories(test_stockham.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )
-
-# SEQ_2D
-# Define executable target
-add_executable(test_sequential_2D.out test/2D/sequential_2D/test_sequential_2D.cpp)
-# link the library to link to the executable
-target_link_libraries(test_sequential_2D.out PUBLIC FFFT)
-# specify the library's header file location
-target_include_directories(test_sequential_2D.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )
-
-# OMP_2D
-# Define executable target
-add_executable(test_OMP_2D.out test/2D/OMP_2D/test_OMP_2D.cpp)
-# link the library to link to the executable
-target_link_libraries(test_OMP_2D.out PUBLIC FFFT)
-# specify the library's header file location
-target_include_directories(test_OMP_2D.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )                    
-# MPI_2D
-# Define executable target
-add_executable(test_MPI_2D.out test/2D/MPI_2D/test_MPI_2D.cpp)
-# link the library to link to the executable
-target_link_libraries(test_MPI_2D.out PUBLIC FFFT)
-# specify the library's header file location
-target_include_directories(test_MPI_2D.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )
-
-# MPI_OMP_2D
-# Define executable target
-add_executable(test_MPI_OMP_2D.out test/2D/MPI_OMP_2D/test_MPI_OMP_2D.cpp)
-# link the library to link to the executable
-target_link_libraries(test_MPI_OMP_2D.out PUBLIC FFFT)
-# specify the library's header file location
-target_include_directories(test_MPI_OMP_2D.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )
-
-# MPI_3D
-# Define executable target
-add_executable(test_MPI_3D.out test/3D/MPI_3D/test_MPI_3D.cpp)
-# link the library to link to the executable
-target_link_libraries(test_MPI_3D.out PUBLIC FFFT)
-# specify the library's header file location
-target_include_directories(test_MPI_3D.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )
-                                
-# SEQ_3D
-# Define executable target
-add_executable(test_sequential_3D.out test/3D/sequential_3D/test_sequential_3D.cpp)
-# link the library to link to the executable
-target_link_libraries(test_sequential_3D.out PUBLIC FFFT)
-# specify the library's header file location
-target_include_directories(test_sequential_3D.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )
-
-# OMP_3D
-# Define executable target
-add_executable(test_OMP_3D.out test/3D/OMP_3D/test_OMP_3D.cpp)
-# link the library to link to the executable
-target_link_libraries(test_OMP_3D.out PUBLIC FFFT)
-# specify the library's header file location
-target_include_directories(test_OMP_3D.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )   
-
-# SPECTROGRAM
-# Define executable target
-add_executable(test_spectrogram.out spectrogram/spectrogram_main.cpp)
-# link the library to link to the executable
-target_link_libraries(test_spectrogram.out PUBLIC FFFT)
-# specify the library's header file location
-target_include_directories(test_spectrogram.out PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )
+add_subdirectory(ffft)
+add_subdirectory(test)
+add_subdirectory(spectrogram)
