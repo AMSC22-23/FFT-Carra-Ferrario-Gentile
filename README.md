@@ -1,4 +1,5 @@
 # FFFT - Fast and FOUrious FOUrier Transform 
+![FFFT logo](./spectrogram/assets/FFFT_Logo.png)
 ### A parallel library for the Fast Fourier Transform
 AMSC project powered by Carrà Edoardo, Gentile Lorenzo, Ferrario Daniele.
 

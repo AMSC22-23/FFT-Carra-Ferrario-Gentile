@@ -38,11 +38,13 @@ python plot_spectrogram.py output [log]
 ```
 
 ### Additional settings
-The spectrogram application can be configured by editing the `spectrogram_app.cpp` file. The following settings are available:
-- `FloatingType`: the floating point type used to compute the ffts. It can be set to `float` or `double`. The default value is `double`.
-- `Strategy`: the strategy used to compute the ffts. It can be set to any 1-dimensional strategy available in the FFFT library (even the CUDA strategies if you built the library with CUDA support). 
-- `FRAME_LENGTH`: the lenght of the frames in samples. It must be a power of 2. The default value is 1024.
-- `STEP_SIZE`: the lenght at which subsequent frames are separated in samples. Default value is 128.
+The spectrogram application has a few additional settings that can be specified through command line arguments.
+- `--frame_length`: the length of the frames in which the audio file is divided. It has to be a power of 2. Default is 1024.
+- `--frame_step`: the distance, in samples, between two consecutive frames. Default is 256.
+
+Moreover, by editing the `spectrogram_main.cpp` file, you can set the strategy to use to compute the ffts.  
+You can choose among all the 1-dimensional strategies available in the FFFT library, both sequential and parallel. The default strategy is the sequential Stockham strategy.
+You can also change the floating point type used for the computation. The default is `double`.
 
 ## Examples
 The following examples are provided in the `spectrogram/wav_samples/` folder:
