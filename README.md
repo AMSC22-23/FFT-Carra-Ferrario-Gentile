@@ -1,4 +1,5 @@
 # FFFT - Fast and FOUrious FOUrier Transform 
+![FFFT logo](./spectrogram/assets/FFFT_Logo.png)
 ### A parallel library for the Fast Fourier Transform
 AMSC project powered by Carrà Edoardo, Gentile Lorenzo, Ferrario Daniele.
 
@@ -115,9 +116,9 @@ Now you can build the shared object of the library with the command `make FFFT`,
 - test_CUDA.out
 
 
-An executable for each test will be created into `/build`, and can be executed through
+An executable for each test will be created into `/build/test`, and can be executed through
 ```bash
-$ ./test_NAME.out N (M Z)
+$ ./test/test_NAME.out N (M Z)
 ```
 where N is the log2 of the size of the input and M and Z have to be specified in the case of multidimensional tests.
 
@@ -128,6 +129,8 @@ The output of the test is as follows:
 
 ### Documentation
 For a comprehensive understanding of the library's structure and usage within your project, please refer to the [documentation](./doc/). This contains a report on the numerical methodology and on the code organization as well as some results on the performance of the library.
+## Spectrogram application
+In the `spectrogram/` directory we provide a small application that uses the Spectrogram module of the library to compute the spectrograms of a set of audio files. To use it please refer to the [spectrogram README](./spectrogram/README.md).
 ## Zazam
 Zazam is a direct example of use of FFFT library. See the details at the corresponding folder.
 [Go to Zazam README.md](./zazam/README.md)

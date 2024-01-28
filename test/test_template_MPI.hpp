@@ -42,13 +42,13 @@ void test_fft_mpi(int argc, char *argv[]){
     Eigen::array<Eigen::Index, dim> dimensions;
 
     // Calculate total elements and print selected dimension sizes
-    int total_elements_number = 0, tmp = 0;
+    int total_elements_number = 1, tmp = 0;
     for(int i = 0; i < dim; i++ )
     {
         if(rank == 0)
             std::cout << argv[i+1] << ","; 
         tmp = 1 << atoi(argv[i+1]);
-        total_elements_number += tmp;
+        total_elements_number *= tmp;
         dimensions[i] = tmp;
     }
 
@@ -66,7 +66,7 @@ void test_fft_mpi(int argc, char *argv[]){
     MPI_Bcast(tensor.get_tensor().data(), total_elements_number, mpi_datatype1, 0, MPI_COMM_WORLD);
 
     // Save the copy for the second solver
-    if( rank == 0 ){
+        if( rank == 0 ){
         tensor_baseline.get_tensor() = tensor.get_tensor().template cast<std::complex<FloatingType2>>(); // cast to different floating type
     }
 
@@ -90,7 +90,7 @@ void test_fft_mpi(int argc, char *argv[]){
 
         // norm L1
         //error_forward = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).sum();
-    }
+            }
 
     // Inverse
     MPI_Bcast(tensor.get_tensor().data(), total_elements_number, mpi_datatype1, 0, MPI_COMM_WORLD);

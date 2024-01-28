@@ -68,33 +68,42 @@ namespace fftcore{
     void MPIFFT_2D<FloatingType>::fft(CTensor_2D &global_tensor, FFTDirection fftDirection) const
     {
         
-        MPIFFT strategy;
+        MPIFFT<FloatingType> strategy;
 
+        int rank, size;
         MPI_Datatype mpi_datatype = std::is_same<FloatingType, double>::value ? MPI_C_DOUBLE_COMPLEX : MPI_C_FLOAT_COMPLEX;
+        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+        MPI_Comm_size(MPI_COMM_WORLD, &size);
+
 
         // Retrieve the matrix dimensions
         const auto& dims = global_tensor.dimensions();
         
         // Rows
         CTensor_1D axis_tensor;
-        for(int x=0; x<dims[0]; x++){
+        for(int y=0; y<dims[0]; y++){
             // Curent 
-            axis_tensor = global_tensor.chip(x,0);
+
+            axis_tensor = global_tensor.chip(y,0);
             strategy.fft(axis_tensor, fftDirection);   
-            global_tensor.chip(x,0) = axis_tensor;
-        }
+            if(rank == 0)
+                global_tensor.chip(y,0) = axis_tensor;
         
+        }
         MPI_Bcast(global_tensor.data(), global_tensor.size(), mpi_datatype, 0, MPI_COMM_WORLD);
+
 
         // Columns 
-        for(int y=0; y<dims[1]; y++){
-            axis_tensor= global_tensor.chip(y,1);
+        for(int x=0; x<dims[1]; x++){
+            axis_tensor= global_tensor.chip(x,1);
             strategy.fft(axis_tensor, fftDirection);    
-            global_tensor.chip(y,1) = axis_tensor;
+            if(rank == 0)
+                global_tensor.chip(x,1) = axis_tensor;
         }
         
         MPI_Bcast(global_tensor.data(), global_tensor.size(), mpi_datatype, 0, MPI_COMM_WORLD);
 
+        
     }
 }
 

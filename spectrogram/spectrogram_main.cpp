@@ -1,68 +1,66 @@
 #include "ffft/spectrogram.hpp"
 
 using namespace spectrogram;
+using std::filesystem::path;
 
-//modifiable parameters
+//settings
 using FloatingType = double;
 using Strategy = StockhamFFT<FloatingType>;
+unsigned FRAME_LENGTH = 1024;
+unsigned FRAME_STEP = 256;
 
-//type aliases
-using ComplexType = std::complex<FloatingType>;
-using CTensor_1D = fftcore::CTensorBase<1, FloatingType>;
+path wav_directory = "../spectrogram/wav_samples";
+path output_directory = "../spectrogram/output";
 
-#define N_SIGNALS 3
+int main(int argc, char **argv){
 
-using std::filesystem::path;
-path wav_directory = "../wav_samples", output_directory = "output";
-
-int main(void){
-
-    std::vector<CTensor_1D> signals(N_SIGNALS);
-
-    for(unsigned long i = 0; i < signals.size(); i++){
-        signals[i] = CTensor_1D(1024);
-        for(fftcore::TensorIdx j = 0; j < signals[i].get_tensor().size(); j++){
-            signals[i].get_tensor()(j) = ComplexType(std::sin((i + 1) * (j + 1)), 0);
+    // Parse command line arguments
+    for (int i = 1; i < argc; ++i) {
+        string arg = argv[i];
+        if (arg == "-w") {
+            wav_directory = argv[++i];
+        } else if (arg == "-o") {
+            output_directory = argv[++i];
+        } else if (arg == "--frame-length") {
+            FRAME_LENGTH = std::stoi(argv[++i]);
+        } else if (arg == "--frame-step") {
+            FRAME_STEP = std::stoi(argv[++i]);
+        } else {
+            std::cout << "Usage: spectrogram_app.out [-w wav_directory] [-o output_directory] [--frame-length frame_length] [--frame-step frame_step]" << std::endl;
+            return 1;
         }
     }
 
-    SpectrogramGenerator<Strategy> spectrogram_generator;
-
-    for(auto &signal : signals){
-        spectrogram_generator.load_audio(signal, 128, 32);
-        spectrogram_generator.compute_spectrogram();
+    //check if wav directory exists
+    if(!std::filesystem::exists(wav_directory)){
+        std::cout << "Wav directory at " << wav_directory << " does not exist." << std::endl;
+        return 1;
     }
-
-    auto spectrograms = spectrogram_generator.get_spectrograms();
 
     // Check if output directory exists, if not create it
     if (!std::filesystem::exists(output_directory)) {
         std::cout << "Output directory does not exist, creating it..." << std::endl;
         std::filesystem::create_directory(output_directory);
+    } else {
+        // Clear output directory
+        std::cout << "Output directory exists, clearing it..." << std::endl;
+        std::filesystem::remove_all(output_directory);
+        std::filesystem::create_directory(output_directory);
     }
 
-    unsigned int file_index = 0;
-    for(auto &spectrogram : spectrograms){
-        path filename = output_directory / ("spectrogram_" + std::to_string(file_index) + ".txt");
-        spectrogram.write_to_file(filename);
-        file_index++;
-    }
-
-    /*------------------------------------------------------------------*/
-
-    //check if wav directory exists
-    assert(std::filesystem::exists(wav_directory) && "Wav directory does not exist");
+    SpectrogramGenerator<Strategy> spectrogram_generator;
 
     // Now iterate over the directory contents
     for (const auto &entry : std::filesystem::directory_iterator(wav_directory)) {
         if (entry.path().extension() == ".wav") {
-            spectrogram_generator.load_audio(entry.path(), 1024, 256);
+            spectrogram_generator.load_audio(entry.path(), FRAME_LENGTH, FRAME_STEP);
             spectrogram_generator.compute_spectrogram();
             path filename = output_directory / entry.path().filename().replace_extension(".txt");
             spectrogram_generator.get_last_spectrogram().write_to_file(filename);
         }
     }
 
-    return 0;
+    std::cout << "Done." << std::endl;
 
+    return 0;
 }
