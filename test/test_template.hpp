@@ -54,7 +54,7 @@ void test_fft(int argc, char *argv[]){
     std::cout<<",";
     
     // norm inf of the error after the transformation 
-    Eigen::Tensor<double, 0> error_forward = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).maximum();
+    Eigen::Tensor<FloatingType1, 0> error_forward = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).maximum();
     // norm L1
     //Eigen::Tensor<double, 0> error_forward = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).sum();
 
@@ -74,7 +74,7 @@ void test_fft(int argc, char *argv[]){
     std::cout<<",";
 
     // norm inf of the error after the inverse
-    Eigen::Tensor<double, 0> error_inverse = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).maximum();
+    Eigen::Tensor<FloatingType1, 0> error_inverse = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).maximum();
 
     // norm L1
     //Eigen::Tensor<double, 0> error_inverse = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).sum();

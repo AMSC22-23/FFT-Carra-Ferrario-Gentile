@@ -19,13 +19,12 @@ int main(int argc, char** argv)
     Eigen::array<Eigen::Index, 2> dimensions;
 
     // Calculate total elements and print selected dimension sizes
-    int total_elements_number = 0, tmp = 0;
+    TensorIdx tmp = 0;
     for(int i = 0; i < 2; i++ )
     {
         if(rank == 0)
             std::cout << argv[i+1] << ","; 
         tmp = 1 << atoi(argv[i+1]);
-        total_elements_number += tmp;
         dimensions[i] = tmp;
     }
     

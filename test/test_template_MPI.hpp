@@ -31,8 +31,8 @@ void test_fft_mpi(int argc, char *argv[]){
     MPI_Comm_size(MPI_COMM_WORLD, &size);    
     MPI_Datatype mpi_datatype1 = std::is_same<FloatingType1, double>::value ? MPI_C_DOUBLE_COMPLEX : MPI_C_FLOAT_COMPLEX;
 
-    Eigen::Tensor<double, 0> error_inverse;
-    Eigen::Tensor<double, 0> error_forward;
+    Eigen::Tensor<FloatingType1, 0> error_inverse;
+    Eigen::Tensor<FloatingType1, 0> error_forward;
 
     FFTSolver<dim, FloatingType1> solver(std::make_unique<FFTStrategy1>());
     FFTSolver<dim, FloatingType2> solver_baseline(std::make_unique<FFTStrategy2>());
