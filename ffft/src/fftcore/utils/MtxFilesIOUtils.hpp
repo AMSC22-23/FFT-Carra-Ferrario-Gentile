@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include "FFTDataTypes.hpp"
 
 /**
  * Utility methods for MtxFilesIOUtils
@@ -82,7 +83,7 @@ namespace fftcore{
         }
 
         template<typename DataType, int Rank>
-        inline void tensor_set_value(Eigen::Tensor<DataType, Rank>& tensor, std::vector<int> coordinates, std::vector<std::string> str_values){
+        inline void tensor_set_value(Eigen::Tensor<DataType, Rank>& tensor, std::array<TensorIdx, static_cast<size_t>(Rank)> coordinates, std::vector<std::string> str_values){
             bool num_of_entries_check = str_values.size() == (Rank + 1);
             assert(num_of_entries_check && "Error: real data is incomplete or badly formatted.");
 
@@ -95,7 +96,7 @@ namespace fftcore{
         }
 
         template<typename DataType, int Rank>
-        inline void tensor_set_value(Eigen::Tensor<std::complex<DataType>, Rank>& tensor, std::vector<int> coordinates, std::vector<std::string> str_values){
+        inline void tensor_set_value(Eigen::Tensor<std::complex<DataType>, Rank>& tensor, std::array<TensorIdx, Rank> coordinates, std::vector<std::string> str_values){
             bool num_of_entries_check = str_values.size() == Rank + 2;
             assert(num_of_entries_check && "Error: complex data is incomplete or badly formatted.");
 

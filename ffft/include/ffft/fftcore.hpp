@@ -63,8 +63,8 @@
 
 // Utilities
 #include "../../src/fftcore/utils/FFTUtils.hpp"
-//#include "../../src/fftcore/utils/MtxFilesIO.hpp"
-//#include "../../src/fftcore/utils/MtxFilesIOUtils.hpp"
+#include "../../src/fftcore/utils/MtxFilesIO.hpp"
+#include "../../src/fftcore/utils/MtxFilesIOUtils.hpp"
 
 
 #endif //FFTCORE_HPP

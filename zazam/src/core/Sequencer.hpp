@@ -1,14 +1,11 @@
 #ifndef SEQUENCER_HPP
 #define SEQUENCER_HPP
 
-#include "../../AudioFile/AudioFile.h"
+#include "ffft/fftcore.hpp"
+#include "ffft/spectrogram.hpp"
 #include "utils/ZazamDataTypes.hpp"
 #include "utils/MusicTensor.hpp"
 #include "utils/Utils.hpp"
-#include "../../ffft/src/fftcore/utils/FFTUtils.hpp"
-#include "../../ffft/src/spectrogram/SpectrogramGenerator.hpp"
-#include "../../ffft/src/spectrogram/SpectrogramDataTypes.hpp"
-#include "../../ffft/include/ffft/fftcore.hpp"
 #include "HashGenerator.hpp"
 
 #include <memory>

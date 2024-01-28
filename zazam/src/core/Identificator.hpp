@@ -1,8 +1,8 @@
 #ifndef IDENTIFICATOR_HPP
 #define IDENTIFICATOR_HPP
 
+#include "ffft/fftcore.hpp"
 #include "utils/ZazamDataTypes.hpp"
-#include "../../ffft/src/fftcore/utils/MtxFilesIO.hpp"
 #include "utils/Utils.hpp"
 #include <vector>
 

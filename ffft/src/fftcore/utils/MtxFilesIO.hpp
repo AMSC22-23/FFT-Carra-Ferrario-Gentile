@@ -13,6 +13,7 @@
 #include <complex>
 #include <type_traits>
 #include "MtxFilesIOUtils.hpp"
+#include "FFTDataTypes.hpp"
 
 
 /**
@@ -79,13 +80,13 @@ namespace fftcore{
             int nnz_count = 0; // Actual number
 
             // Size of each dimension
-            std::vector<long> dim_sizes;
+            std::array<TensorIdx, Rank> dim_sizes;
             
             // Sub string values for each line
             std::vector<std::string> str_values;
 
             // Current line coordinates
-            std::vector<int> current_coordinates;
+            std::array<TensorIdx, Rank> current_coordinates;
 
             // HEADER CHECK    
             std::getline(input_file, line);
@@ -113,7 +114,7 @@ namespace fftcore{
                     
                     // Set the dimension sizes
                     for(int i=0; i<str_values.size()-1; i++){
-                        dim_sizes.push_back(std::stol(str_values[i]));
+                        dim_sizes[i] = std::stoi(str_values.at(i));
                     }
 
                     // Set the target nnz entries to load
@@ -135,17 +136,22 @@ namespace fftcore{
                 }else{
                     
                     // Convert string coordinates to an int vector
-                    std::transform(str_values.begin(), str_values.end()-1, std::back_inserter(current_coordinates), [](const std::string& str) {
-                        // -1 because of the 1-indexing of mtx file
-                        return std::stoi(str)-1;
-                    });     
+                    // std::transform(str_values.begin(), str_values.end()-1, std::back_inserter(current_coordinates), [](const std::string& str) {
+                    //     // -1 because of the 1-indexing of mtx file
+                    //     return std::stoi(str)-1;
+                    // });    
+
+                     auto it = str_values.begin();
+                    for (size_t i = 0; i < Rank; ++i) {
+        current_coordinates[i] = std::stol(*it++) - 1; // -1 because of the 1-indexing of mtx file
+    }
 
 
                     // Setting the current line data in the tensor
                     fftcore::utils::tensor_set_value(tensor, current_coordinates, str_values);
 
                     nnz_count++;
-                    current_coordinates.clear();
+                    current_coordinates.fill(0);
                 }
             }
 

@@ -1,3 +1,6 @@
+#ifndef RECORDER_HPP
+#define RECORDER_HPP
+
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
@@ -201,3 +204,5 @@ namespace zazamrealtime{
         return finished;
     }
 }
+
+#endif // RECORDER_HPP

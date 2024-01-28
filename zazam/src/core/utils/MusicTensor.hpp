@@ -1,10 +1,9 @@
 #ifndef MUSICTENSOR_HPP
 #define MUSICTENSOR_HPP
 
-#include "../../ffft/src/fftcore/Tensor/TensorFFTBase.hpp"
+#include "ffft/fftcore.hpp"
 #include "Utils.hpp"
 #include "ZazamDataTypes.hpp"
-#include "../AudioFile/AudioFile.h"
 #include <string>
 #include <complex>
 
