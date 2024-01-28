@@ -22,11 +22,11 @@ header2 = sys.argv[3]
 dim=int(sys.argv[4])
 if dim==1:
     # Run the benchmark script and capture its output
-    csv_data = subprocess.check_output(['../speedup/benchmark.sh  ../../build/' + testname + ' ' + header1 + ' ' + header2], shell=True)
+    csv_data = subprocess.check_output(['../speedup/benchmark.sh  ../../build/test/' + testname + ' ' + header1 + ' ' + header2], shell=True)
 elif dim==2:
-    csv_data = subprocess.check_output(['../speedup/benchmark2D.sh  ../../build/' + testname + ' ' + header1 + ' ' + header2], shell=True)
+    csv_data = subprocess.check_output(['../speedup/benchmark2D.sh  ../../build/test/' + testname + ' ' + header1 + ' ' + header2], shell=True)
 else:
-    csv_data = subprocess.check_output(['../speedup/benchmark3D.sh  ../../build/' + testname + ' ' + header1 + ' ' + header2], shell=True)
+    csv_data = subprocess.check_output(['../speedup/benchmark3D.sh  ../../build/test/' + testname + ' ' + header1 + ' ' + header2], shell=True)
 
 
 #print(csv_data)

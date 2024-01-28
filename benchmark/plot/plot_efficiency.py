@@ -14,17 +14,17 @@ filename=sys.argv[4]
 if dim==1:
     # Run the benchmark script and capture its output
     size = sys.argv[5]
-    csv_data = subprocess.check_output(['../efficiency/efficiency.sh  ../../build/' + testname + ' ' +size + ' ' + max_proc], shell=True)
+    csv_data = subprocess.check_output(['../efficiency/efficiency.sh  ../../build/test/' + testname + ' ' +size + ' ' + max_proc], shell=True)
 elif dim==2:
     size = sys.argv[5]
     size2 = sys.argv[6]
-    csv_data = subprocess.check_output(['../efficiency/efficiency_2D.sh  ../../build/' + testname + ' ' +size + ' ' +size2+ ' ' + max_proc], shell=True)
+    csv_data = subprocess.check_output(['../efficiency/efficiency_2D.sh  ../../build/test/' + testname + ' ' +size + ' ' +size2+ ' ' + max_proc], shell=True)
 else:
     size = sys.argv[5]
     size2 = sys.argv[6]
     size3 = sys.argv[7]
 
-    csv_data = subprocess.check_output(['../efficiency/efficiency_3D.sh   ../../build/' + testname + ' ' +size + ' ' +size2 + ' ' +size3+ ' ' + max_proc], shell=True)
+    csv_data = subprocess.check_output(['../efficiency/efficiency_3D.sh   ../../build/test/' + testname + ' ' +size + ' ' +size2 + ' ' +size3+ ' ' + max_proc], shell=True)
 
 
 #print(csv_data)
