@@ -53,10 +53,12 @@ void test_fft(int argc, char *argv[]){
     solver_baseline.get_timer().print_last_formatted();
     std::cout<<",";
     
-    // norm inf of the error after the transformation 
-    Eigen::Tensor<FloatingType1, 0> error_forward = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).maximum();
-    // norm L1
-    //Eigen::Tensor<double, 0> error_forward = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).sum();
+    // norm two of the error after the transformation 
+    //absolute error
+    Eigen::Tensor<FloatingType1, 0> error_forward = (tensor.get_tensor() - tensor_baseline.get_tensor()).abs().square().sum().sqrt();
+    // relative error
+    Eigen::Tensor<FloatingType1, 0> norm_tensor = tensor.get_tensor().abs().square().sum().sqrt();
+    error_forward = error_forward/norm_tensor;
 
 
     /*
@@ -73,11 +75,12 @@ void test_fft(int argc, char *argv[]){
     solver_baseline.get_timer().print_last_formatted();
     std::cout<<",";
 
-    // norm inf of the error after the inverse
-    Eigen::Tensor<FloatingType1, 0> error_inverse = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).maximum();
-
-    // norm L1
-    //Eigen::Tensor<double, 0> error_inverse = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).sum();
+    // norm two of the error after the inverse
+     //absolute error
+    Eigen::Tensor<FloatingType1, 0> error_inverse = (tensor.get_tensor() - tensor_baseline.get_tensor()).abs().square().sum().sqrt();
+    // relative error
+    norm_tensor = tensor.get_tensor().abs().square().sum().sqrt();
+    error_inverse = error_inverse/norm_tensor;
 
 
     // print speedup

@@ -33,6 +33,7 @@ void test_fft_mpi(int argc, char *argv[]){
 
     Eigen::Tensor<FloatingType1, 0> error_inverse;
     Eigen::Tensor<FloatingType1, 0> error_forward;
+    Eigen::Tensor<FloatingType1, 0> norm_tensor;
 
     FFTSolver<dim, FloatingType1> solver(std::make_unique<FFTStrategy1>());
     FFTSolver<dim, FloatingType2> solver_baseline(std::make_unique<FFTStrategy2>());
@@ -85,12 +86,13 @@ void test_fft_mpi(int argc, char *argv[]){
         solver_baseline.get_timer().print_last_formatted();
         std::cout<<",";
 
-        // norm inf of the error after the transformation
-        error_forward = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).maximum();
-
-        // norm L1
-        //error_forward = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).sum();
-            }
+        // norm two of the error after the transformation 
+        //absolute error
+        error_forward = (tensor.get_tensor() - tensor_baseline.get_tensor()).abs().square().sum().sqrt();
+        // relative error
+        norm_tensor = tensor.get_tensor().abs().square().sum().sqrt();
+        error_forward = error_forward/norm_tensor;
+    }
 
     // Inverse
     MPI_Bcast(tensor.get_tensor().data(), total_elements_number, mpi_datatype1, 0, MPI_COMM_WORLD);
@@ -114,11 +116,12 @@ void test_fft_mpi(int argc, char *argv[]){
         // print speedup
         std::cout<<f2/f1<<","<<i2/i1<<",";
         
-        // norm inf of the error after the inverse
-        error_inverse = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).maximum();
-
-        // norm L1
-        //error_inverse = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).sum();
+        // norm two of the error after the transformation
+        //absolute error
+        error_inverse = (tensor.get_tensor() - tensor_baseline.get_tensor()).abs().square().sum().sqrt();
+        // relative error
+        norm_tensor = tensor.get_tensor().abs().square().sum().sqrt();
+        error_inverse = error_inverse/norm_tensor;
 
         // print error inverse 
         std::cout << error_forward << ",";

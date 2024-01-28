@@ -30,11 +30,15 @@ int main(int argc, char** argv)
     
     double f2;
 
-    Eigen::Tensor<double, 0> error_inverse;
-    Eigen::Tensor<double, 0> error_forward;
+    using FloatingType1 = double;
+    using FloatingType2 = double;
 
-    CTensorBase<2, double> tensor(dimensions);
-    CTensorBase<2, double> tensor_baseline(dimensions); 
+    Eigen::Tensor<FloatingType1, 0> error_inverse;
+    Eigen::Tensor<FloatingType1, 0> error_forward;
+    Eigen::Tensor<FloatingType1, 0> norm_tensor;
+
+    CTensorBase<2, FloatingType1> tensor(dimensions);
+    CTensorBase<2, FloatingType2> tensor_baseline(dimensions); 
 
     // Set the random values on process 0
     if(rank == 0){
@@ -42,8 +46,8 @@ int main(int argc, char** argv)
         tensor_baseline.get_tensor()=tensor.get_tensor();
     }
 
-    FFTSolver<2, double> solver_MPI_OMP(std::make_unique<MPI_OMP_FFT_2D<double>>());
-    FFTSolver<2, double> solver_baseline(std::make_unique<SequentialFFT_2D<double>>());
+    FFTSolver<2, FloatingType1> solver_MPI_OMP(std::make_unique<MPI_OMP_FFT_2D<FloatingType1>>());
+    FFTSolver<2, FloatingType2> solver_baseline(std::make_unique<SequentialFFT_2D<FloatingType2>>());
 
 
     /*
@@ -61,12 +65,13 @@ int main(int argc, char** argv)
         solver_baseline.get_timer().print_last_formatted();
         std::cout<<",";
         
-        // norm inf of the error after the transformation
-        error_forward = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).maximum();
 
-        // norm L1
-        //error_forward = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).sum();
-
+        // norm two of the error after the transformation 
+        //absolute error
+        error_forward = (tensor.get_tensor() - tensor_baseline.get_tensor()).abs().square().sum().sqrt();
+        // relative error
+        norm_tensor = tensor.get_tensor().abs().square().sum().sqrt();
+        error_forward = error_forward/norm_tensor;
     }
 
     /*
@@ -94,11 +99,12 @@ int main(int argc, char** argv)
         std::cout<<f2/f1<<","<<i2/i1<<",";
 
         
-        // norm inf of the error after the inverse
-        error_inverse = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).maximum();
-
-        // norm L1
-        //error_inverse = (tensor.get_tensor().abs() - tensor_baseline.get_tensor().abs()).sum();
+        // norm two of the error after the transformation
+        //absolute error
+        error_inverse = (tensor.get_tensor() - tensor_baseline.get_tensor()).abs().square().sum().sqrt();
+        // relative error
+        norm_tensor = tensor.get_tensor().abs().square().sum().sqrt();
+        error_inverse = error_inverse/norm_tensor;
 
         // print error inverse 
         std::cout << error_forward << ",";
