@@ -13,11 +13,11 @@ int main(){
         std::vector<double> recording;
         recorder.record(recording);
 
-        Sequencer sequencer("../local_dataset/hashes");
+        Sequencer sequencer("../../zazam/local_dataset/hashes");
         Song sample, result;
         sequencer.sequence(recording, sample, false);
 
-        Identificator identificator("../local_dataset/hashes");
+        Identificator identificator("../../zazam/local_dataset/hashes");
         identificator.identify(sample.hash, result); 
 
         std::cout << "============================================================" << std::endl;

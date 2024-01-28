@@ -17,7 +17,6 @@ add_test_executable(test_OMP_2D.out "2D/OMP_2D/test_OMP_2D.cpp")
 add_test_executable(test_MPI_OMP_2D.out "2D/MPI_OMP_2D/test_MPI_OMP_2D.cpp")
 
 add_test_executable(test_sequential_3D.out "3D/sequential_3D/test_sequential_3D.cpp")
-add_test_executable(test_MPI_3D.out "3D/MPI_3D/test_MPI_3D.cpp")
 add_test_executable(test_OMP_3D.out "3D/OMP_3D/test_OMP_3D.cpp")
 
 if(CUDA_FOUND)

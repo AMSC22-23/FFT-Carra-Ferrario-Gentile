@@ -52,7 +52,6 @@
 // strategies 3D
 #include "../../src/fftcore/Strategy/3D/SequentialFFT_3D/SequentialFFT_3D.hpp"
 #include "../../src/fftcore/Strategy/3D/OpenMP_3D/OmpFFT_3D.hpp"
-#include "../../src/fftcore/Strategy/3D/MPIFFT_3D/MPIFFT_3D.hpp"
 
 
 //Timer
