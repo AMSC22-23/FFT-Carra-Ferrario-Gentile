@@ -128,7 +128,7 @@ The output of the test is as follows:
 `n(,m,z), time_forward_tested_strategy, time_forward_baseline_strategy, time_inverse_tested_strategy, time_inverse_baseline_strategy, speedup_forward, speedup_inverse, error_forward, error_inverse`
 
 ### Documentation
-For a comprehensive understanding of the library's structure and usage within your project, please refer to the [documentation](./doc/). This contains a report on the numerical methodology and on the code organization as well as some results on the performance of the library.
+For a comprehensive understanding of the library's structure and usage within your project, please refer to the [documentation](./docs/). This contains a report on the numerical methodology and on the code organization as well as some results on the performance of the library.
 ## Spectrogram application
 In the `spectrogram/` directory we provide a small application that uses the Spectrogram module of the library to compute the spectrograms of a set of audio files. To use it please refer to the [spectrogram README](./spectrogram/README.md).
 ## Zazam
