@@ -1,52 +1,27 @@
-# establishes policy settings and ensures that the following CMake
-# functions are run with a compatible version of CMake
-cmake_minimum_required(VERSION 3.10)
+# Collect all the source files for the ZAZAM library
+file(GLOB_RECURSE ZAZAM_SOURCES "src/*.cpp" "utils/*.cpp")
 
-# Project name and version
-project(ZAZAM VERSION 1.0)
+# Create a static library with the common source files
+add_library(zazam_lib STATIC ${ZAZAM_SOURCES})
 
-# Set C++ standard
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+# Link the static library with the FFFT and portaudio libraries
+target_link_libraries(zazam_lib PUBLIC FFFT ${PORTAUDIO_LIBRARY})
 
-# Define default build type if not provided
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
-endif()
+# Include the portaudio headers for the library
+target_include_directories(zazam_lib PUBLIC ${PORTAUDIO_INCLUDE_DIR})
 
-# Set build type options
-set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
-  STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+# Specify the include directories for the library
+target_include_directories(zazam_lib PUBLIC
+                          "${PROJECT_SOURCE_DIR}/ffft/include"
+                          "${PROJECT_SOURCE_DIR}/AudioFile"
+                          )
 
-# Set compiler flags for different build types
-set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
-
-# Include ffft library
-add_subdirectory(/home/df/Documenti/Universita/AMSC/FFT-Carra-Ferrario-Gentile/ffft FFFT)
-
-file(GLOB_RECURSE SOURCES "src/*.cpp" "utils/*.cpp")
-add_library(ZAZAM SHARED ${SOURCES})
-
-# Define executable target
+# Define executable targets
 add_executable(identify.out examples/identify.cpp)
 add_executable(sequence.out examples/sequence.cpp)
 add_executable(record.out examples/record.cpp)
 
-find_package(portaudio)
-# link the library to link to the executable
-target_link_libraries(ZAZAM PUBLIC FFFT) 
-target_link_libraries(ZAZAM PUBLIC portaudio) 
-target_link_libraries(identify.out PUBLIC ZAZAM) 
-target_link_libraries(sequence.out PUBLIC ZAZAM) 
-target_link_libraries(record.out PUBLIC ZAZAM) 
-
-# specify the library's header file location
-target_include_directories(ZAZAM PUBLIC
-                          "${PROJECT_SOURCE_DIR}/ffft/include"
-                          )
-
-target_include_directories(ZAZAM PUBLIC
-                          "${PROJECT_SOURCE_DIR}/AudioFile"
-                          )
-
+# Link the executables with the static library
+target_link_libraries(identify.out PUBLIC zazam_lib)
+target_link_libraries(sequence.out PUBLIC zazam_lib)
+target_link_libraries(record.out PUBLIC zazam_lib)

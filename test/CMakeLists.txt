@@ -1,6 +1,3 @@
-# Include the ffft library
-link_directories(${CMAKE_SOURCE_DIR}/ffft)
-
 # Macro for adding test executables
 macro(add_test_executable TARGET_NAME SOURCE_FILE)
     add_executable(${TARGET_NAME} ${SOURCE_FILE})

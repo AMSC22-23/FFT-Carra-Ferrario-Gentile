@@ -34,8 +34,7 @@ endif()
 find_package(MPI REQUIRED)
 cmake_policy(SET CMP0074 NEW)
 find_package(OpenMP REQUIRED)
-find_package(Eigen3 REQUIRED NO_MODULE
-		HINTS $ENV{mkEigenPrefix})
+find_package(Eigen3 REQUIRED NO_MODULE HINTS $ENV{mkEigenPrefix})
 
 # Check if CUDA is available and add CUDA source files
 find_package(CUDA)
@@ -62,3 +61,15 @@ endif()
 add_subdirectory(ffft)
 add_subdirectory(test)
 add_subdirectory(spectrogram)
+
+#find portaudio 
+find_library(PORTAUDIO_LIBRARY NAMES portaudio)
+find_path(PORTAUDIO_INCLUDE_DIR NAMES portaudio.h)
+
+#conditional compilation of zazam
+if(PORTAUDIO_LIBRARY AND PORTAUDIO_INCLUDE_DIR)
+    message(STATUS "Found portaudio: ${PORTAUDIO_LIBRARY}")
+    add_subdirectory(zazam)
+else()
+    message(STATUS "Could not find portaudio. Disabling zazam.")
+endif()
