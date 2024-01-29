@@ -37,7 +37,7 @@ find_package(OpenMP REQUIRED)
 find_package(Eigen3 REQUIRED NO_MODULE HINTS $ENV{mkEigenPrefix})
 
 # Check if CUDA is available and add CUDA source files
-find_package(CUDA)
+#find_package(CUDA)
 if(CUDA_FOUND)
     #Eigen3 version has to be >= 3.4, otherwise CUDA will not work
     if(Eigen3_VERSION VERSION_LESS 3.4)
