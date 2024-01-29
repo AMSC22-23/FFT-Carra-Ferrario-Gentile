@@ -24,19 +24,19 @@ mkdir -p 3D/mpi/
 for i in {1..5}; do
 		# speedup
 		#1D
-		python3 plot_time.py test_sequential.out cooley-tuckey fftw 1 1D/seq/seq$i.png
+		python3 plot_time.py test_sequential.out cooley-Tukey fftw 1 1D/seq/seq$i.png
 		python3 plot_time.py test_stockham.out stockham fftw 1 1D/stockham/stockham$i.png
 		python3 plot_time.py test_OMP.out OMP sequential_CT 1 1D/omp/omp$i.png
 		python3 plot_time_MPI.py test_MPI.out $N_PROC MPI sequential_CT 1 1D/mpi/mpi$i.png
 
 		#2D
-		python3 plot_time.py test_sequential_2D.out cooley-tuckey fftw 2 2D/seq/seq$i.png
+		python3 plot_time.py test_sequential_2D.out cooley-Tukey fftw 2 2D/seq/seq$i.png
 		python3 plot_time.py test_OMP_2D.out OMP sequential_CT 2 2D/omp/omp$i.png
 		#python3 plot_time_MPI.py test_MPI_OMP_2D.out MPI_OMP sequential_CT 2 2D/mpiomp/mpiomp$i.png
 		python3 plot_time_MPI.py test_MPI_2D.out $N_PROC MPI sequential_CT 2 2D/mpi/mpi$i.png
 		
 		#3D
-		python3 plot_time.py test_sequential_3D.out cooley-tuckey fftw 3 3D/seq/seq$i.png
+		python3 plot_time.py test_sequential_3D.out cooley-Tukey fftw 3 3D/seq/seq$i.png
 		python3 plot_time.py test_OMP_3D.out OMP sequential_CT 3 3D/omp/omp$i.png
 		python3 plot_time_MPI.py test_MPI_3D.out $N_PROC MPI sequential_CT 3 3D/mpi/mpi$i.png
 

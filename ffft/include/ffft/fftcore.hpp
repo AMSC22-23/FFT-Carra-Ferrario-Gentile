@@ -6,7 +6,7 @@
  * \section Introduction
  * 
  * FFTCore is a parallel C++ library designed for computing the Fast Fourier Transform design to be highly extensible, and easy to integrate in different applications.
- * The Library contains different sequential and parallel implementation to compute the FFT in one or higher dimension based on Stockham and Cooley-Tuckey algorithms. 
+ * The Library contains different sequential and parallel implementation to compute the FFT in one or higher dimension based on Stockham and Cooley-Tukey algorithms. 
  *  
  * \subsection Library folder structure
  *   - `fftcore/`: this directory contains the core files of the library.
@@ -16,10 +16,10 @@
  * \subsection  Supported strategies
  *  At the moment the supported strategies are:
  *  - Stockham only 1 dimensioanl.
- *  - Cooley-Tuckey 1,2 and 3 dimensional.
- *  - Cooley-Tuckey MPI 1,2 and 3 dimensional.
- *  - Cooley-Tuckey OMP 1,2 and 3 dimensional.
- *  - Cooley-Tuckey CUDA 1,2 and 3 dimensional.
+ *  - Cooley-Tukey 1,2 and 3 dimensional.
+ *  - Cooley-Tukey MPI 1,2 and 3 dimensional.
+ *  - Cooley-Tukey OMP 1,2 and 3 dimensional.
+ *  - Cooley-Tukey CUDA 1,2 and 3 dimensional.
  */
 
 /**
