@@ -32,7 +32,6 @@
 *.app
 
 # Matrix Market files
-*.mtx
 
 # Vscode files
 .vscode
@@ -51,3 +50,6 @@ doxygen/html
 spectroram/output
 # Doxygen
 #html/
+
+# Zazam music
+zazam/examples/dataset/music
