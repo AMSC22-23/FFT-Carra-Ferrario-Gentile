@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['audiofile_0',['AudioFile',['../classAudioFile.html',1,'']]],
-  ['audiosampleconverter_1',['AudioSampleConverter',['../structAudioSampleConverter.html',1,'']]]
+  ['audiofile_0',['AudioFile',['../class_audio_file.html',1,'']]],
+  ['audiosampleconverter_1',['AudioSampleConverter',['../struct_audio_sample_converter.html',1,'']]]
 ];
