@@ -34,7 +34,9 @@ The library is designed to be fast and easy to use. Here is a simple example of 
 
 1. First we include the library:
 ```c++
-#include "ffft.hpp"
+#include "ffft/fftcore.hpp"
+
+using namespace fftcore;
 ```
 
 2. Create a solver and assign it to a strategy, which in this case is the Cooley-Tukey sequential FFT for two dimensional objects working with double: 
@@ -56,7 +58,9 @@ solver.compute_fft(data, FFT_FORWARD);
 
 Complete code:
 ```c++
-#include "ffft.hpp"
+#include "ffft/fftcore.hpp"
+
+using namespace fftcore;
 
 int main(){
     // Create the solver
