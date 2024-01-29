@@ -55,7 +55,7 @@ void test_fft(int argc, char *argv[]){
     
     // norm two of the error after the transformation 
     //absolute error
-    Eigen::Tensor<FloatingType1, 0> error_forward = (tensor.get_tensor() - tensor_baseline.get_tensor()).abs().square().sum().sqrt();
+    Eigen::Tensor<FloatingType1, 0> error_forward = (tensor.get_tensor() - tensor_baseline.get_tensor().template cast<std::complex<FloatingType1>>()).abs().square().sum().sqrt();
     // relative error
     Eigen::Tensor<FloatingType1, 0> norm_tensor = tensor.get_tensor().abs().square().sum().sqrt();
     error_forward = error_forward/norm_tensor;
@@ -77,7 +77,7 @@ void test_fft(int argc, char *argv[]){
 
     // norm two of the error after the inverse
      //absolute error
-    Eigen::Tensor<FloatingType1, 0> error_inverse = (tensor.get_tensor() - tensor_baseline.get_tensor()).abs().square().sum().sqrt();
+    Eigen::Tensor<FloatingType1, 0> error_inverse = (tensor.get_tensor() - tensor_baseline.get_tensor().template cast<std::complex<FloatingType1>>()).abs().square().sum().sqrt();
     // relative error
     norm_tensor = tensor.get_tensor().abs().square().sum().sqrt();
     error_inverse = error_inverse/norm_tensor;
