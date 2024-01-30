@@ -8,7 +8,7 @@ Fast and FOUrious FOUrier Transform (FFFT) is a parallel C++ library designed fo
 
 ## Required software
 
-This library depends on two modules: `Eigen v3.3.9` and `fftw3`, both of these modules are available in the **[mk modules](https://github.com/pcafrica/mk)**.
+This library depends on 4 modules: `Eigen v3.3.9`, `fftw3`, `MPI` (all available in the **[mk modules](https://github.com/pcafrica/mk)**) and `OpenMP`. Without any of these modules, the library will not compile.\
 
 fftw3 is a state-of-the-art library widely used in the scientific community for its efficiency and accuracy. In the context of this library, it is utilized primarily for testing the correctness and performance of the different implementations.
 ### For CUDA

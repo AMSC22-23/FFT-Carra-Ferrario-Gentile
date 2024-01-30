@@ -51,6 +51,7 @@ The following examples are provided in the `spectrogram/wav_samples/` folder:
 - `Violin.wav`: a short segment of "Experience" by Ludovico Einaudi, played by a violin.
 - `Trumpet.wav`: a trumpet solo played by James Morrison.
 - `Tuning_Fork_440Hz.wav`: a tuning fork playing the A4 note (440 Hz).
+- `FFFT_logo.wav`: a wav file reconstructed from the FFFT logo image. Its spectrogram is the logo itself. 
 
 These are the spectrograms of the violin sample, the first one with a linear frequency axis, the second one with a logarithmic frequency axis:
 
